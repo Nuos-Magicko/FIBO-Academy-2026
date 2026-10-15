@@ -101,3 +101,20 @@ Firmware split into modules (`firmware/main/`: settings, camera, vision, net, wi
 | Protocol parser (fragmentation, corruption, oversize, grid/detections/JSON decode) | `python pc/protocol.py` passes | SIMULATED-UNIT-TESTED |
 
 Observations for students (not fixed, by design): per-bundle `t_send` averages ~78 ms for ~9 KB JPEGs (≈ 115 KB/s), so sent fps sits slightly below processed fps and occasional drops occur. At VGA the network, not inference, limits sent fps. Wi-Fi power save is left at the IDF default (MIN_MODEM).
+
+## 2026-10-15: Gate 3 PC viewer, logger, tracker, replay, tests (branch `gate2-device-app`)
+
+PC stack (`pc/requirements.txt`): Python 3.12.4, numpy 2.4.6, opencv-python 4.14.0.94, pytest 8.4.2, in `pc/.venv`.
+Modules: `protocol.py` (framing/codecs), `pipeline.py` (frame_id join, stats, tracker feed, logging), `tracker.py`, `heatmap.py`, `clock_sync.py`, `logger.py`, `replay.py` (+ synthetic generator), `viewer.py` (OpenCV), `test_client.py`.
+
+| Item | Result | Label |
+|---|---|---|
+| `pytest pc/tests`: parser (fragmentation at every chunk size, corruption + resync, oversize, truncation, decoders); pipeline (pairing by frame_id, out-of-order halves, never DETECTIONS[n+1] on frame n, missing JPEG / missing DETECTIONS, metadata mode, seq gaps, reconnect); grid cell mapping (matches firmware) + normalization; tracklet association, gating, expiry, jitter suppression, step accumulation; segment rasterization; CSV/JSONL schema; JPEG-only-when-recording; logged run replays identically | **27 passed** | SIMULATED-UNIT-TESTED |
+| `samples/synthetic_run/` replays without hardware | 68 pairs, 1 missing pair, 1 frame_id gap, 0 seq gaps (all as designed); committed sample byte-identical to the generator | SIMULATED-UNIT-TESTED |
+| Viewer on the synthetic replay (headless snapshot) | frame + boxes + scores + frame_id; movement overlay follows the three walkers; legend with units; limitations printed | SIMULATED-UNIT-TESTED |
+| Viewer on the live device, 20 s, logging on, recording off | 119 pairs, 0 seq gaps, 0 CRC errors, 0 missing pairs; 25 frame_id gaps = device drops during Wi-Fi send stalls (device t_send window mean up to 418 ms, RSSI −55 to −64); host draw 1.5–6.5 ms/frame; clock bound ±11 ms; capture→display 183–1,500 ms ±11 ms (varies with the stalls) | VERIFIED ON HARDWARE |
+| Run logs from the live session | `runs/<time>_gmt-8e6dd8/`: hello.json, detections.jsonl (119), metrics.csv (fixed columns), events.jsonl, grid_snapshots.csv, host_stats.csv, stream.gmtp; `frames/` empty (recording off) | VERIFIED ON HARDWARE |
+| Replay of that live run | same counters as live (270 records, 119 pairs, 25 gaps) | VERIFIED ON HARDWARE (data from hardware, replay on PC) |
+| Presence overlay on live data | renders; almost no detections in view (max 0.0002 detections/frame/cell over 5,014 frames) | VERIFIED ON HARDWARE (rendering only; not validated with people walking) |
+| Interactive keys (o/r/g/m/s/c/q) in the window | handlers written; only exercised headless (no key presses) | NOT TESTED |
+| Live recording on (JPEGs to disk) | covered by unit test only; not run live to avoid saving images of people in the office | SIMULATED-UNIT-TESTED |

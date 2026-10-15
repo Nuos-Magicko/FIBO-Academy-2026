@@ -43,3 +43,15 @@ core 1: vision_task (vision.cpp)                         core 0: net_task (net.c
 - **FreeRTOS tick 1 kHz;** the vision loop yields 1 tick per iteration so IDLE1 feeds the task watchdog.
 - **Wi-Fi power save** stays at the IDF default (MIN_MODEM). It is recorded, not tuned.
 - **Versions in HELLO** are read at build time from `managed_components/*/idf_component.yml` (CMake), so they can't drift from what was built.
+
+## PC side (`pc/`)
+```text
+LiveSource (socket thread) ─┐                     ┌─ RunLogger: runs/<time>_<device>/ (always; JPEGs only when recording)
+ReplaySource (stream.gmtp) ─┴─► Parser ─► Pipeline ┼─ frame_id join ─► latest frame ─► viewer render (OpenCV)
+                                                   ├─ Tracker (ephemeral NN tracklets) ─► MovementGrid (PC metric)
+                                                   ├─ PRESENCE_GRID from device (device metric)
+                                                   └─ ClockSync (PING/PONG, min-RTT) ─► capture→display ± RTT/2
+```
+- The viewer and replay share `Pipeline`, so a replayed run gives the same counters as the live session (tested).
+- `stream.gmtp` keeps every record. With recording off, JPEG_FRAME keeps its 16-byte header with an empty image, so seq and frame_id stay continuous.
+- Movement tracker defaults: gate = max(20 px, 400 px/s × Δt), expiry after 3 missed frames, minimum step 8 px (anchor-based, so slow walkers still count). These are knobs in `Tracker(...)`, not tuned values.
