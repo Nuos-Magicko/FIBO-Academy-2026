@@ -1,0 +1,6 @@
+# Exact pins. Transitive deps are locked in ../dependencies.lock (commit it).
+dependencies:
+  idf: "==5.5.3"
+  espressif/pedestrian_detect: "==0.3.2"
+  espressif/esp-dl: "==3.3.13"
+  espressif/esp32-camera: "==2.1.8"

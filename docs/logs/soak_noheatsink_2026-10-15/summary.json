@@ -1,0 +1,60 @@
+{
+ "label": "noheatsink",
+ "host": "192.168.1.248",
+ "started": "2026-10-15T14:20:40",
+ "duration_s": 3601,
+ "frames_received": 22553,
+ "rx_fps_mean": 6.26,
+ "rx_bytes_per_s_mean": 52850,
+ "seq_gaps": 0,
+ "crc_errors": 0,
+ "resyncs": 0,
+ "oversize": 0,
+ "missing_pairs": 0,
+ "reconnects": 0,
+ "connect_failures": 0,
+ "device_boots_seen": 1,
+ "unexpected_resets": 0,
+ "reset_reasons": [
+  "USB"
+ ],
+ "temp_c_min_max": [
+  56.9,
+  71.9
+ ],
+ "int_min_first_last": [
+  112915,
+  75203
+ ],
+ "ps_min_first_last": [
+  3725704,
+  3725704
+ ],
+ "device_last_metrics": {
+  "host_time": "2026-10-15T15:20:40",
+  "uptime_s": 3641.7,
+  "temp_c": 69.9,
+  "frames": 26591,
+  "sent": 22552,
+  "tx_dropped": 4009,
+  "no_client_discards": 30,
+  "cap_fail": 0,
+  "dec_fail": 0,
+  "oversize": 0,
+  "no_eoi": 0,
+  "no_soi": 0,
+  "fb_ovf": 0,
+  "int_free": 110427,
+  "int_min": 75203,
+  "ps_free": 4254572,
+  "ps_min": 3725704,
+  "rssi": -59,
+  "sta_disconnects": 0,
+  "clients": 1,
+  "t_detect_us": 120280,
+  "t_proc_us": 134057,
+  "t_send_us": 37988,
+  "jpeg_len": 8014,
+  "reset_reason": "USB"
+ }
+}

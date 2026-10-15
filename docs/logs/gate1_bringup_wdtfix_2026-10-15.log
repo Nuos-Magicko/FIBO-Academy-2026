@@ -1,0 +1,692 @@
+I (124) esp_image: segment 1: paddr=000ad48c vaddr=3fc9ba00 sizeESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x15 (USB_UART_CHIP_RESET),boot:0x2b (SPI_FAST_FLASH_BOOT)
+Saved PC:0x40056f6f
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2820,len:0x16a4
+load:0x403c8700,len:0xe80
+load:0x403cb700,len:0x3188
+entry 0x403c8948
+I (24) boot: ESP-IDF v5.5.3 2nd stage bootloader
+I (24) boot: compile time Oct 15 2026 13:20:17
+I (25) boot: Multicore bootloader
+I (25) boot: chip revision: v0.2
+I (25) boot: efuse block revision: v1.3
+I (25) qio_mode: Enabling default flash chip QIO
+I (26) boot.esp32s3: Boot SPI Speed : 80MHz
+I (26) boot.esp32s3: SPI Mode       : QIO
+I (26) boot.esp32s3: SPI Flash Size : 8MB
+I (26) boot: Enabling RNG early entropy source...
+I (26) boot: Partition Table:
+I (27) boot: ## Label            Usage          Type ST Offset   Length
+I (27) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (27) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (28) boot:  2 factory          factory app      00 00 00010000 00700000
+I (28) boot: End of partition table
+I (28) esp_image: segment 0: paddr=00010020 vaddr=3c1f0020 size=9d464h (644196) map
+I (124) esp_image: segment 1: paddr=000ad48c vaddr=3fc9ba00 size=02b8ch ( 11148) load
+I (127) esp_image: segment 2: paddr=000b0020 vaddr=42000020 size=1e1ce8h (1973480) map
+I (420) esp_image: segment 3: paddr=00291d10 vaddr=3fc9e58c size=03294h ( 12948) load
+I (422) esp_image: segment 4: paddr=00294fac vaddr=40378000 size=13980h ( 80256) load
+I (438) esp_image: segment 5: paddr=002a8934 vaddr=50000000 size=00020h (    32) load
+I (446) boot: Loaded app from partition at offset 0x10000
+I (447) boot: Disabling RNG early entropy source...
+I (448) octal_psram: vendor id    : 0x0d (AP)
+I (448) octal_psram: dev id       : 0x02 (generation 3)
+I (448) octal_psram: density      : 0x03 (64 Mbit)
+I (448) octal_psram: good-die     : 0x01 (Pass)
+I (448) octal_psram: Latency      : 0x01 (Fixed)
+I (449) octal_psram: VCC          : 0x01 (3V)
+I (449) octal_psram: SRF          : 0x01 (Fast Refresh)
+I (449) octal_psram: BurstType    : 0x01 (Hybrid Wrap)
+I (449) octal_psram: BurstLen     : 0x01 (32 Byte)
+I (449) octal_psram: Readlatency  : 0x02 (10 cycles@Fixed)
+I (450) octal_psram: DriveStrength: 0x00 (1/1)
+I (450) MSPI Timing: Enter psram timing tuning
+I (451) esp_psram: Found 8MB PSRAM device
+I (451) esp_psram: Speed: 80MHz
+I (488) mmu_psram: Read only data copied and mapped to SPIRAM
+I (624) mmu_psram: Instructions copied and mapped to SPIRAM
+I (624) cpu_start: Multicore app
+I (818) esp_psram: SPI SRAM memory test OK
+I (826) cpu_start: Pro cpu start user code
+I (826) cpu_start: cpu freq: 240000000 Hz
+I (827) app_init: Application information:
+I (827) app_init: Project name:     gmt_people_flow
+I (827) app_init: App version:      1
+I (827) app_init: Compile time:     Oct 15 2026 13:20:14
+I (827) app_init: ELF file SHA256:  8571c71cd...
+I (828) app_init: ESP-IDF:          v5.5.3
+I (828) efuse_init: Min chip rev:     v0.0
+I (828) efuse_init: Max chip rev:     v0.99 
+I (828) efuse_init: Chip rev:         v0.2
+I (828) heap_init: Initializing. RAM available for dynamic allocation:
+I (829) heap_init: At 3FCA4058 len 000456B8 (277 KiB): RAM
+I (829) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM
+I (829) heap_init: At 600FE000 len 00001FE8 (7 KiB): RTCRAM
+I (829) esp_psram: Adding pool of 5568K of PSRAM memory to heap allocator
+I (829) esp_psram: Adding pool of 10K of PSRAM memory gap generated due to end address alignment of drom to the heap allocator
+I (830) spi_flash: detected chip: gd
+I (830) spi_flash: flash io: qio
+I (830) sleep_gpio: Configure to isolate all GPIO pins in sleep state
+I (831) sleep_gpio: Enable automatic switching of GPIO sleep configuration
+I (831) main_task: Started on CPU0
+I (832) esp_psram: Reserving pool of 32K of internal memory for DMA/internal allocations
+I (832) main_task: Calling app_main()
+I (832) temperature_sensor: Range [20°C ~ 100°C], error < 2°C
+I (835) bringup: BOARD chip=esp32s3 rev=v0.2 cores=2 flash=8MB psram=8MB mac=8c:bf:ea:8e:6d:d8
+I (835) bringup: BOARD reset_reason=USB idf=v5.5.3
+I (835) bringup: MEM boot: internal free=297607 min=297607 | psram free=5709808 min=5709808 | temp=56.9C
+I (836) bringup: MEM model_loaded: internal free=297355 min=297355 | psram free=5709808 min=5709808 | temp=57.9C
+W (914) FbsLoader: CONFIG_SPIRAM_RODATA or CONFIG_SPIRAM_XIP_FROM_PSRAM option is on, fbs model is copied to PSRAM.
+W (1006) dl::Model: minimize() will delete unused inference variables, breaking model testing/debugging.
+I (1131) bringup: STILL run=0 img=640x480 t_decode=77507us t_detect=217848us
+I (1132) bringup: STILL frame=0 boxes=3
+I (1132) bringup:   box score=0.884 x1=144 y1=187 x2=251 y2=464
+I (1132) bringup:   box score=0.879 x1=284 y1=195 x2=368 y2=462
+I (1133) bringup:   box score=0.786 x1=412 y1=226 x2=490 y2=396
+I (1331) bringup: STILL run=1 img=640x480 t_decode=77793us t_detect=120755us
+I (1332) bringup: STILL frame=1 boxes=3
+I (1332) bringup:   box score=0.884 x1=144 y1=187 x2=251 y2=464
+I (1332) bringup:   box score=0.879 x1=284 y1=195 x2=368 y2=462
+I (1332) bringup:   box score=0.786 x1=412 y1=226 x2=490 y2=396
+I (1531) bringup: STILL run=2 img=640x480 t_decode=77765us t_detect=120780us
+I (1531) bringup: STILL frame=2 boxes=3
+I (1531) bringup:   box score=0.884 x1=144 y1=187 x2=251 y2=464
+I (1532) bringup:   box score=0.879 x1=284 y1=195 x2=368 y2=462
+I (1532) bringup:   box score=0.786 x1=412 y1=226 x2=490 y2=396
+I (1731) bringup: STILL run=3 img=640x480 t_decode=77769us t_detect=120755us
+I (1731) bringup: STILL frame=3 boxes=3
+I (1731) bringup:   box score=0.884 x1=144 y1=187 x2=251 y2=464
+I (1731) bringup:   box score=0.879 x1=284 y1=195 x2=368 y2=462
+I (1732) bringup:   box score=0.786 x1=412 y1=226 x2=490 y2=396
+I (1930) bringup: STILL run=4 img=640x480 t_decode=77761us t_detect=120775us
+I (1931) bringup: STILL frame=4 boxes=3
+I (1931) bringup:   box score=0.884 x1=144 y1=187 x2=251 y2=464
+I (1931) bringup:   box score=0.879 x1=284 y1=195 x2=368 y2=462
+I (1931) bringup:   box score=0.786 x1=412 y1=226 x2=490 y2=396
+I (1932) s3 ll_cam: DMA Channel=0
+I (1932) cam_hal: cam init ok
+I (1932) sccb-ng: pin_sda 40 pin_scl 39
+I (1932) sccb-ng: sccb_i2c_port=1
+I (1944) ov3640: Mismatch PID=0x3660
+I (1945) camera: Camera PID=0x3660 VER=0x00 MIDL=0x00 MIDH=0x00
+I (1946) camera: Detected OV3660 camera
+I (1946) camera: Detected camera at address=0x3c
+I (2251) cam_hal: PSRAM DMA mode disabled
+I (2251) cam_hal: buffer_size: 16384, half_buffer_size: 1024, node_buffer_size: 1024, node_cnt: 16, total_cnt: 15
+I (2251) cam_hal: Allocating 15360 Byte frame buffer in PSRAM
+I (2251) cam_hal: Allocating 15360 Byte frame buffer in PSRAM
+I (2252) cam_hal: cam config ok
+I (2264) ov3660: Calculated VCO: 200000000 Hz, PLLCLK: 200000000 Hz, SYSCLK: 50000000 Hz, PCLK: 10000000 Hz
+I (2282) bringup: CAMERA sensor PID=0x3660 VER=0x00 MIDH=0x00 MIDL=0x00 xclk=20000000Hz
+I (2796) bringup: CAPTURE first frame 320x240 fmt=4
+I (38778) bringup: CAPTURE_TEST n=1000 ok=1000 fail=0 no_eoi=0 no_soi=0 fb_ovf=0 bytes min/mean/max=3555/3612/3651 fps=27.76
+I (38779) bringup: MEM after_capture_test: internal free=251755 min=217471 | psram free=5067188 min=4176840 | temp=53.9C
+I (38945) bringup: LIVE frame=0 t_wait=35154 t_decode=11632 t_detect=118948 us cap_fail=0 dec_fail=0 no_eoi=0
+I (38945) bringup: LIVE frame=0 boxes=0
+I (38945) bringup: MEM live: internal free=252019 min=217471 | psram free=5067188 min=4176840 | temp=54.9C
+I (39077) bringup: LIVE frame=1 t_wait=156 t_decode=11713 t_detect=118542 us cap_fail=0 dec_fail=0 no_eoi=0
+I (39077) bringup: LIVE frame=1 boxes=0
+I (39208) bringup: LIVE frame=2 t_wait=154 t_decode=11574 t_detect=118683 us cap_fail=0 dec_fail=0 no_eoi=0
+I (39208) bringup: LIVE frame=2 boxes=0
+I (39339) bringup: LIVE frame=3 t_wait=155 t_decode=11650 t_detect=118514 us cap_fail=0 dec_fail=0 no_eoi=0
+I (39339) bringup: LIVE frame=3 boxes=0
+I (39470) bringup: LIVE frame=4 t_wait=155 t_decode=11562 t_detect=118972 us cap_fail=0 dec_fail=0 no_eoi=0
+I (39471) bringup: LIVE frame=4 boxes=0
+I (39602) bringup: LIVE frame=5 t_wait=157 t_decode=11557 t_detect=118663 us cap_fail=0 dec_fail=0 no_eoi=0
+I (39602) bringup: LIVE frame=5 boxes=0
+I (39733) bringup: LIVE frame=6 t_wait=155 t_decode=11651 t_detect=118494 us cap_fail=0 dec_fail=0 no_eoi=0
+I (39733) bringup: LIVE frame=6 boxes=0
+I (39864) bringup: LIVE frame=7 t_wait=157 t_decode=11555 t_detect=118926 us cap_fail=0 dec_fail=0 no_eoi=0
+I (39864) bringup: LIVE frame=7 boxes=0
+I (39996) bringup: LIVE frame=8 t_wait=158 t_decode=11541 t_detect=118690 us cap_fail=0 dec_fail=0 no_eoi=0
+I (39996) bringup: LIVE frame=8 boxes=0
+I (40127) bringup: LIVE frame=9 t_wait=158 t_decode=11671 t_detect=118542 us cap_fail=0 dec_fail=0 no_eoi=0
+I (40127) bringup: LIVE frame=9 boxes=0
+I (40258) bringup: LIVE frame=10 t_wait=159 t_decode=11522 t_detect=119013 us cap_fail=0 dec_fail=0 no_eoi=0
+I (40259) bringup: LIVE frame=10 boxes=0
+I (40390) bringup: LIVE frame=11 t_wait=159 t_decode=11537 t_detect=118731 us cap_fail=0 dec_fail=0 no_eoi=0
+I (40390) bringup: LIVE frame=11 boxes=0
+I (40521) bringup: LIVE frame=12 t_wait=156 t_decode=11683 t_detect=118543 us cap_fail=0 dec_fail=0 no_eoi=0
+I (40521) bringup: LIVE frame=12 boxes=0
+I (40652) bringup: LIVE frame=13 t_wait=157 t_decode=11552 t_detect=118797 us cap_fail=0 dec_fail=0 no_eoi=0
+I (40652) bringup: LIVE frame=13 boxes=0
+I (40783) bringup: LIVE frame=14 t_wait=126 t_decode=11584 t_detect=118638 us cap_fail=0 dec_fail=0 no_eoi=0
+I (40783) bringup: LIVE frame=14 boxes=0
+I (40914) bringup: LIVE frame=15 t_wait=156 t_decode=11688 t_detect=118529 us cap_fail=0 dec_fail=0 no_eoi=0
+I (40914) bringup: LIVE frame=15 boxes=0
+I (41045) bringup: LIVE frame=16 t_wait=156 t_decode=11561 t_detect=118704 us cap_fail=0 dec_fail=0 no_eoi=0
+I (41045) bringup: LIVE frame=16 boxes=0
+I (41176) bringup: LIVE frame=17 t_wait=156 t_decode=11644 t_detect=118434 us cap_fail=0 dec_fail=0 no_eoi=0
+I (41176) bringup: LIVE frame=17 boxes=0
+I (41307) bringup: LIVE frame=18 t_wait=155 t_decode=11565 t_detect=118991 us cap_fail=0 dec_fail=0 no_eoi=0
+I (41308) bringup: LIVE frame=18 boxes=0
+I (41439) bringup: LIVE frame=19 t_wait=157 t_decode=11562 t_detect=118653 us cap_fail=0 dec_fail=0 no_eoi=0
+I (41439) bringup: LIVE frame=19 boxes=0
+I (41570) bringup: LIVE frame=20 t_wait=155 t_decode=11649 t_detect=118485 us cap_fail=0 dec_fail=0 no_eoi=0
+I (41570) bringup: LIVE frame=20 boxes=0
+I (41701) bringup: LIVE frame=21 t_wait=157 t_decode=11557 t_detect=118924 us cap_fail=0 dec_fail=0 no_eoi=0
+I (41702) bringup: LIVE frame=21 boxes=0
+I (41833) bringup: LIVE frame=22 t_wait=156 t_decode=11563 t_detect=118693 us cap_fail=0 dec_fail=0 no_eoi=0
+I (41833) bringup: LIVE frame=22 boxes=0
+I (41964) bringup: LIVE frame=23 t_wait=195 t_decode=11636 t_detect=118539 us cap_fail=0 dec_fail=0 no_eoi=0
+I (41964) bringup: LIVE frame=23 boxes=0
+I (42095) bringup: LIVE frame=24 t_wait=156 t_decode=11551 t_detect=118979 us cap_fail=0 dec_fail=0 no_eoi=0
+I (42096) bringup: LIVE frame=24 boxes=0
+I (42227) bringup: LIVE frame=25 t_wait=157 t_decode=11556 t_detect=118732 us cap_fail=0 dec_fail=0 no_eoi=0
+I (42227) bringup: LIVE frame=25 boxes=0
+I (42358) bringup: LIVE frame=26 t_wait=156 t_decode=11681 t_detect=118556 us cap_fail=0 dec_fail=0 no_eoi=0
+I (42358) bringup: LIVE frame=26 boxes=0
+I (42489) bringup: LIVE frame=27 t_wait=156 t_decode=11562 t_detect=118809 us cap_fail=0 dec_fail=0 no_eoi=0
+I (42489) bringup: LIVE frame=27 boxes=0
+I (42620) bringup: LIVE frame=28 t_wait=126 t_decode=11582 t_detect=118661 us cap_fail=0 dec_fail=0 no_eoi=0
+I (42620) bringup: LIVE frame=28 boxes=0
+I (42751) bringup: LIVE frame=29 t_wait=158 t_decode=11684 t_detect=118540 us cap_fail=0 dec_fail=0 no_eoi=0
+I (42751) bringup: LIVE frame=29 boxes=0
+I (42882) bringup: LIVE frame=30 t_wait=156 t_decode=11550 t_detect=118709 us cap_fail=0 dec_fail=0 no_eoi=0
+I (42882) bringup: LIVE frame=30 boxes=0
+I (43013) bringup: LIVE frame=31 t_wait=157 t_decode=11639 t_detect=118400 us cap_fail=0 dec_fail=0 no_eoi=0
+I (43013) bringup: LIVE frame=31 boxes=0
+I (43144) bringup: LIVE frame=32 t_wait=155 t_decode=11562 t_detect=118990 us cap_fail=0 dec_fail=0 no_eoi=0
+I (43145) bringup: LIVE frame=32 boxes=0
+I (43276) bringup: LIVE frame=33 t_wait=157 t_decode=11559 t_detect=118657 us cap_fail=0 dec_fail=0 no_eoi=0
+I (43276) bringup: LIVE frame=33 boxes=0
+I (43407) bringup: LIVE frame=34 t_wait=156 t_decode=11648 t_detect=118497 us cap_fail=0 dec_fail=0 no_eoi=0
+I (43407) bringup: LIVE frame=34 boxes=0
+I (43538) bringup: LIVE frame=35 t_wait=157 t_decode=11560 t_detect=118963 us cap_fail=0 dec_fail=0 no_eoi=0
+I (43539) bringup: LIVE frame=35 boxes=0
+I (43670) bringup: LIVE frame=36 t_wait=156 t_decode=11563 t_detect=118676 us cap_fail=0 dec_fail=0 no_eoi=0
+I (43670) bringup: LIVE frame=36 boxes=0
+I (43801) bringup: LIVE frame=37 t_wait=157 t_decode=11636 t_detect=118542 us cap_fail=0 dec_fail=0 no_eoi=0
+I (43801) bringup: LIVE frame=37 boxes=0
+I (43932) bringup: LIVE frame=38 t_wait=156 t_decode=11554 t_detect=118989 us cap_fail=0 dec_fail=0 no_eoi=0
+I (43933) bringup: LIVE frame=38 boxes=0
+I (44064) bringup: LIVE frame=39 t_wait=158 t_decode=11546 t_detect=118741 us cap_fail=0 dec_fail=0 no_eoi=0
+I (44064) bringup: LIVE frame=39 boxes=0
+I (44195) bringup: LIVE frame=40 t_wait=156 t_decode=11687 t_detect=118550 us cap_fail=0 dec_fail=0 no_eoi=0
+I (44195) bringup: LIVE frame=40 boxes=0
+I (44326) bringup: LIVE frame=41 t_wait=156 t_decode=11556 t_detect=118806 us cap_fail=0 dec_fail=0 no_eoi=0
+I (44326) bringup: LIVE frame=41 boxes=0
+I (44457) bringup: LIVE frame=42 t_wait=127 t_decode=11575 t_detect=118614 us cap_fail=0 dec_fail=0 no_eoi=0
+I (44457) bringup: LIVE frame=42 boxes=0
+I (44588) bringup: LIVE frame=43 t_wait=158 t_decode=11682 t_detect=118517 us cap_fail=0 dec_fail=0 no_eoi=0
+I (44588) bringup: LIVE frame=43 boxes=0
+I (44719) bringup: LIVE frame=44 t_wait=156 t_decode=11544 t_detect=118715 us cap_fail=0 dec_fail=0 no_eoi=0
+I (44719) bringup: LIVE frame=44 boxes=0
+I (44850) bringup: LIVE frame=45 t_wait=156 t_decode=11642 t_detect=118383 us cap_fail=0 dec_fail=0 no_eoi=0
+I (44850) bringup: LIVE frame=45 boxes=0
+I (44981) bringup: LIVE frame=46 t_wait=155 t_decode=11562 t_detect=118987 us cap_fail=0 dec_fail=0 no_eoi=0
+I (44982) bringup: LIVE frame=46 boxes=0
+I (45113) bringup: LIVE frame=47 t_wait=157 t_decode=11550 t_detect=118710 us cap_fail=0 dec_fail=0 no_eoi=0
+I (45113) bringup: LIVE frame=47 boxes=0
+I (45244) bringup: LIVE frame=48 t_wait=157 t_decode=11641 t_detect=118498 us cap_fail=0 dec_fail=0 no_eoi=0
+I (45244) bringup: LIVE frame=48 boxes=0
+I (45375) bringup: LIVE frame=49 t_wait=157 t_decode=11553 t_detect=118957 us cap_fail=0 dec_fail=0 no_eoi=0
+I (45376) bringup: LIVE frame=49 boxes=0
+I (45507) bringup: LIVE frame=50 t_wait=156 t_decode=11559 t_detect=118687 us cap_fail=0 dec_fail=0 no_eoi=0
+I (45507) bringup: LIVE frame=50 boxes=0
+I (45507) bringup: MEM live: internal free=252019 min=217471 | psram free=5067188 min=4176840 | temp=57.9C
+I (45639) bringup: LIVE frame=51 t_wait=157 t_decode=11656 t_detect=118508 us cap_fail=0 dec_fail=0 no_eoi=0
+I (45639) bringup: LIVE frame=51 boxes=0
+I (45770) bringup: LIVE frame=52 t_wait=157 t_decode=11516 t_detect=118860 us cap_fail=0 dec_fail=0 no_eoi=0
+I (45770) bringup: LIVE frame=52 boxes=0
+I (45901) bringup: LIVE frame=53 t_wait=157 t_decode=11553 t_detect=118731 us cap_fail=0 dec_fail=0 no_eoi=0
+I (45901) bringup: LIVE frame=53 boxes=0
+I (46032) bringup: LIVE frame=54 t_wait=156 t_decode=11676 t_detect=118544 us cap_fail=0 dec_fail=0 no_eoi=0
+I (46032) bringup: LIVE frame=54 boxes=0
+I (46163) bringup: LIVE frame=55 t_wait=157 t_decode=11551 t_detect=118825 us cap_fail=0 dec_fail=0 no_eoi=0
+I (46163) bringup: LIVE frame=55 boxes=0
+I (46294) bringup: LIVE frame=56 t_wait=126 t_decode=11582 t_detect=118723 us cap_fail=0 dec_fail=0 no_eoi=0
+I (46294) bringup: LIVE frame=56 boxes=0
+I (46425) bringup: LIVE frame=57 t_wait=156 t_decode=11690 t_detect=118520 us cap_fail=0 dec_fail=0 no_eoi=0
+I (46425) bringup: LIVE frame=57 boxes=0
+I (46556) bringup: LIVE frame=58 t_wait=156 t_decode=11553 t_detect=118707 us cap_fail=0 dec_fail=0 no_eoi=0
+I (46556) bringup: LIVE frame=58 boxes=0
+I (46687) bringup: LIVE frame=59 t_wait=157 t_decode=11642 t_detect=118378 us cap_fail=0 dec_fail=0 no_eoi=0
+I (46687) bringup: LIVE frame=59 boxes=0
+I (46818) bringup: LIVE frame=60 t_wait=156 t_decode=11556 t_detect=118947 us cap_fail=0 dec_fail=0 no_eoi=0
+I (46819) bringup: LIVE frame=60 boxes=0
+I (46950) bringup: LIVE frame=61 t_wait=157 t_decode=11549 t_detect=118711 us cap_fail=0 dec_fail=0 no_eoi=0
+I (46950) bringup: LIVE frame=61 boxes=0
+I (47081) bringup: LIVE frame=62 t_wait=157 t_decode=11641 t_detect=118502 us cap_fail=0 dec_fail=0 no_eoi=0
+I (47081) bringup: LIVE frame=62 boxes=0
+I (47212) bringup: LIVE frame=63 t_wait=157 t_decode=11555 t_detect=118966 us cap_fail=0 dec_fail=0 no_eoi=0
+I (47213) bringup: LIVE frame=63 boxes=0
+I (47344) bringup: LIVE frame=64 t_wait=155 t_decode=11564 t_detect=118673 us cap_fail=0 dec_fail=0 no_eoi=0
+I (47344) bringup: LIVE frame=64 boxes=0
+I (47475) bringup: LIVE frame=65 t_wait=156 t_decode=11646 t_detect=118523 us cap_fail=0 dec_fail=0 no_eoi=0
+I (47475) bringup: LIVE frame=65 boxes=0
+I (47606) bringup: LIVE frame=66 t_wait=196 t_decode=11509 t_detect=119009 us cap_fail=0 dec_fail=0 no_eoi=0
+I (47607) bringup: LIVE frame=66 boxes=0
+I (47738) bringup: LIVE frame=67 t_wait=157 t_decode=11556 t_detect=118714 us cap_fail=0 dec_fail=0 no_eoi=0
+I (47738) bringup: LIVE frame=67 boxes=0
+I (47869) bringup: LIVE frame=68 t_wait=156 t_decode=11682 t_detect=118557 us cap_fail=0 dec_fail=0 no_eoi=0
+I (47869) bringup: LIVE frame=68 boxes=0
+I (48000) bringup: LIVE frame=69 t_wait=156 t_decode=11557 t_detect=118843 us cap_fail=0 dec_fail=0 no_eoi=0
+I (48000) bringup: LIVE frame=69 boxes=0
+I (48132) bringup: LIVE frame=70 t_wait=127 t_decode=11578 t_detect=118656 us cap_fail=0 dec_fail=0 no_eoi=0
+I (48132) bringup: LIVE frame=70 boxes=0
+I (48263) bringup: LIVE frame=71 t_wait=157 t_decode=11684 t_detect=118490 us cap_fail=0 dec_fail=0 no_eoi=0
+I (48263) bringup: LIVE frame=71 boxes=0
+I (48394) bringup: LIVE frame=72 t_wait=156 t_decode=11556 t_detect=118680 us cap_fail=0 dec_fail=0 no_eoi=0
+I (48394) bringup: LIVE frame=72 boxes=0
+I (48525) bringup: LIVE frame=73 t_wait=157 t_decode=11631 t_detect=118532 us cap_fail=0 dec_fail=0 no_eoi=0
+I (48525) bringup: LIVE frame=73 boxes=0
+I (48656) bringup: LIVE frame=74 t_wait=156 t_decode=11556 t_detect=118950 us cap_fail=0 dec_fail=0 no_eoi=0
+I (48657) bringup: LIVE frame=74 boxes=0
+I (48788) bringup: LIVE frame=75 t_wait=157 t_decode=11549 t_detect=118759 us cap_fail=0 dec_fail=0 no_eoi=0
+I (48788) bringup: LIVE frame=75 boxes=0
+I (48919) bringup: LIVE frame=76 t_wait=156 t_decode=11636 t_detect=118667 us cap_fail=0 dec_fail=0 no_eoi=0
+I (48919) bringup: LIVE frame=76 boxes=0
+I (49050) bringup: LIVE frame=77 t_wait=157 t_decode=11558 t_detect=118984 us cap_fail=0 dec_fail=0 no_eoi=0
+I (49051) bringup: LIVE frame=77 boxes=0
+I (49182) bringup: LIVE frame=78 t_wait=157 t_decode=11553 t_detect=118671 us cap_fail=0 dec_fail=0 no_eoi=0
+I (49182) bringup: LIVE frame=78 boxes=0
+I (49313) bringup: LIVE frame=79 t_wait=156 t_decode=11653 t_detect=118463 us cap_fail=0 dec_fail=0 no_eoi=0
+I (49313) bringup: LIVE frame=79 boxes=0
+I (49444) bringup: LIVE frame=80 t_wait=156 t_decode=11514 t_detect=118889 us cap_fail=0 dec_fail=0 no_eoi=0
+I (49444) bringup: LIVE frame=80 boxes=0
+I (49576) bringup: LIVE frame=81 t_wait=156 t_decode=11555 t_detect=118642 us cap_fail=0 dec_fail=0 no_eoi=0
+I (49576) bringup: LIVE frame=81 boxes=0
+I (49707) bringup: LIVE frame=82 t_wait=157 t_decode=11676 t_detect=118491 us cap_fail=0 dec_fail=0 no_eoi=0
+I (49707) bringup: LIVE frame=82 boxes=0
+I (49838) bringup: LIVE frame=83 t_wait=157 t_decode=11544 t_detect=118862 us cap_fail=0 dec_fail=0 no_eoi=0
+I (49838) bringup: LIVE frame=83 boxes=0
+I (49970) bringup: LIVE frame=84 t_wait=137 t_decode=11565 t_detect=118707 us cap_fail=0 dec_fail=0 no_eoi=0
+I (49970) bringup: LIVE frame=84 boxes=0
+I (50101) bringup: LIVE frame=85 t_wait=158 t_decode=11680 t_detect=118524 us cap_fail=0 dec_fail=0 no_eoi=0
+I (50101) bringup: LIVE frame=85 boxes=0
+I (50232) bringup: LIVE frame=86 t_wait=156 t_decode=11550 t_detect=118813 us cap_fail=0 dec_fail=0 no_eoi=0
+I (50232) bringup: LIVE frame=86 boxes=0
+I (50363) bringup: LIVE frame=87 t_wait=127 t_decode=11567 t_detect=118617 us cap_fail=0 dec_fail=0 no_eoi=0
+I (50363) bringup: LIVE frame=87 boxes=0
+I (50494) bringup: LIVE frame=88 t_wait=156 t_decode=11552 t_detect=118943 us cap_fail=0 dec_fail=0 no_eoi=0
+I (50495) bringup: LIVE frame=88 boxes=0
+I (50626) bringup: LIVE frame=89 t_wait=156 t_decode=11559 t_detect=118705 us cap_fail=0 dec_fail=0 no_eoi=0
+I (50626) bringup: LIVE frame=89 boxes=0
+I (50757) bringup: LIVE frame=90 t_wait=156 t_decode=11643 t_detect=118500 us cap_fail=0 dec_fail=0 no_eoi=0
+I (50757) bringup: LIVE frame=90 boxes=0
+I (50888) bringup: LIVE frame=91 t_wait=157 t_decode=11559 t_detect=118993 us cap_fail=0 dec_fail=0 no_eoi=0
+I (50889) bringup: LIVE frame=91 boxes=0
+I (51020) bringup: LIVE frame=92 t_wait=156 t_decode=11548 t_detect=118670 us cap_fail=0 dec_fail=0 no_eoi=0
+I (51020) bringup: LIVE frame=92 boxes=0
+I (51151) bringup: LIVE frame=93 t_wait=156 t_decode=11657 t_detect=118514 us cap_fail=0 dec_fail=0 no_eoi=0
+I (51151) bringup: LIVE frame=93 boxes=0
+I (51282) bringup: LIVE frame=94 t_wait=156 t_decode=11560 t_detect=118998 us cap_fail=0 dec_fail=0 no_eoi=0
+I (51283) bringup: LIVE frame=94 boxes=0
+I (51414) bringup: LIVE frame=95 t_wait=157 t_decode=11542 t_detect=118658 us cap_fail=0 dec_fail=0 no_eoi=0
+I (51414) bringup: LIVE frame=95 boxes=0
+I (51545) bringup: LIVE frame=96 t_wait=156 t_decode=11637 t_detect=118551 us cap_fail=0 dec_fail=0 no_eoi=0
+I (51545) bringup: LIVE frame=96 boxes=0
+I (51676) bringup: LIVE frame=97 t_wait=201 t_decode=11513 t_detect=118962 us cap_fail=0 dec_fail=0 no_eoi=0
+I (51677) bringup: LIVE frame=97 boxes=0
+I (51808) bringup: LIVE frame=98 t_wait=156 t_decode=11545 t_detect=118823 us cap_fail=0 dec_fail=0 no_eoi=0
+I (51808) bringup: LIVE frame=98 boxes=0
+I (51939) bringup: LIVE frame=99 t_wait=157 t_decode=11685 t_detect=118593 us cap_fail=0 dec_fail=0 no_eoi=0
+I (51939) bringup: LIVE frame=99 boxes=0
+I (52070) bringup: LIVE frame=100 t_wait=156 t_decode=11556 t_detect=118820 us cap_fail=0 dec_fail=0 no_eoi=0
+I (52070) bringup: LIVE frame=100 boxes=0
+I (52070) bringup: MEM live: internal free=252019 min=217471 | psram free=5067188 min=4176840 | temp=59.9C
+I (52202) bringup: LIVE frame=101 t_wait=134 t_decode=11589 t_detect=118704 us cap_fail=0 dec_fail=0 no_eoi=0
+I (52202) bringup: LIVE frame=101 boxes=0
+I (52333) bringup: LIVE frame=102 t_wait=156 t_decode=11699 t_detect=118528 us cap_fail=0 dec_fail=0 no_eoi=0
+I (52333) bringup: LIVE frame=102 boxes=0
+I (52464) bringup: LIVE frame=103 t_wait=156 t_decode=11554 t_detect=118672 us cap_fail=0 dec_fail=0 no_eoi=0
+I (52464) bringup: LIVE frame=103 boxes=0
+I (52595) bringup: LIVE frame=104 t_wait=156 t_decode=11638 t_detect=118576 us cap_fail=0 dec_fail=0 no_eoi=0
+I (52595) bringup: LIVE frame=104 boxes=0
+I (52726) bringup: LIVE frame=105 t_wait=158 t_decode=11561 t_detect=119022 us cap_fail=0 dec_fail=0 no_eoi=0
+I (52727) bringup: LIVE frame=105 boxes=0
+I (52858) bringup: LIVE frame=106 t_wait=156 t_decode=11554 t_detect=118727 us cap_fail=0 dec_fail=0 no_eoi=0
+I (52858) bringup: LIVE frame=106 boxes=0
+I (52989) bringup: LIVE frame=107 t_wait=157 t_decode=11639 t_detect=118696 us cap_fail=0 dec_fail=0 no_eoi=0
+I (52989) bringup: LIVE frame=107 boxes=0
+I (53120) bringup: LIVE frame=108 t_wait=156 t_decode=11550 t_detect=118949 us cap_fail=0 dec_fail=0 no_eoi=0
+I (53121) bringup: LIVE frame=108 boxes=0
+I (53252) bringup: LIVE frame=109 t_wait=157 t_decode=11549 t_detect=118661 us cap_fail=0 dec_fail=0 no_eoi=0
+I (53252) bringup: LIVE frame=109 boxes=0
+I (53383) bringup: LIVE frame=110 t_wait=156 t_decode=11648 t_detect=118516 us cap_fail=0 dec_fail=0 no_eoi=0
+I (53383) bringup: LIVE frame=110 boxes=0
+I (53514) bringup: LIVE frame=111 t_wait=158 t_decode=11510 t_detect=118915 us cap_fail=0 dec_fail=0 no_eoi=0
+I (53514) bringup: LIVE frame=111 boxes=0
+I (53646) bringup: LIVE frame=112 t_wait=157 t_decode=11536 t_detect=118770 us cap_fail=0 dec_fail=0 no_eoi=0
+I (53646) bringup: LIVE frame=112 boxes=0
+I (53777) bringup: LIVE frame=113 t_wait=157 t_decode=11674 t_detect=118567 us cap_fail=0 dec_fail=0 no_eoi=0
+I (53777) bringup: LIVE frame=113 boxes=0
+I (53908) bringup: LIVE frame=114 t_wait=156 t_decode=11557 t_detect=118828 us cap_fail=0 dec_fail=0 no_eoi=0
+I (53908) bringup: LIVE frame=114 boxes=0
+I (54039) bringup: LIVE frame=115 t_wait=149 t_decode=11549 t_detect=118657 us cap_fail=0 dec_fail=0 no_eoi=0
+I (54039) bringup: LIVE frame=115 boxes=0
+I (54170) bringup: LIVE frame=116 t_wait=156 t_decode=11682 t_detect=118516 us cap_fail=0 dec_fail=0 no_eoi=0
+I (54170) bringup: LIVE frame=116 boxes=0
+I (54301) bringup: LIVE frame=117 t_wait=157 t_decode=11546 t_detect=118682 us cap_fail=0 dec_fail=0 no_eoi=0
+I (54301) bringup: LIVE frame=117 boxes=0
+I (54432) bringup: LIVE frame=118 t_wait=156 t_decode=11631 t_detect=118596 us cap_fail=0 dec_fail=0 no_eoi=0
+I (54432) bringup: LIVE frame=118 boxes=0
+I (54563) bringup: LIVE frame=119 t_wait=159 t_decode=11551 t_detect=119039 us cap_fail=0 dec_fail=0 no_eoi=0
+I (54564) bringup: LIVE frame=119 boxes=0
+I (54695) bringup: LIVE frame=120 t_wait=157 t_decode=11552 t_detect=118738 us cap_fail=0 dec_fail=0 no_eoi=0
+I (54695) bringup: LIVE frame=120 boxes=0
+I (54826) bringup: LIVE frame=121 t_wait=158 t_decode=11631 t_detect=118677 us cap_fail=0 dec_fail=0 no_eoi=0
+I (54826) bringup: LIVE frame=121 boxes=0
+I (54957) bringup: LIVE frame=122 t_wait=155 t_decode=11551 t_detect=118956 us cap_fail=0 dec_fail=0 no_eoi=0
+I (54958) bringup: LIVE frame=122 boxes=0
+I (55089) bringup: LIVE frame=123 t_wait=158 t_decode=11554 t_detect=118636 us cap_fail=0 dec_fail=0 no_eoi=0
+I (55089) bringup: LIVE frame=123 boxes=0
+I (55220) bringup: LIVE frame=124 t_wait=157 t_decode=11643 t_detect=118523 us cap_fail=0 dec_fail=0 no_eoi=0
+I (55220) bringup: LIVE frame=124 boxes=0
+I (55351) bringup: LIVE frame=125 t_wait=158 t_decode=11514 t_detect=118946 us cap_fail=0 dec_fail=0 no_eoi=0
+I (55351) bringup: LIVE frame=125 boxes=0
+I (55483) bringup: LIVE frame=126 t_wait=158 t_decode=11523 t_detect=118768 us cap_fail=0 dec_fail=0 no_eoi=0
+I (55483) bringup: LIVE frame=126 boxes=0
+I (55614) bringup: LIVE frame=127 t_wait=158 t_decode=11676 t_detect=118557 us cap_fail=0 dec_fail=0 no_eoi=0
+I (55614) bringup: LIVE frame=127 boxes=0
+I (55745) bringup: LIVE frame=128 t_wait=157 t_decode=11550 t_detect=118845 us cap_fail=0 dec_fail=0 no_eoi=0
+I (55745) bringup: LIVE frame=128 boxes=0
+I (55876) bringup: LIVE frame=129 t_wait=150 t_decode=11544 t_detect=118656 us cap_fail=0 dec_fail=0 no_eoi=0
+I (55876) bringup: LIVE frame=129 boxes=0
+I (56007) bringup: LIVE frame=130 t_wait=156 t_decode=11689 t_detect=118587 us cap_fail=0 dec_fail=0 no_eoi=0
+I (56007) bringup: LIVE frame=130 boxes=0
+I (56138) bringup: LIVE frame=131 t_wait=157 t_decode=11550 t_detect=118685 us cap_fail=0 dec_fail=0 no_eoi=0
+I (56138) bringup: LIVE frame=131 boxes=0
+I (56269) bringup: LIVE frame=132 t_wait=196 t_decode=11586 t_detect=118608 us cap_fail=0 dec_fail=0 no_eoi=0
+I (56269) bringup: LIVE frame=132 boxes=0
+I (56400) bringup: LIVE frame=133 t_wait=159 t_decode=11545 t_detect=119049 us cap_fail=0 dec_fail=0 no_eoi=0
+I (56401) bringup: LIVE frame=133 boxes=0
+I (56532) bringup: LIVE frame=134 t_wait=157 t_decode=11546 t_detect=118720 us cap_fail=0 dec_fail=0 no_eoi=0
+I (56532) bringup: LIVE frame=134 boxes=0
+I (56663) bringup: LIVE frame=135 t_wait=159 t_decode=11616 t_detect=118609 us cap_fail=0 dec_fail=0 no_eoi=0
+I (56663) bringup: LIVE frame=135 boxes=0
+I (56794) bringup: LIVE frame=136 t_wait=157 t_decode=11546 t_detect=118936 us cap_fail=0 dec_fail=0 no_eoi=0
+I (56794) bringup: LIVE frame=136 boxes=0
+I (56926) bringup: LIVE frame=137 t_wait=158 t_decode=11551 t_detect=118625 us cap_fail=0 dec_fail=0 no_eoi=0
+I (56926) bringup: LIVE frame=137 boxes=0
+I (57057) bringup: LIVE frame=138 t_wait=157 t_decode=11639 t_detect=118518 us cap_fail=0 dec_fail=0 no_eoi=0
+I (57057) bringup: LIVE frame=138 boxes=0
+I (57188) bringup: LIVE frame=139 t_wait=159 t_decode=11506 t_detect=118935 us cap_fail=0 dec_fail=0 no_eoi=0
+I (57188) bringup: LIVE frame=139 boxes=0
+I (57320) bringup: LIVE frame=140 t_wait=158 t_decode=11526 t_detect=118767 us cap_fail=0 dec_fail=0 no_eoi=0
+I (57320) bringup: LIVE frame=140 boxes=0
+I (57451) bringup: LIVE frame=141 t_wait=158 t_decode=11672 t_detect=118567 us cap_fail=0 dec_fail=0 no_eoi=0
+I (57451) bringup: LIVE frame=141 boxes=0
+I (57582) bringup: LIVE frame=142 t_wait=158 t_decode=11540 t_detect=118859 us cap_fail=0 dec_fail=0 no_eoi=0
+I (57582) bringup: LIVE frame=142 boxes=0
+I (57714) bringup: LIVE frame=143 t_wait=151 t_decode=11536 t_detect=118696 us cap_fail=0 dec_fail=0 no_eoi=0
+I (57714) bringup: LIVE frame=143 boxes=0
+I (57845) bringup: LIVE frame=144 t_wait=157 t_decode=11674 t_detect=118569 us cap_fail=0 dec_fail=0 no_eoi=0
+I (57845) bringup: LIVE frame=144 boxes=0
+I (57976) bringup: LIVE frame=145 t_wait=159 t_decode=11546 t_detect=118807 us cap_fail=0 dec_fail=0 no_eoi=0
+I (57976) bringup: LIVE frame=145 boxes=0
+I (58107) bringup: LIVE frame=146 t_wait=127 t_decode=11555 t_detect=118646 us cap_fail=0 dec_fail=0 no_eoi=0
+I (58107) bringup: LIVE frame=146 boxes=0
+I (58238) bringup: LIVE frame=147 t_wait=159 t_decode=11532 t_detect=118871 us cap_fail=0 dec_fail=0 no_eoi=0
+I (58238) bringup: LIVE frame=147 boxes=0
+I (58370) bringup: LIVE frame=148 t_wait=159 t_decode=11529 t_detect=118700 us cap_fail=0 dec_fail=0 no_eoi=0
+I (58370) bringup: LIVE frame=148 boxes=0
+I (58501) bringup: LIVE frame=149 t_wait=159 t_decode=11617 t_detect=118378 us cap_fail=0 dec_fail=0 no_eoi=0
+I (58501) bringup: LIVE frame=149 boxes=0
+I (58632) bringup: LIVE frame=150 t_wait=159 t_decode=11528 t_detect=118946 us cap_fail=0 dec_fail=0 no_eoi=0
+I (58632) bringup: LIVE frame=150 boxes=0
+I (58633) bringup: MEM live: internal free=252019 min=217471 | psram free=5067188 min=4176840 | temp=59.9C
+I (58764) bringup: LIVE frame=151 t_wait=159 t_decode=11544 t_detect=118763 us cap_fail=0 dec_fail=0 no_eoi=0
+I (58764) bringup: LIVE frame=151 boxes=0
+I (58895) bringup: LIVE frame=152 t_wait=158 t_decode=11637 t_detect=118577 us cap_fail=0 dec_fail=0 no_eoi=0
+I (58895) bringup: LIVE frame=152 boxes=0
+I (59026) bringup: LIVE frame=153 t_wait=157 t_decode=11553 t_detect=118975 us cap_fail=0 dec_fail=0 no_eoi=0
+I (59027) bringup: LIVE frame=153 boxes=0
+I (59158) bringup: LIVE frame=154 t_wait=157 t_decode=11550 t_detect=118657 us cap_fail=0 dec_fail=0 no_eoi=0
+I (59158) bringup: LIVE frame=154 boxes=0
+I (59289) bringup: LIVE frame=155 t_wait=158 t_decode=11635 t_detect=118550 us cap_fail=0 dec_fail=0 no_eoi=0
+I (59289) bringup: LIVE frame=155 boxes=0
+I (59420) bringup: LIVE frame=156 t_wait=157 t_decode=11512 t_detect=119005 us cap_fail=0 dec_fail=0 no_eoi=0
+I (59421) bringup: LIVE frame=156 boxes=0
+I (59552) bringup: LIVE frame=157 t_wait=158 t_decode=11542 t_detect=118696 us cap_fail=0 dec_fail=0 no_eoi=0
+I (59552) bringup: LIVE frame=157 boxes=0
+I (59683) bringup: LIVE frame=158 t_wait=158 t_decode=11671 t_detect=118563 us cap_fail=0 dec_fail=0 no_eoi=0
+I (59683) bringup: LIVE frame=158 boxes=0
+I (59814) bringup: LIVE frame=159 t_wait=157 t_decode=11541 t_detect=118850 us cap_fail=0 dec_fail=0 no_eoi=0
+I (59814) bringup: LIVE frame=159 boxes=0
+I (59946) bringup: LIVE frame=160 t_wait=127 t_decode=11571 t_detect=118657 us cap_fail=0 dec_fail=0 no_eoi=0
+I (59946) bringup: LIVE frame=160 boxes=0
+I (60077) bringup: LIVE frame=161 t_wait=158 t_decode=11678 t_detect=118509 us cap_fail=0 dec_fail=0 no_eoi=0
+I (60077) bringup: LIVE frame=161 boxes=0
+I (60208) bringup: LIVE frame=162 t_wait=157 t_decode=11543 t_detect=118687 us cap_fail=0 dec_fail=0 no_eoi=0
+I (60208) bringup: LIVE frame=162 boxes=0
+I (60339) bringup: LIVE frame=163 t_wait=198 t_decode=11586 t_detect=118520 us cap_fail=0 dec_fail=0 no_eoi=0
+I (60339) bringup: LIVE frame=163 boxes=0
+I (60470) bringup: LIVE frame=164 t_wait=157 t_decode=11542 t_detect=118971 us cap_fail=0 dec_fail=0 no_eoi=0
+I (60471) bringup: LIVE frame=164 boxes=0
+I (60602) bringup: LIVE frame=165 t_wait=158 t_decode=11548 t_detect=118760 us cap_fail=0 dec_fail=0 no_eoi=0
+I (60602) bringup: LIVE frame=165 boxes=0
+I (60733) bringup: LIVE frame=166 t_wait=157 t_decode=11632 t_detect=118583 us cap_fail=0 dec_fail=0 no_eoi=0
+I (60733) bringup: LIVE frame=166 boxes=0
+I (60864) bringup: LIVE frame=167 t_wait=157 t_decode=11551 t_detect=118963 us cap_fail=0 dec_fail=0 no_eoi=0
+I (60865) bringup: LIVE frame=167 boxes=0
+I (60996) bringup: LIVE frame=168 t_wait=157 t_decode=11551 t_detect=118645 us cap_fail=0 dec_fail=0 no_eoi=0
+I (60996) bringup: LIVE frame=168 boxes=0
+I (61127) bringup: LIVE frame=169 t_wait=158 t_decode=11638 t_detect=118468 us cap_fail=0 dec_fail=0 no_eoi=0
+I (61127) bringup: LIVE frame=169 boxes=0
+I (61258) bringup: LIVE frame=170 t_wait=156 t_decode=11509 t_detect=118892 us cap_fail=0 dec_fail=0 no_eoi=0
+I (61258) bringup: LIVE frame=170 boxes=0
+I (61390) bringup: LIVE frame=171 t_wait=157 t_decode=11545 t_detect=118656 us cap_fail=0 dec_fail=0 no_eoi=0
+I (61390) bringup: LIVE frame=171 boxes=0
+I (61521) bringup: LIVE frame=172 t_wait=157 t_decode=11676 t_detect=118477 us cap_fail=0 dec_fail=0 no_eoi=0
+I (61521) bringup: LIVE frame=172 boxes=0
+I (61652) bringup: LIVE frame=173 t_wait=158 t_decode=11537 t_detect=118879 us cap_fail=0 dec_fail=0 no_eoi=0
+I (61652) bringup: LIVE frame=173 boxes=0
+I (61784) bringup: LIVE frame=174 t_wait=140 t_decode=11551 t_detect=118703 us cap_fail=0 dec_fail=0 no_eoi=0
+I (61784) bringup: LIVE frame=174 boxes=0
+I (61915) bringup: LIVE frame=175 t_wait=158 t_decode=11680 t_detect=118517 us cap_fail=0 dec_fail=0 no_eoi=0
+I (61915) bringup: LIVE frame=175 boxes=0
+I (62046) bringup: LIVE frame=176 t_wait=157 t_decode=11550 t_detect=118814 us cap_fail=0 dec_fail=0 no_eoi=0
+I (62046) bringup: LIVE frame=176 boxes=0
+I (62177) bringup: LIVE frame=177 t_wait=127 t_decode=11557 t_detect=118625 us cap_fail=0 dec_fail=0 no_eoi=0
+I (62177) bringup: LIVE frame=177 boxes=0
+I (62308) bringup: LIVE frame=178 t_wait=157 t_decode=11545 t_detect=118937 us cap_fail=0 dec_fail=0 no_eoi=0
+I (62308) bringup: LIVE frame=178 boxes=0
+I (62440) bringup: LIVE frame=179 t_wait=158 t_decode=11551 t_detect=118674 us cap_fail=0 dec_fail=0 no_eoi=0
+I (62440) bringup: LIVE frame=179 boxes=0
+I (62571) bringup: LIVE frame=180 t_wait=156 t_decode=11634 t_detect=118492 us cap_fail=0 dec_fail=0 no_eoi=0
+I (62571) bringup: LIVE frame=180 boxes=0
+I (62702) bringup: LIVE frame=181 t_wait=158 t_decode=11545 t_detect=118958 us cap_fail=0 dec_fail=0 no_eoi=0
+I (62703) bringup: LIVE frame=181 boxes=0
+I (62834) bringup: LIVE frame=182 t_wait=157 t_decode=11545 t_detect=118670 us cap_fail=0 dec_fail=0 no_eoi=0
+I (62834) bringup: LIVE frame=182 boxes=0
+I (62965) bringup: LIVE frame=183 t_wait=158 t_decode=11644 t_detect=118585 us cap_fail=0 dec_fail=0 no_eoi=0
+I (62965) bringup: LIVE frame=183 boxes=0
+I (63096) bringup: LIVE frame=184 t_wait=156 t_decode=11553 t_detect=118976 us cap_fail=0 dec_fail=0 no_eoi=0
+I (63097) bringup: LIVE frame=184 boxes=0
+I (63228) bringup: LIVE frame=185 t_wait=157 t_decode=11547 t_detect=118643 us cap_fail=0 dec_fail=0 no_eoi=0
+I (63228) bringup: LIVE frame=185 boxes=0
+I (63359) bringup: LIVE frame=186 t_wait=156 t_decode=11640 t_detect=118553 us cap_fail=0 dec_fail=0 no_eoi=0
+I (63359) bringup: LIVE frame=186 boxes=0
+I (63490) bringup: LIVE frame=187 t_wait=157 t_decode=11506 t_detect=118953 us cap_fail=0 dec_fail=0 no_eoi=0
+I (63490) bringup: LIVE frame=187 boxes=0
+I (63622) bringup: LIVE frame=188 t_wait=155 t_decode=11546 t_detect=118835 us cap_fail=0 dec_fail=0 no_eoi=0
+I (63622) bringup: LIVE frame=188 boxes=0
+I (63753) bringup: LIVE frame=189 t_wait=158 t_decode=11678 t_detect=118591 us cap_fail=0 dec_fail=0 no_eoi=0
+I (63753) bringup: LIVE frame=189 boxes=0
+I (63884) bringup: LIVE frame=190 t_wait=155 t_decode=11558 t_detect=118831 us cap_fail=0 dec_fail=0 no_eoi=0
+I (63884) bringup: LIVE frame=190 boxes=0
+I (64015) bringup: LIVE frame=191 t_wait=132 t_decode=11580 t_detect=118656 us cap_fail=0 dec_fail=0 no_eoi=0
+I (64015) bringup: LIVE frame=191 boxes=0
+I (64146) bringup: LIVE frame=192 t_wait=155 t_decode=11697 t_detect=118574 us cap_fail=0 dec_fail=0 no_eoi=0
+I (64146) bringup: LIVE frame=192 boxes=0
+I (64277) bringup: LIVE frame=193 t_wait=157 t_decode=11557 t_detect=118684 us cap_fail=0 dec_fail=0 no_eoi=0
+I (64277) bringup: LIVE frame=193 boxes=0
+I (64408) bringup: LIVE frame=194 t_wait=156 t_decode=11645 t_detect=118464 us cap_fail=0 dec_fail=0 no_eoi=0
+I (64408) bringup: LIVE frame=194 boxes=0
+I (64539) bringup: LIVE frame=195 t_wait=156 t_decode=11569 t_detect=118968 us cap_fail=0 dec_fail=0 no_eoi=0
+I (64540) bringup: LIVE frame=195 boxes=0
+I (64671) bringup: LIVE frame=196 t_wait=155 t_decode=11562 t_detect=118675 us cap_fail=0 dec_fail=0 no_eoi=0
+I (64671) bringup: LIVE frame=196 boxes=0
+I (64802) bringup: LIVE frame=197 t_wait=156 t_decode=11651 t_detect=118598 us cap_fail=0 dec_fail=0 no_eoi=0
+I (64802) bringup: LIVE frame=197 boxes=0
+I (64933) bringup: LIVE frame=198 t_wait=154 t_decode=11566 t_detect=118970 us cap_fail=0 dec_fail=0 no_eoi=0
+I (64934) bringup: LIVE frame=198 boxes=0
+I (65065) bringup: LIVE frame=199 t_wait=155 t_decode=11549 t_detect=118649 us cap_fail=0 dec_fail=0 no_eoi=0
+I (65065) bringup: LIVE frame=199 boxes=0
+I (65196) bringup: LIVE frame=200 t_wait=155 t_decode=11657 t_detect=118562 us cap_fail=0 dec_fail=0 no_eoi=0
+I (65196) bringup: LIVE frame=200 boxes=0
+I (65196) bringup: MEM live: internal free=252019 min=217471 | psram free=5067188 min=4176840 | temp=59.9C
+I (65328) bringup: LIVE frame=201 t_wait=156 t_decode=11574 t_detect=118939 us cap_fail=0 dec_fail=0 no_eoi=0
+I (65329) bringup: LIVE frame=201 boxes=0
+I (65460) bringup: LIVE frame=202 t_wait=156 t_decode=11542 t_detect=118788 us cap_fail=0 dec_fail=0 no_eoi=0
+I (65460) bringup: LIVE frame=202 boxes=0
+I (65591) bringup: LIVE frame=203 t_wait=157 t_decode=11677 t_detect=118558 us cap_fail=0 dec_fail=0 no_eoi=0
+I (65591) bringup: LIVE frame=203 boxes=0
+I (65722) bringup: LIVE frame=204 t_wait=155 t_decode=11560 t_detect=118860 us cap_fail=0 dec_fail=0 no_eoi=0
+I (65722) bringup: LIVE frame=204 boxes=0
+I (65854) bringup: LIVE frame=205 t_wait=148 t_decode=11553 t_detect=118727 us cap_fail=0 dec_fail=0 no_eoi=0
+I (65854) bringup: LIVE frame=205 boxes=0
+I (65985) bringup: LIVE frame=206 t_wait=155 t_decode=11696 t_detect=118562 us cap_fail=0 dec_fail=0 no_eoi=0
+I (65985) bringup: LIVE frame=206 boxes=0
+I (66116) bringup: LIVE frame=207 t_wait=156 t_decode=11560 t_detect=118805 us cap_fail=0 dec_fail=0 no_eoi=0
+I (66116) bringup: LIVE frame=207 boxes=0
+I (66247) bringup: LIVE frame=208 t_wait=126 t_decode=11564 t_detect=118656 us cap_fail=0 dec_fail=0 no_eoi=0
+I (66247) bringup: LIVE frame=208 boxes=0
+I (66378) bringup: LIVE frame=209 t_wait=156 t_decode=11556 t_detect=118843 us cap_fail=0 dec_fail=0 no_eoi=0
+I (66378) bringup: LIVE frame=209 boxes=0
+I (66510) bringup: LIVE frame=210 t_wait=156 t_decode=11552 t_detect=118690 us cap_fail=0 dec_fail=0 no_eoi=0
+I (66510) bringup: LIVE frame=210 boxes=0
+I (66641) bringup: LIVE frame=211 t_wait=156 t_decode=11641 t_detect=118374 us cap_fail=0 dec_fail=0 no_eoi=0
+I (66641) bringup: LIVE frame=211 boxes=0
+I (66772) bringup: LIVE frame=212 t_wait=155 t_decode=11560 t_detect=118949 us cap_fail=0 dec_fail=0 no_eoi=0
+I (66773) bringup: LIVE frame=212 boxes=0
+I (66904) bringup: LIVE frame=213 t_wait=156 t_decode=11560 t_detect=118733 us cap_fail=0 dec_fail=0 no_eoi=0
+I (66904) bringup: LIVE frame=213 boxes=0
+I (67035) bringup: LIVE frame=214 t_wait=156 t_decode=11645 t_detect=118555 us cap_fail=0 dec_fail=0 no_eoi=0
+I (67035) bringup: LIVE frame=214 boxes=0
+I (67166) bringup: LIVE frame=215 t_wait=156 t_decode=11562 t_detect=118960 us cap_fail=0 dec_fail=0 no_eoi=0
+I (67167) bringup: LIVE frame=215 boxes=0
+I (67298) bringup: LIVE frame=216 t_wait=155 t_decode=11567 t_detect=118675 us cap_fail=0 dec_fail=0 no_eoi=0
+I (67298) bringup: LIVE frame=216 boxes=0
+I (67429) bringup: LIVE frame=217 t_wait=156 t_decode=11641 t_detect=118458 us cap_fail=0 dec_fail=0 no_eoi=0
+I (67429) bringup: LIVE frame=217 boxes=0
+I (67560) bringup: LIVE frame=218 t_wait=194 t_decode=11523 t_detect=118988 us cap_fail=0 dec_fail=0 no_eoi=0
+I (67561) bringup: LIVE frame=218 boxes=0
+I (67692) bringup: LIVE frame=219 t_wait=157 t_decode=11552 t_detect=118712 us cap_fail=0 dec_fail=0 no_eoi=0
+I (67692) bringup: LIVE frame=219 boxes=0
+I (67823) bringup: LIVE frame=220 t_wait=155 t_decode=11689 t_detect=118518 us cap_fail=0 dec_fail=0 no_eoi=0
+I (67823) bringup: LIVE frame=220 boxes=0
+I (67954) bringup: LIVE frame=221 t_wait=156 t_decode=11559 t_detect=118848 us cap_fail=0 dec_fail=0 no_eoi=0
+I (67954) bringup: LIVE frame=221 boxes=0
+I (68086) bringup: LIVE frame=222 t_wait=126 t_decode=11583 t_detect=118668 us cap_fail=0 dec_fail=0 no_eoi=0
+I (68086) bringup: LIVE frame=222 boxes=0
+I (68217) bringup: LIVE frame=223 t_wait=156 t_decode=11694 t_detect=118495 us cap_fail=0 dec_fail=0 no_eoi=0
+I (68217) bringup: LIVE frame=223 boxes=0
+I (68348) bringup: LIVE frame=224 t_wait=156 t_decode=11552 t_detect=118681 us cap_fail=0 dec_fail=0 no_eoi=0
+I (68348) bringup: LIVE frame=224 boxes=0
+I (68479) bringup: LIVE frame=225 t_wait=156 t_decode=11633 t_detect=118526 us cap_fail=0 dec_fail=0 no_eoi=0
+I (68479) bringup: LIVE frame=225 boxes=0
+I (68610) bringup: LIVE frame=226 t_wait=156 t_decode=11558 t_detect=118938 us cap_fail=0 dec_fail=0 no_eoi=0
+I (68611) bringup: LIVE frame=226 boxes=0
+I (68742) bringup: LIVE frame=227 t_wait=157 t_decode=11555 t_detect=118784 us cap_fail=0 dec_fail=0 no_eoi=0
+I (68742) bringup: LIVE frame=227 boxes=0
+I (68873) bringup: LIVE frame=228 t_wait=155 t_decode=11639 t_detect=118630 us cap_fail=0 dec_fail=0 no_eoi=0
+I (68873) bringup: LIVE frame=228 boxes=0
+I (69004) bringup: LIVE frame=229 t_wait=156 t_decode=11561 t_detect=118964 us cap_fail=0 dec_fail=0 no_eoi=0
+I (69005) bringup: LIVE frame=229 boxes=0
+I (69136) bringup: LIVE frame=230 t_wait=156 t_decode=11560 t_detect=118656 us cap_fail=0 dec_fail=0 no_eoi=0
+I (69136) bringup: LIVE frame=230 boxes=0
+I (69267) bringup: LIVE frame=231 t_wait=156 t_decode=11650 t_detect=118473 us cap_fail=0 dec_fail=0 no_eoi=0
+I (69267) bringup: LIVE frame=231 boxes=0
+I (69398) bringup: LIVE frame=232 t_wait=155 t_decode=11562 t_detect=118841 us cap_fail=0 dec_fail=0 no_eoi=0
+I (69398) bringup: LIVE frame=232 boxes=0
+I (69530) bringup: LIVE frame=233 t_wait=156 t_decode=11558 t_detect=118642 us cap_fail=0 dec_fail=0 no_eoi=0
+I (69530) bringup: LIVE frame=233 boxes=0
+I (69661) bringup: LIVE frame=234 t_wait=194 t_decode=11639 t_detect=118484 us cap_fail=0 dec_fail=0 no_eoi=0
+I (69661) bringup: LIVE frame=234 boxes=0
+I (69792) bringup: LIVE frame=235 t_wait=157 t_decode=11549 t_detect=118862 us cap_fail=0 dec_fail=0 no_eoi=0
+I (69792) bringup: LIVE frame=235 boxes=0
+I (69924) bringup: LIVE frame=236 t_wait=138 t_decode=11563 t_detect=118698 us cap_fail=0 dec_fail=0 no_eoi=0
+I (69924) bringup: LIVE frame=236 boxes=0
+I (70055) bringup: LIVE frame=237 t_wait=156 t_decode=11679 t_detect=118522 us cap_fail=0 dec_fail=0 no_eoi=0
+I (70055) bringup: LIVE frame=237 boxes=0
+I (70186) bringup: LIVE frame=238 t_wait=155 t_decode=11560 t_detect=118825 us cap_fail=0 dec_fail=0 no_eoi=0
+I (70186) bringup: LIVE frame=238 boxes=0
+I (70317) bringup: LIVE frame=239 t_wait=126 t_decode=11573 t_detect=118625 us cap_fail=0 dec_fail=0 no_eoi=0
+I (70317) bringup: LIVE frame=239 boxes=0
+I (70448) bringup: LIVE frame=240 t_wait=155 t_decode=11562 t_detect=118942 us cap_fail=0 dec_fail=0 no_eoi=0
+I (70449) bringup: LIVE frame=240 boxes=0
+I (70580) bringup: LIVE frame=241 t_wait=155 t_decode=11565 t_detect=118703 us cap_fail=0 dec_fail=0 no_eoi=0
+I (70580) bringup: LIVE frame=241 boxes=0
+I (70711) bringup: LIVE frame=242 t_wait=154 t_decode=11656 t_detect=118489 us cap_fail=0 dec_fail=0 no_eoi=0
+I (70711) bringup: LIVE frame=242 boxes=0
+I (70842) bringup: LIVE frame=243 t_wait=156 t_decode=11562 t_detect=118973 us cap_fail=0 dec_fail=0 no_eoi=0
+I (70843) bringup: LIVE frame=243 boxes=0
+I (70974) bringup: LIVE frame=244 t_wait=155 t_decode=11556 t_detect=118692 us cap_fail=0 dec_fail=0 no_eoi=0
+I (70974) bringup: LIVE frame=244 boxes=0
+I (71105) bringup: LIVE frame=245 t_wait=156 t_decode=11658 t_detect=118523 us cap_fail=0 dec_fail=0 no_eoi=0
+I (71105) bringup: LIVE frame=245 boxes=0
+I (71236) bringup: LIVE frame=246 t_wait=155 t_decode=11562 t_detect=119001 us cap_fail=0 dec_fail=0 no_eoi=0
+I (71237) bringup: LIVE frame=246 boxes=0
+I (71368) bringup: LIVE frame=247 t_wait=155 t_decode=11548 t_detect=118692 us cap_fail=0 dec_fail=0 no_eoi=0
+I (71368) bringup: LIVE frame=247 boxes=0
+I (71499) bringup: LIVE frame=248 t_wait=155 t_decode=11658 t_detect=118558 us cap_fail=0 dec_fail=0 no_eoi=0
+I (71499) bringup: LIVE frame=248 boxes=0
+I (71630) bringup: LIVE frame=249 t_wait=155 t_decode=11513 t_detect=118954 us cap_fail=0 dec_fail=0 no_eoi=0
+I (71630) bringup: LIVE frame=249 boxes=0
+I (71762) bringup: LIVE frame=250 t_wait=154 t_decode=11546 t_detect=118825 us cap_fail=0 dec_fail=0 no_eoi=0
+I (71762) bringup: LIVE frame=250 boxes=0
+I (71762) bringup: MEM live: internal free=252019 min=217471 | psram free=5067188 min=4176840 | temp=59.9C
+I (71894) bringup: LIVE frame=251 t_wait=157 t_decode=11701 t_detect=118619 us cap_fail=0 dec_fail=0 no_eoi=0
+I (71894) bringup: LIVE frame=251 boxes=0
+I (72025) bringup: LIVE frame=252 t_wait=157 t_decode=11555 t_detect=118840 us cap_fail=0 dec_fail=0 no_eoi=0
+I (72025) bringup: LIVE frame=252 boxes=0
+I (72157) bringup: LIVE frame=253 t_wait=150 t_decode=11549 t_detect=118727 us cap_fail=0 dec_fail=0 no_eoi=0
+I (72157) bringup: LIVE frame=253 boxes=0
+I (72288) bringup: LIVE frame=254 t_wait=155 t_decode=11690 t_detect=118566 us cap_fail=0 dec_fail=0 no_eoi=0
+I (72288) bringup: LIVE frame=254 boxes=0
+I (72419) bringup: LIVE frame=255 t_wait=158 t_decode=11552 t_detect=118816 us cap_fail=0 dec_fail=0 no_eoi=0
+I (72419) bringup: LIVE frame=255 boxes=0
+I (72550) bringup: LIVE frame=256 t_wait=125 t_decode=11564 t_detect=118675 us cap_fail=0 dec_fail=0 no_eoi=0
+I (72550) bringup: LIVE frame=256 boxes=0
+I (72681) bringup: LIVE frame=257 t_wait=155 t_decode=11559 t_detect=118874 us cap_fail=0 dec_fail=0 no_eoi=0
+I (72681) bringup: LIVE frame=257 boxes=0
+I (72813) bringup: LIVE frame=258 t_wait=156 t_decode=11553 t_detect=118692 us cap_fail=0 dec_fail=0 no_eoi=0
+I (72813) bringup: LIVE frame=258 boxes=0
+I (72944) bringup: LIVE frame=259 t_wait=155 t_decode=11645 t_detect=118397 us cap_fail=0 dec_fail=0 no_eoi=0
+I (72944) bringup: LIVE frame=259 boxes=0
+I (73075) bringup: LIVE frame=260 t_wait=155 t_decode=11569 t_detect=118985 us cap_fail=0 dec_fail=0 no_eoi=0
+I (73076) bringup: LIVE frame=260 boxes=0
+I (73207) bringup: LIVE frame=261 t_wait=156 t_decode=11555 t_detect=118710 us cap_fail=0 dec_fail=0 no_eoi=0
+I (73207) bringup: LIVE frame=261 boxes=0
+I (73338) bringup: LIVE frame=262 t_wait=155 t_decode=11651 t_detect=118486 us cap_fail=0 dec_fail=0 no_eoi=0
+I (73338) bringup: LIVE frame=262 boxes=0
+I (73469) bringup: LIVE frame=263 t_wait=155 t_decode=11562 t_detect=118961 us cap_fail=0 dec_fail=0 no_eoi=0
+I (73470) bringup: LIVE frame=263 boxes=0
+I (73601) bringup: LIVE frame=264 t_wait=156 t_decode=11567 t_detect=118673 us cap_fail=0 dec_fail=0 no_eoi=0
+I (73601) bringup: LIVE frame=264 boxes=0
+I (73732) bringup: LIVE frame=265 t_wait=156 t_decode=11640 t_detect=118534 us cap_fail=0 dec_fail=0 no_eoi=0
+I (73732) bringup: LIVE frame=265 boxes=0
+I (73863) bringup: LIVE frame=266 t_wait=156 t_decode=11555 t_detect=119012 us cap_fail=0 dec_fail=0 no_eoi=0
+I (73864) bringup: LIVE frame=266 boxes=0
+I (73995) bringup: LIVE frame=267 t_wait=156 t_decode=11557 t_detect=118732 us cap_fail=0 dec_fail=0 no_eoi=0
+I (73995) bringup: LIVE frame=267 boxes=0
+I (74126) bringup: LIVE frame=268 t_wait=156 t_decode=11677 t_detect=118519 us cap_fail=0 dec_fail=0 no_eoi=0
+I (74126) bringup: LIVE frame=268 boxes=0
+I (74257) bringup: LIVE frame=269 t_wait=156 t_decode=11558 t_detect=118815 us cap_fail=0 dec_fail=0 no_eoi=0
+I (74257) bringup: LIVE frame=269 boxes=0
+I (74388) bringup: LIVE frame=270 t_wait=126 t_decode=11587 t_detect=118670 us cap_fail=0 dec_fail=0 no_eoi=0
+I (74388) bringup: LIVE frame=270 boxes=0
+I (74519) bringup: LIVE frame=271 t_wait=155 t_decode=11694 t_detect=118538 us cap_fail=0 dec_fail=0 no_eoi=0
+I (74519) bringup: LIVE frame=271 boxes=0
+I (74650) bringup: LIVE frame=272 t_wait=156 t_decode=11555 t_detect=118717 us cap_fail=0 dec_fail=0 no_eoi=0
+I (74650) bringup: LIVE frame=272 boxes=0
+I (74781) bringup: LIVE frame=273 t_wait=156 t_decode=11638 t_detect=118379 us cap_fail=0 dec_fail=0 no_eoi=0
+I (74781) bringup: LIVE frame=273 boxes=0
+I (74912) bringup: LIVE frame=274 t_wait=156 t_decode=11559 t_detect=118964 us cap_fail=0 dec_fail=0 no_eoi=0
+I (74913) bringup: LIVE frame=274 boxes=0
+I (75044) bringup: LIVE frame=275 t_wait=155 t_decode=11559 t_detect=118705 us cap_fail=0 dec_fail=0 no_eoi=0
+I (75044) bringup: LIVE frame=275 boxes=0
+I (75175) bringup: LIVE frame=276 t_wait=156 t_decode=11648 t_detect=118482 us cap_fail=0 dec_fail=0 no_eoi=0
+I (75175) bringup: LIVE frame=276 boxes=0
+I (75306) bringup: LIVE frame=277 t_wait=156 t_decode=11562 t_detect=118983 us cap_fail=0 dec_fail=0 no_eoi=0
+I (75307) bringup: LIVE frame=277 boxes=0
+I (75438) bringup: LIVE frame=278 t_wait=156 t_decode=11563 t_detect=118718 us cap_fail=0 dec_fail=0 no_eoi=0
+I (75438) bringup: LIVE frame=278 boxes=0
+I (75569) bringup: LIVE frame=279 t_wait=156 t_decode=11648 t_detect=118502 us cap_fail=0 dec_fail=0 no_eoi=0
+I (75569) bringup: LIVE frame=279 boxes=0

@@ -1,0 +1,171 @@
+I (133) esp_image: segment 1: paddr=000bb4e0 vaddr=3fca3100 sizeESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x15 (USB_UART_CHIP_RESET),boot:0x2b (SPI_FAST_FLASH_BOOT)
+Saved PC:0x403cda82
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2820,len:0x16a4
+load:0x403c8700,len:0xe80
+load:0x403cb700,len:0x3188
+entry 0x403c8948
+I (24) boot: ESP-IDF v5.5.3 2nd stage bootloader
+I (24) boot: compile time Oct 15 2026 13:20:17
+I (25) boot: Multicore bootloader
+I (25) boot: chip revision: v0.2
+I (25) boot: efuse block revision: v1.3
+I (25) qio_mode: Enabling default flash chip QIO
+I (25) boot.esp32s3: Boot SPI Speed : 80MHz
+I (26) boot.esp32s3: SPI Mode       : QIO
+I (26) boot.esp32s3: SPI Flash Size : 8MB
+I (26) boot: Enabling RNG early entropy source...
+I (26) boot: Partition Table:
+I (26) boot: ## Label            Usage          Type ST Offset   Length
+I (27) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (27) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (27) boot:  2 factory          factory app      00 00 00010000 00700000
+I (28) boot: End of partition table
+I (28) esp_image: segment 0: paddr=00010020 vaddr=3c250020 size=ab4b8h (701624) map
+I (133) esp_image: segment 1: paddr=000bb4e0 vaddr=3fca3100 size=04b38h ( 19256) load
+I (136) esp_image: segment 2: paddr=000c0020 vaddr=42000020 size=24b660h (2405984) map
+I (494) esp_image: segment 3: paddr=0030b688 vaddr=3fca7c38 size=030f8h ( 12536) load
+I (496) esp_image: segment 4: paddr=0030e788 vaddr=40378000 size=1b0c4h (110788) load
+I (517) esp_image: segment 5: paddr=00329854 vaddr=50000000 size=00020h (    32) load
+I (529) boot: Loaded app from partition at offset 0x10000
+I (529) boot: Disabling RNG early entropy source...
+I (530) octal_psram: vendor id    : 0x0d (AP)
+I (530) octal_psram: dev id       : 0x02 (generation 3)
+I (530) octal_psram: density      : 0x03 (64 Mbit)
+I (531) octal_psram: good-die     : 0x01 (Pass)
+I (531) octal_psram: Latency      : 0x01 (Fixed)
+I (531) octal_psram: VCC          : 0x01 (3V)
+I (531) octal_psram: SRF          : 0x01 (Fast Refresh)
+I (531) octal_psram: BurstType    : 0x01 (Hybrid Wrap)
+I (532) octal_psram: BurstLen     : 0x01 (32 Byte)
+I (532) octal_psram: Readlatency  : 0x02 (10 cycles@Fixed)
+I (532) octal_psram: DriveStrength: 0x00 (1/1)
+I (532) MSPI Timing: Enter psram timing tuning
+I (533) esp_psram: Found 8MB PSRAM device
+I (533) esp_psram: Speed: 80MHz
+I (575) mmu_psram: Read only data copied and mapped to SPIRAM
+I (736) mmu_psram: Instructions copied and mapped to SPIRAM
+I (736) cpu_start: Multicore app
+I (915) esp_psram: SPI SRAM memory test OK
+I (923) cpu_start: Pro cpu start user code
+I (923) cpu_start: cpu freq: 240000000 Hz
+I (923) app_init: Application information:
+I (923) app_init: Project name:     gmt_people_flow
+I (924) app_init: App version:      1
+I (924) app_init: Compile time:     Oct 15 2026 13:20:14
+I (924) app_init: ELF file SHA256:  291d9472e...
+I (924) app_init: ESP-IDF:          v5.5.3
+I (924) efuse_init: Min chip rev:     v0.0
+I (924) efuse_init: Max chip rev:     v0.99 
+I (925) efuse_init: Chip rev:         v0.2
+I (925) heap_init: Initializing. RAM available for dynamic allocation:
+I (925) heap_init: At 3FCB0CB0 len 00038A60 (226 KiB): RAM
+I (925) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM
+I (925) heap_init: At 600FE000 len 00001FE8 (7 KiB): RTCRAM
+I (926) esp_psram: Adding pool of 5120K of PSRAM memory to heap allocator
+I (926) esp_psram: Adding pool of 18K of PSRAM memory gap generated due to end address alignment of drom to the heap allocator
+I (926) spi_flash: detected chip: gd
+I (926) spi_flash: flash io: qio
+I (927) sleep_gpio: Configure to isolate all GPIO pins in sleep state
+I (927) sleep_gpio: Enable automatic switching of GPIO sleep configuration
+I (928) main_task: Started on CPU0
+I (929) esp_psram: Reserving pool of 32K of internal memory for DMA/internal allocations
+I (929) main_task: Calling app_main()
+I (929) temperature_sensor: Range [20°C ~ 100°C], error < 2°C
+I (932) gmt: BOARD chip=esp32s3 rev=v0.2 cores=2 flash=8MB psram=8MB mac=8c:bf:ea:8e:6d:d8
+I (932) gmt: BOARD reset_reason=USB idf=v5.5.3
+I (932) gmt: MEM boot: internal free=241523 min=241523 | psram free=5258848 min=5258848 | temp=54.9C
+I (933) gmt: MEM model_loaded: internal free=241271 min=241271 | psram free=5258848 min=5258848 | temp=56.9C
+W (1011) FbsLoader: CONFIG_SPIRAM_RODATA or CONFIG_SPIRAM_XIP_FROM_PSRAM option is on, fbs model is copied to PSRAM.
+W (1103) dl::Model: minimize() will delete unused inference variables, breaking model testing/debugging.
+I (1228) gmt: STILL run=0 img=640x480 t_decode=77514us t_detect=217786us
+I (1229) gmt: STILL frame=0 boxes=3
+I (1229) gmt:   box score=0.884 x1=144 y1=187 x2=251 y2=464
+I (1229) gmt:   box score=0.879 x1=284 y1=195 x2=368 y2=462
+I (1229) gmt:   box score=0.786 x1=412 y1=226 x2=490 y2=396
+I (1428) gmt: STILL run=1 img=640x480 t_decode=77798us t_detect=120815us
+I (1428) gmt: STILL frame=1 boxes=3
+I (1428) gmt:   box score=0.884 x1=144 y1=187 x2=251 y2=464
+I (1429) gmt:   box score=0.879 x1=284 y1=195 x2=368 y2=462
+I (1429) gmt:   box score=0.786 x1=412 y1=226 x2=490 y2=396
+I (1627) gmt: STILL run=2 img=640x480 t_decode=77762us t_detect=120823us
+I (1628) gmt: STILL frame=2 boxes=3
+I (1628) gmt:   box score=0.884 x1=144 y1=187 x2=251 y2=464
+I (1628) gmt:   box score=0.879 x1=284 y1=195 x2=368 y2=462
+I (1628) gmt:   box score=0.786 x1=412 y1=226 x2=490 y2=396
+I (1827) gmt: STILL run=3 img=640x480 t_decode=77762us t_detect=120807us
+I (1827) gmt: STILL frame=3 boxes=3
+I (1827) gmt:   box score=0.884 x1=144 y1=187 x2=251 y2=464
+I (1827) gmt:   box score=0.879 x1=284 y1=195 x2=368 y2=462
+I (1828) gmt:   box score=0.786 x1=412 y1=226 x2=490 y2=396
+I (2026) gmt: STILL run=4 img=640x480 t_decode=77757us t_detect=120821us
+I (2027) gmt: STILL frame=4 boxes=3
+I (2027) gmt:   box score=0.884 x1=144 y1=187 x2=251 y2=464
+I (2027) gmt:   box score=0.879 x1=284 y1=195 x2=368 y2=462
+I (2027) gmt:   box score=0.786 x1=412 y1=226 x2=490 y2=396
+I (2027) s3 ll_cam: DMA Channel=0
+I (2027) cam_hal: cam init ok
+I (2028) sccb-ng: pin_sda 40 pin_scl 39
+I (2028) sccb-ng: sccb_i2c_port=1
+I (2039) ov3640: Mismatch PID=0x3660
+I (2040) camera: Camera PID=0x3660 VER=0x00 MIDL=0x00 MIDH=0x00
+I (2041) camera: Detected OV3660 camera
+I (2041) camera: Detected camera at address=0x3c
+I (2346) cam_hal: PSRAM DMA mode disabled
+I (2346) cam_hal: buffer_size: 16384, half_buffer_size: 1024, node_buffer_size: 1024, node_cnt: 16, total_cnt: 15
+I (2346) cam_hal: Allocating 15360 Byte frame buffer in PSRAM
+I (2346) cam_hal: Allocating 15360 Byte frame buffer in PSRAM
+I (2346) cam_hal: cam config ok
+I (2358) ov3660: Calculated VCO: 200000000 Hz, PLLCLK: 200000000 Hz, SYSCLK: 50000000 Hz, PCLK: 10000000 Hz
+I (2376) gmt: CAMERA sensor PID=0x3660 VER=0x00 MIDH=0x00 MIDL=0x00 xclk=20000000Hz
+I (2891) gmt: CAPTURE first frame 320x240 fmt=4
+cam_hal: FB-OVF
+cam_hal: FB-OVF
+cam_hal: FB-OVF
+cam_hal: FB-OVF
+I (39017) gmt: CAPTURE_TEST n=1000 ok=1000 fail=0 no_eoi=0 no_soi=0 fb_ovf=0 bytes min/mean/max=4858/5165/12230 fps=27.65
+I (39018) gmt: MEM after_capture_test: internal free=195675 min=161343 | psram free=4616236 min=3725880 | temp=52.9C
+I (39021) pp: pp rom version: e7ae62f
+I (39021) net80211: net80211 rom version: e7ae62f
+I (39022) wifi:wifi driver task: 3fcbfa30, prio:23, stack:6656, core=0
+I (39024) wifi:wifi firmware version: 4df78f2
+I (39024) wifi:wifi certification version: v7.0
+I (39024) wifi:config NVS flash: enabled
+I (39024) wifi:config nano formatting: disabled
+I (39024) wifi:Init data frame dynamic rx buffer num: 32
+I (39025) wifi:Init static rx mgmt buffer num: 5
+I (39025) wifi:Init management short buffer num: 32
+I (39025) wifi:Init dynamic tx buffer num: 32
+I (39025) wifi:Init static tx FG buffer num: 2
+I (39025) wifi:Init static rx buffer size: 1600
+I (39026) wifi:Init static rx buffer num: 10
+I (39026) wifi:Init dynamic rx buffer num: 32
+I (39026) wifi_init: rx ba win: 6
+I (39026) wifi_init: accept mbox: 6
+I (39026) wifi_init: tcpip mbox: 32
+I (39026) wifi_init: udp mbox: 6
+I (39027) wifi_init: tcp mbox: 6
+I (39027) wifi_init: tcp tx win: 5760
+I (39027) wifi_init: tcp rx win: 5760
+I (39027) wifi_init: tcp mss: 1440
+I (39027) wifi_init: WiFi IRAM OP enabled
+I (39027) wifi_init: WiFi RX IRAM OP enabled
+I (39097) gmt: NET mode=ap ssid=GMT-PF-6DD9 ip=192.168.4.1 port=5000
+I (39097) phy_init: phy_version 711,97bcf0a2,Aug 25 2025,19:04:10
+W (39098) phy_init: failed to load RF calibration data (0xffffffff), falling back to full calibration
+I (39129) phy_init: Saving new calibration data due to checksum failure or outdated calibration data, mode(2)
+I (39137) wifi:mode : softAP (8c:bf:ea:8e:6d:d9)
+I (39139) wifi:Total power save buffer number: 16
+I (39139) wifi:Init max length of beacon: 752/752
+I (39139) wifi:Init max length of beacon: 752/752
+I (39140) gmt: MEM wifi_started: internal free=140055 min=139975 | psram free=4485032 min=3725824 | temp=52.9C
+I (39140) esp_netif_lwip: DHCP server started on interface WIFI_AP_DEF with IP: 192.168.4.1
+I (39141) main_task: Returned from app_main()
+I (39242) gmt: SOAK {"uptime_s":38.3,"temp_c":53.9,"frames":0,"sent":0,"tx_dropped":0,"no_client_discards":0,"cap_fail":0,"dec_fail":0,"oversize":0,"no_eoi":0,"no_soi":0,"fb_ovf":0,"int_free":120779,"int_min":111291,"ps_free":4254628,"ps_min":3725796,"rssi":0,"sta_disconnects":0,"clients":0,"t_detect_us":0,"t_proc_us":0,"t_send_us":0,"jpeg_len":0,"reset_reason":"USB"}
+I (49243) gmt: SOAK {"uptime_s":48.3,"temp_c":61.9,"frames":76,"sent":0,"tx_dropped":0,"no_client_discards":76,"cap_fail":0,"dec_fail":0,"oversize":0,"no_eoi":0,"no_soi":0,"fb_ovf":0,"int_free":120699,"int_min":110951,"ps_free":4254628,"ps_min":3725796,"rssi":0,"sta_disconnects":0,"clients":0,"t_detect_us":118458,"t_proc_us":130948,"t_send_us":0,"jpeg_len":5077,"reset_reason":"USB"}
+I (59244) gmt: SOAK {"uptime_s":58.3,"temp_c":63.9,"frames":152,"sent":0,"tx_dropped":0,"no_client_discards":152,"cap_fail":0,"dec_fail":0,"oversize":0,"no_eoi":0,"no_soi":0,"fb_ovf":0,"int_free":120699,"int_min":110951,"ps_free":4254628,"ps_min":3725796,"rssi":0,"sta_disconnects":0,"clients":0,"t_detect_us":118434,"t_proc_us":130760,"t_send_us":0,"jpeg_len":4746,"reset_reason":"USB"}
+I (69345) gmt: SOAK {"uptime_s":68.4,"temp_c":63.9,"frames":228,"sent":0,"tx_dropped":0,"no_client_discards":228,"cap_fail":0,"dec_fail":0,"oversize":0,"no_eoi":0,"no_soi":0,"fb_ovf":0,"int_free":120699,"int_min":110951,"ps_free":4254628,"ps_min":3725796,"rssi":0,"sta_disconnects":0,"clients":0,"t_detect_us":118290,"t_proc_us":130823,"t_send_us":0,"jpeg_len":5249,"reset_reason":"USB"}
+I (79346) gmt: SOAK {"uptime_s":78.4,"temp_c":64.9,"frames":304,"sent":0,"tx_dropped":0,"no_client_discards":304,"cap_fail":0,"dec_fail":0,"oversize":0,"no_eoi":0,"no_soi":0,"fb_ovf":0,"int_free":120699,"int_min":110951,"ps_free":4254628,"ps_min":3725796,"rssi":0,"sta_disconnects":0,"clients":0,"t_detect_us":118595,"t_proc_us":131069,"t_send_us":0,"jpeg_len":5079,"reset_reason":"USB"}

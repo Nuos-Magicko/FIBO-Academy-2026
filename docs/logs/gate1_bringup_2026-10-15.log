@@ -1,0 +1,1553 @@
+I (124) esp_image: segment 1: paddr=000ad48c vaddr=3fc9ba00 sizeESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x15 (USB_UART_CHIP_RESET),boot:0x2b (SPI_FAST_FLASH_BOOT)
+Saved PC:0x4038034e
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2820,len:0x16a4
+load:0x403c8700,len:0xe80
+load:0x403cb700,len:0x3188
+entry 0x403c8948
+I (24) boot: ESP-IDF v5.5.3 2nd stage bootloader
+I (24) boot: compile time Oct 15 2026 13:15:13
+I (25) boot: Multicore bootloader
+I (25) boot: chip revision: v0.2
+I (25) boot: efuse block revision: v1.3
+I (25) qio_mode: Enabling default flash chip QIO
+I (25) boot.esp32s3: Boot SPI Speed : 80MHz
+I (26) boot.esp32s3: SPI Mode       : QIO
+I (26) boot.esp32s3: SPI Flash Size : 8MB
+I (26) boot: Enabling RNG early entropy source...
+I (26) boot: Partition Table:
+I (26) boot: ## Label            Usage          Type ST Offset   Length
+I (27) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (27) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (28) boot:  2 factory          factory app      00 00 00010000 00700000
+I (28) boot: End of partition table
+I (28) esp_image: segment 0: paddr=00010020 vaddr=3c1f0020 size=9d464h (644196) map
+I (124) esp_image: segment 1: paddr=000ad48c vaddr=3fc9ba00 size=02b8ch ( 11148) load
+I (127) esp_image: segment 2: paddr=000b0020 vaddr=42000020 size=1e1d08h (1973512) map
+I (420) esp_image: segment 3: paddr=00291d30 vaddr=3fc9e58c size=03294h ( 12948) load
+I (423) esp_image: segment 4: paddr=00294fcc vaddr=40378000 size=13990h ( 80272) load
+I (438) esp_image: segment 5: paddr=002a8964 vaddr=50000000 size=00020h (    32) load
+I (447) boot: Loaded app from partition at offset 0x10000
+I (447) boot: Disabling RNG early entropy source...
+I (448) octal_psram: vendor id    : 0x0d (AP)
+I (448) octal_psram: dev id       : 0x02 (generation 3)
+I (448) octal_psram: density      : 0x03 (64 Mbit)
+I (448) octal_psram: good-die     : 0x01 (Pass)
+I (448) octal_psram: Latency      : 0x01 (Fixed)
+I (449) octal_psram: VCC          : 0x01 (3V)
+I (449) octal_psram: SRF          : 0x01 (Fast Refresh)
+I (449) octal_psram: BurstType    : 0x01 (Hybrid Wrap)
+I (449) octal_psram: BurstLen     : 0x01 (32 Byte)
+I (450) octal_psram: Readlatency  : 0x02 (10 cycles@Fixed)
+I (450) octal_psram: DriveStrength: 0x00 (1/1)
+I (450) MSPI Timing: Enter psram timing tuning
+I (451) esp_psram: Found 8MB PSRAM device
+I (451) esp_psram: Speed: 80MHz
+I (489) mmu_psram: Read only data copied and mapped to SPIRAM
+I (623) mmu_psram: Instructions copied and mapped to SPIRAM
+I (624) cpu_start: Multicore app
+I (815) esp_psram: SPI SRAM memory test OK
+I (824) cpu_start: Pro cpu start user code
+I (824) cpu_start: cpu freq: 240000000 Hz
+I (824) app_init: Application information:
+I (824) app_init: Project name:     gmt_people_flow
+I (825) app_init: App version:      1
+I (825) app_init: Compile time:     Oct 15 2026 13:14:07
+I (825) app_init: ELF file SHA256:  e84a4fb34...
+I (825) app_init: ESP-IDF:          v5.5.3
+I (825) efuse_init: Min chip rev:     v0.0
+I (826) efuse_init: Max chip rev:     v0.99 
+I (826) efuse_init: Chip rev:         v0.2
+I (826) heap_init: Initializing. RAM available for dynamic allocation:
+I (826) heap_init: At 3FCA4058 len 000456B8 (277 KiB): RAM
+I (826) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM
+I (827) heap_init: At 600FE000 len 00001FE8 (7 KiB): RTCRAM
+I (827) esp_psram: Adding pool of 5568K of PSRAM memory to heap allocator
+I (827) esp_psram: Adding pool of 10K of PSRAM memory gap generated due to end address alignment of drom to the heap allocator
+I (828) spi_flash: detected chip: gd
+I (828) spi_flash: flash io: qio
+I (828) sleep_gpio: Configure to isolate all GPIO pins in sleep state
+I (828) sleep_gpio: Enable automatic switching of GPIO sleep configuration
+I (829) main_task: Started on CPU0
+I (839) esp_psram: Reserving pool of 32K of internal memory for DMA/internal allocations
+I (839) main_task: Calling app_main()
+I (839) temperature_sensor: Range [20°C ~ 100°C], error < 2°C
+I (839) bringup: BOARD chip=esp32s3 rev=v0.2 cores=2 flash=8MB psram=8MB mac=8c:bf:ea:8e:6d:d8
+I (839) bringup: BOARD reset_reason=USB idf=v5.5.3
+I (839) bringup: MEM boot: internal free=297607 min=297607 | psram free=5709808 min=5709808 | temp=51.9C
+I (839) bringup: MEM model_loaded: internal free=297355 min=297355 | psram free=5709808 min=5709808 | temp=52.9C
+W (919) FbsLoader: CONFIG_SPIRAM_RODATA or CONFIG_SPIRAM_XIP_FROM_PSRAM option is on, fbs model is copied to PSRAM.
+W (1009) dl::Model: minimize() will delete unused inference variables, breaking model testing/debugging.
+I (1139) bringup: STILL run=0 img=640x480 t_decode=76986us t_detect=216158us
+I (1139) bringup: STILL frame=0 boxes=3
+I (1139) bringup:   box score=0.884 x1=144 y1=187 x2=251 y2=464
+I (1139) bringup:   box score=0.879 x1=284 y1=195 x2=368 y2=462
+I (1139) bringup:   box score=0.786 x1=412 y1=226 x2=490 y2=396
+I (1339) bringup: STILL run=1 img=640x480 t_decode=77274us t_detect=119649us
+I (1339) bringup: STILL frame=1 boxes=3
+I (1339) bringup:   box score=0.884 x1=144 y1=187 x2=251 y2=464
+I (1339) bringup:   box score=0.879 x1=284 y1=195 x2=368 y2=462
+I (1339) bringup:   box score=0.786 x1=412 y1=226 x2=490 y2=396
+I (1529) bringup: STILL run=2 img=640x480 t_decode=77235us t_detect=119665us
+I (1529) bringup: STILL frame=2 boxes=3
+I (1529) bringup:   box score=0.884 x1=144 y1=187 x2=251 y2=464
+I (1529) bringup:   box score=0.879 x1=284 y1=195 x2=368 y2=462
+I (1529) bringup:   box score=0.786 x1=412 y1=226 x2=490 y2=396
+I (1729) bringup: STILL run=3 img=640x480 t_decode=77249us t_detect=119653us
+I (1729) bringup: STILL frame=3 boxes=3
+I (1729) bringup:   box score=0.884 x1=144 y1=187 x2=251 y2=464
+I (1729) bringup:   box score=0.879 x1=284 y1=195 x2=368 y2=462
+I (1729) bringup:   box score=0.786 x1=412 y1=226 x2=490 y2=396
+I (1929) bringup: STILL run=4 img=640x480 t_decode=77243us t_detect=119661us
+I (1929) bringup: STILL frame=4 boxes=3
+I (1929) bringup:   box score=0.884 x1=144 y1=187 x2=251 y2=464
+I (1929) bringup:   box score=0.879 x1=284 y1=195 x2=368 y2=462
+I (1929) bringup:   box score=0.786 x1=412 y1=226 x2=490 y2=396
+I (1929) s3 ll_cam: DMA Channel=0
+I (1929) cam_hal: cam init ok
+I (1929) sccb-ng: pin_sda 40 pin_scl 39
+I (1929) sccb-ng: sccb_i2c_port=1
+I (1939) ov3640: Mismatch PID=0x3660
+I (1939) camera: Camera PID=0x3660 VER=0x00 MIDL=0x00 MIDH=0x00
+I (1939) camera: Detected OV3660 camera
+I (1939) camera: Detected camera at address=0x3c
+I (2239) cam_hal: PSRAM DMA mode disabled
+I (2239) cam_hal: buffer_size: 16384, half_buffer_size: 1024, node_buffer_size: 1024, node_cnt: 16, total_cnt: 15
+I (2239) cam_hal: Allocating 15360 Byte frame buffer in PSRAM
+I (2239) cam_hal: Allocating 15360 Byte frame buffer in PSRAM
+I (2239) cam_hal: cam config ok
+I (2249) ov3660: Calculated VCO: 200000000 Hz, PLLCLK: 200000000 Hz, SYSCLK: 50000000 Hz, PCLK: 10000000 Hz
+I (2269) bringup: CAMERA sensor PID=0x3660 VER=0x00 MIDH=0x00 MIDL=0x00 xclk=20000000Hz
+I (2749) bringup: CAPTURE first frame 320x240 fmt=4
+I (38729) bringup: CAPTURE_TEST n=1000 ok=1000 fail=0 no_eoi=0 no_soi=0 fb_ovf=0 bytes min/mean/max=3601/3635/3667 fps=27.76
+I (38729) bringup: MEM after_capture_test: internal free=251755 min=217471 | psram free=5067188 min=4176840 | temp=51.9C
+I (38899) bringup: LIVE frame=0 t_wait=35154 t_decode=11563 t_detect=117965 us cap_fail=0 dec_fail=0 no_eoi=0
+I (38899) bringup: LIVE frame=0 boxes=0
+I (38899) bringup: MEM live: internal free=252019 min=217471 | psram free=5067188 min=4176840 | temp=51.9C
+I (39029) bringup: LIVE frame=1 t_wait=157 t_decode=11506 t_detect=117961 us cap_fail=0 dec_fail=0 no_eoi=0
+I (39029) bringup: LIVE frame=1 boxes=0
+I (39159) bringup: LIVE frame=2 t_wait=154 t_decode=11494 t_detect=117608 us cap_fail=0 dec_fail=0 no_eoi=0
+I (39159) bringup: LIVE frame=2 boxes=0
+I (39289) bringup: LIVE frame=3 t_wait=154 t_decode=11591 t_detect=117517 us cap_fail=0 dec_fail=0 no_eoi=0
+I (39289) bringup: LIVE frame=3 boxes=0
+I (39419) bringup: LIVE frame=4 t_wait=154 t_decode=11494 t_detect=117791 us cap_fail=0 dec_fail=0 no_eoi=0
+I (39419) bringup: LIVE frame=4 boxes=0
+I (39549) bringup: LIVE frame=5 t_wait=129 t_decode=11512 t_detect=117528 us cap_fail=0 dec_fail=0 no_eoi=0
+I (39549) bringup: LIVE frame=5 boxes=0
+I (39679) bringup: LIVE frame=6 t_wait=155 t_decode=11493 t_detect=117909 us cap_fail=0 dec_fail=0 no_eoi=0
+I (39679) bringup: LIVE frame=6 boxes=0
+I (39809) bringup: LIVE frame=7 t_wait=156 t_decode=11487 t_detect=117610 us cap_fail=0 dec_fail=0 no_eoi=0
+I (39809) bringup: LIVE frame=7 boxes=0
+I (39939) bringup: LIVE frame=8 t_wait=155 t_decode=11574 t_detect=117531 us cap_fail=0 dec_fail=0 no_eoi=0
+I (39939) bringup: LIVE frame=8 boxes=0
+I (40069) bringup: LIVE frame=9 t_wait=154 t_decode=11488 t_detect=117798 us cap_fail=0 dec_fail=0 no_eoi=0
+I (40069) bringup: LIVE frame=9 boxes=0
+I (40199) bringup: LIVE frame=10 t_wait=126 t_decode=11515 t_detect=117525 us cap_fail=0 dec_fail=0 no_eoi=0
+I (40199) bringup: LIVE frame=10 boxes=0
+I (40329) bringup: LIVE frame=11 t_wait=155 t_decode=11488 t_detect=117951 us cap_fail=0 dec_fail=0 no_eoi=0
+I (40329) bringup: LIVE frame=11 boxes=0
+I (40449) bringup: LIVE frame=12 t_wait=154 t_decode=11494 t_detect=117595 us cap_fail=0 dec_fail=0 no_eoi=0
+I (40459) bringup: LIVE frame=12 boxes=0
+I (40579) bringup: LIVE frame=13 t_wait=154 t_decode=11586 t_detect=117522 us cap_fail=0 dec_fail=0 no_eoi=0
+I (40579) bringup: LIVE frame=13 boxes=0
+I (40709) bringup: LIVE frame=14 t_wait=204 t_decode=11453 t_detect=117801 us cap_fail=0 dec_fail=0 no_eoi=0
+I (40709) bringup: LIVE frame=14 boxes=0
+I (40839) bringup: LIVE frame=15 t_wait=155 t_decode=11485 t_detect=117606 us cap_fail=0 dec_fail=0 no_eoi=0
+I (40839) bringup: LIVE frame=15 boxes=0
+I (40969) bringup: LIVE frame=16 t_wait=154 t_decode=11626 t_detect=117492 us cap_fail=0 dec_fail=0 no_eoi=0
+I (40969) bringup: LIVE frame=16 boxes=0
+I (41099) bringup: LIVE frame=17 t_wait=154 t_decode=11505 t_detect=117593 us cap_fail=0 dec_fail=0 no_eoi=0
+I (41099) bringup: LIVE frame=17 boxes=0
+I (41229) bringup: LIVE frame=18 t_wait=153 t_decode=11598 t_detect=117454 us cap_fail=0 dec_fail=0 no_eoi=0
+I (41229) bringup: LIVE frame=18 boxes=0
+I (41359) bringup: LIVE frame=19 t_wait=153 t_decode=11462 t_detect=117929 us cap_fail=0 dec_fail=0 no_eoi=0
+I (41359) bringup: LIVE frame=19 boxes=0
+I (41489) bringup: LIVE frame=20 t_wait=150 t_decode=11495 t_detect=117577 us cap_fail=0 dec_fail=0 no_eoi=0
+I (41489) bringup: LIVE frame=20 boxes=0
+I (41619) bringup: LIVE frame=21 t_wait=154 t_decode=11632 t_detect=117514 us cap_fail=0 dec_fail=0 no_eoi=0
+I (41619) bringup: LIVE frame=21 boxes=0
+I (41749) bringup: LIVE frame=22 t_wait=154 t_decode=11500 t_detect=117680 us cap_fail=0 dec_fail=0 no_eoi=0
+I (41749) bringup: LIVE frame=22 boxes=0
+I (41879) bringup: LIVE frame=23 t_wait=155 t_decode=11583 t_detect=117466 us cap_fail=0 dec_fail=0 no_eoi=0
+I (41879) bringup: LIVE frame=23 boxes=0
+I (42009) bringup: LIVE frame=24 t_wait=154 t_decode=11505 t_detect=117887 us cap_fail=0 dec_fail=0 no_eoi=0
+I (42009) bringup: LIVE frame=24 boxes=0
+I (42139) bringup: LIVE frame=25 t_wait=155 t_decode=11489 t_detect=117682 us cap_fail=0 dec_fail=0 no_eoi=0
+I (42139) bringup: LIVE frame=25 boxes=0
+I (42269) bringup: LIVE frame=26 t_wait=153 t_decode=11625 t_detect=117469 us cap_fail=0 dec_fail=0 no_eoi=0
+I (42269) bringup: LIVE frame=26 boxes=0
+I (42399) bringup: LIVE frame=27 t_wait=154 t_decode=11493 t_detect=117683 us cap_fail=0 dec_fail=0 no_eoi=0
+I (42399) bringup: LIVE frame=27 boxes=0
+I (42529) bringup: LIVE frame=28 t_wait=154 t_decode=11586 t_detect=117446 us cap_fail=0 dec_fail=0 no_eoi=0
+I (42529) bringup: LIVE frame=28 boxes=0
+I (42659) bringup: LIVE frame=29 t_wait=155 t_decode=11500 t_detect=117798 us cap_fail=0 dec_fail=0 no_eoi=0
+I (42659) bringup: LIVE frame=29 boxes=0
+I (42789) bringup: LIVE frame=30 t_wait=154 t_decode=11481 t_detect=117663 us cap_fail=0 dec_fail=0 no_eoi=0
+I (42789) bringup: LIVE frame=30 boxes=0
+I (42919) bringup: LIVE frame=31 t_wait=155 t_decode=11633 t_detect=117496 us cap_fail=0 dec_fail=0 no_eoi=0
+I (42919) bringup: LIVE frame=31 boxes=0
+I (43049) bringup: LIVE frame=32 t_wait=154 t_decode=11491 t_detect=117635 us cap_fail=0 dec_fail=0 no_eoi=0
+I (43049) bringup: LIVE frame=32 boxes=0
+I (43179) bringup: LIVE frame=33 t_wait=154 t_decode=11582 t_detect=117583 us cap_fail=0 dec_fail=0 no_eoi=0
+I (43179) bringup: LIVE frame=33 boxes=0
+I (43309) bringup: LIVE frame=34 t_wait=154 t_decode=11498 t_detect=117853 us cap_fail=0 dec_fail=0 no_eoi=0
+I (43309) bringup: LIVE frame=34 boxes=0
+I (43439) bringup: LIVE frame=35 t_wait=155 t_decode=11485 t_detect=117664 us cap_fail=0 dec_fail=0 no_eoi=0
+I (43439) bringup: LIVE frame=35 boxes=0
+I (43569) bringup: LIVE frame=36 t_wait=154 t_decode=11625 t_detect=117573 us cap_fail=0 dec_fail=0 no_eoi=0
+I (43569) bringup: LIVE frame=36 boxes=0
+I (43699) bringup: LIVE frame=37 t_wait=155 t_decode=11498 t_detect=117651 us cap_fail=0 dec_fail=0 no_eoi=0
+I (43699) bringup: LIVE frame=37 boxes=0
+E (43769) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (43769) task_wdt:  - IDLE0 (CPU 0)
+E (43769) task_wdt: Tasks currently running:
+E (43769) task_wdt: CPU 0: main
+E (43769) task_wdt: CPU 1: IDLE1
+E (43769) task_wdt: Print CPU 0 (current core) backtrace
+
+
+Backtrace: 0x421806EB:0x3FC9CCC0 0x4037BBD1:0x3FC9CCF0 0x4215ADE6:0x3FCA6650 0x4204B7C3:0x3FCA66D0 0x4202A5FC:0x3FCA6770 0x4218DEB3:0x3FCA67E0 0x4203DB58:0x3FCA6800 0x4218E14D:0x3FCA6830 0x4200958B:0x3FCA6850 0x421E111B:0x3FCA6960
+
+I (43829) bringup: LIVE frame=38 t_wait=155 t_decode=11585 t_detect=119659 us cap_fail=0 dec_fail=0 no_eoi=0
+I (43829) bringup: LIVE frame=38 boxes=0
+I (43959) bringup: LIVE frame=39 t_wait=156 t_decode=11495 t_detect=117923 us cap_fail=0 dec_fail=0 no_eoi=0
+I (43959) bringup: LIVE frame=39 boxes=0
+I (44089) bringup: LIVE frame=40 t_wait=154 t_decode=11490 t_detect=117676 us cap_fail=0 dec_fail=0 no_eoi=0
+I (44089) bringup: LIVE frame=40 boxes=0
+I (44219) bringup: LIVE frame=41 t_wait=155 t_decode=11582 t_detect=117564 us cap_fail=0 dec_fail=0 no_eoi=0
+I (44219) bringup: LIVE frame=41 boxes=0
+I (44349) bringup: LIVE frame=42 t_wait=154 t_decode=11502 t_detect=117755 us cap_fail=0 dec_fail=0 no_eoi=0
+I (44349) bringup: LIVE frame=42 boxes=0
+I (44479) bringup: LIVE frame=43 t_wait=125 t_decode=11503 t_detect=117602 us cap_fail=0 dec_fail=0 no_eoi=0
+I (44479) bringup: LIVE frame=43 boxes=0
+I (44609) bringup: LIVE frame=44 t_wait=155 t_decode=11493 t_detect=117932 us cap_fail=0 dec_fail=0 no_eoi=0
+I (44609) bringup: LIVE frame=44 boxes=0
+I (44739) bringup: LIVE frame=45 t_wait=156 t_decode=11489 t_detect=117612 us cap_fail=0 dec_fail=0 no_eoi=0
+I (44739) bringup: LIVE frame=45 boxes=0
+I (44869) bringup: LIVE frame=46 t_wait=155 t_decode=11573 t_detect=117512 us cap_fail=0 dec_fail=0 no_eoi=0
+I (44869) bringup: LIVE frame=46 boxes=0
+I (44999) bringup: LIVE frame=47 t_wait=155 t_decode=11481 t_detect=117802 us cap_fail=0 dec_fail=0 no_eoi=0
+I (44999) bringup: LIVE frame=47 boxes=0
+I (45129) bringup: LIVE frame=48 t_wait=123 t_decode=11535 t_detect=117525 us cap_fail=0 dec_fail=0 no_eoi=0
+I (45129) bringup: LIVE frame=48 boxes=0
+I (45259) bringup: LIVE frame=49 t_wait=155 t_decode=11493 t_detect=117964 us cap_fail=0 dec_fail=0 no_eoi=0
+I (45259) bringup: LIVE frame=49 boxes=0
+I (45389) bringup: LIVE frame=50 t_wait=156 t_decode=11475 t_detect=117572 us cap_fail=0 dec_fail=0 no_eoi=0
+I (45389) bringup: LIVE frame=50 boxes=0
+I (45389) bringup: MEM live: internal free=252019 min=217471 | psram free=5067188 min=4176840 | temp=55.9C
+I (45519) bringup: LIVE frame=51 t_wait=154 t_decode=11605 t_detect=117558 us cap_fail=0 dec_fail=0 no_eoi=0
+I (45519) bringup: LIVE frame=51 boxes=0
+I (45649) bringup: LIVE frame=52 t_wait=200 t_decode=11451 t_detect=117846 us cap_fail=0 dec_fail=0 no_eoi=0
+I (45649) bringup: LIVE frame=52 boxes=0
+I (45779) bringup: LIVE frame=53 t_wait=147 t_decode=11487 t_detect=117595 us cap_fail=0 dec_fail=0 no_eoi=0
+I (45779) bringup: LIVE frame=53 boxes=0
+I (45909) bringup: LIVE frame=54 t_wait=155 t_decode=11620 t_detect=117488 us cap_fail=0 dec_fail=0 no_eoi=0
+I (45909) bringup: LIVE frame=54 boxes=0
+I (46039) bringup: LIVE frame=55 t_wait=153 t_decode=11504 t_detect=117614 us cap_fail=0 dec_fail=0 no_eoi=0
+I (46039) bringup: LIVE frame=55 boxes=0
+I (46169) bringup: LIVE frame=56 t_wait=155 t_decode=11587 t_detect=117428 us cap_fail=0 dec_fail=0 no_eoi=0
+I (46169) bringup: LIVE frame=56 boxes=0
+I (46299) bringup: LIVE frame=57 t_wait=153 t_decode=11452 t_detect=117923 us cap_fail=0 dec_fail=0 no_eoi=0
+I (46299) bringup: LIVE frame=57 boxes=0
+I (46429) bringup: LIVE frame=58 t_wait=151 t_decode=11486 t_detect=117572 us cap_fail=0 dec_fail=0 no_eoi=0
+I (46429) bringup: LIVE frame=58 boxes=0
+I (46559) bringup: LIVE frame=59 t_wait=152 t_decode=11635 t_detect=117539 us cap_fail=0 dec_fail=0 no_eoi=0
+I (46559) bringup: LIVE frame=59 boxes=0
+I (46689) bringup: LIVE frame=60 t_wait=154 t_decode=11495 t_detect=117710 us cap_fail=0 dec_fail=0 no_eoi=0
+I (46689) bringup: LIVE frame=60 boxes=0
+I (46819) bringup: LIVE frame=61 t_wait=155 t_decode=11576 t_detect=117470 us cap_fail=0 dec_fail=0 no_eoi=0
+I (46819) bringup: LIVE frame=61 boxes=0
+I (46949) bringup: LIVE frame=62 t_wait=154 t_decode=11506 t_detect=117883 us cap_fail=0 dec_fail=0 no_eoi=0
+I (46949) bringup: LIVE frame=62 boxes=0
+I (47079) bringup: LIVE frame=63 t_wait=154 t_decode=11483 t_detect=117677 us cap_fail=0 dec_fail=0 no_eoi=0
+I (47079) bringup: LIVE frame=63 boxes=0
+I (47209) bringup: LIVE frame=64 t_wait=153 t_decode=11630 t_detect=117480 us cap_fail=0 dec_fail=0 no_eoi=0
+I (47209) bringup: LIVE frame=64 boxes=0
+I (47339) bringup: LIVE frame=65 t_wait=153 t_decode=11492 t_detect=117672 us cap_fail=0 dec_fail=0 no_eoi=0
+I (47339) bringup: LIVE frame=65 boxes=0
+I (47469) bringup: LIVE frame=66 t_wait=154 t_decode=11589 t_detect=117442 us cap_fail=0 dec_fail=0 no_eoi=0
+I (47469) bringup: LIVE frame=66 boxes=0
+I (47599) bringup: LIVE frame=67 t_wait=153 t_decode=11500 t_detect=117764 us cap_fail=0 dec_fail=0 no_eoi=0
+I (47599) bringup: LIVE frame=67 boxes=0
+I (47729) bringup: LIVE frame=68 t_wait=154 t_decode=11485 t_detect=117643 us cap_fail=0 dec_fail=0 no_eoi=0
+I (47729) bringup: LIVE frame=68 boxes=0
+I (47849) bringup: LIVE frame=69 t_wait=153 t_decode=11632 t_detect=117479 us cap_fail=0 dec_fail=0 no_eoi=0
+I (47859) bringup: LIVE frame=69 boxes=0
+I (47979) bringup: LIVE frame=70 t_wait=154 t_decode=11494 t_detect=117648 us cap_fail=0 dec_fail=0 no_eoi=0
+I (47979) bringup: LIVE frame=70 boxes=0
+I (48109) bringup: LIVE frame=71 t_wait=152 t_decode=11577 t_detect=117447 us cap_fail=0 dec_fail=0 no_eoi=0
+I (48109) bringup: LIVE frame=71 boxes=0
+I (48239) bringup: LIVE frame=72 t_wait=156 t_decode=11500 t_detect=117774 us cap_fail=0 dec_fail=0 no_eoi=0
+I (48239) bringup: LIVE frame=72 boxes=0
+I (48369) bringup: LIVE frame=73 t_wait=154 t_decode=11494 t_detect=117680 us cap_fail=0 dec_fail=0 no_eoi=0
+I (48369) bringup: LIVE frame=73 boxes=0
+I (48499) bringup: LIVE frame=74 t_wait=154 t_decode=11642 t_detect=117478 us cap_fail=0 dec_fail=0 no_eoi=0
+I (48499) bringup: LIVE frame=74 boxes=0
+I (48629) bringup: LIVE frame=75 t_wait=153 t_decode=11499 t_detect=117608 us cap_fail=0 dec_fail=0 no_eoi=0
+I (48629) bringup: LIVE frame=75 boxes=0
+I (48759) bringup: LIVE frame=76 t_wait=153 t_decode=11585 t_detect=117571 us cap_fail=0 dec_fail=0 no_eoi=0
+I (48759) bringup: LIVE frame=76 boxes=0
+E (48769) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (48769) task_wdt:  - IDLE0 (CPU 0)
+E (48769) task_wdt: Tasks currently running:
+E (48769) task_wdt: CPU 0: main
+E (48769) task_wdt: CPU 1: IDLE1
+E (48769) task_wdt: Print CPU 0 (current core) backtrace
+
+
+Backtrace: 0x421806EB:0x3FC9CCC0 0x4037BBD1:0x3FC9CCF0 0x4037AD38:0x3FCA6730 0x42168AE3:0x3FCA6750 0x42160153:0x3FCA6780 0x4215DAA7:0x3FCA67B0 0x4203F50A:0x3FCA67F0 0x42009531:0x3FCA6850 0x421E111B:0x3FCA6960
+
+I (48899) bringup: LIVE frame=77 t_wait=153 t_decode=13631 t_detect=117906 us cap_fail=0 dec_fail=0 no_eoi=0
+I (48899) bringup: LIVE frame=77 boxes=0
+I (49029) bringup: LIVE frame=78 t_wait=154 t_decode=11490 t_detect=117638 us cap_fail=0 dec_fail=0 no_eoi=0
+I (49029) bringup: LIVE frame=78 boxes=0
+I (49149) bringup: LIVE frame=79 t_wait=153 t_decode=11584 t_detect=117491 us cap_fail=0 dec_fail=0 no_eoi=0
+I (49159) bringup: LIVE frame=79 boxes=0
+I (49279) bringup: LIVE frame=80 t_wait=154 t_decode=11502 t_detect=117761 us cap_fail=0 dec_fail=0 no_eoi=0
+I (49279) bringup: LIVE frame=80 boxes=0
+I (49409) bringup: LIVE frame=81 t_wait=124 t_decode=11497 t_detect=117627 us cap_fail=0 dec_fail=0 no_eoi=0
+I (49409) bringup: LIVE frame=81 boxes=0
+I (49539) bringup: LIVE frame=82 t_wait=154 t_decode=11490 t_detect=117936 us cap_fail=0 dec_fail=0 no_eoi=0
+I (49539) bringup: LIVE frame=82 boxes=0
+I (49669) bringup: LIVE frame=83 t_wait=156 t_decode=11497 t_detect=117567 us cap_fail=0 dec_fail=0 no_eoi=0
+I (49669) bringup: LIVE frame=83 boxes=0
+I (49799) bringup: LIVE frame=84 t_wait=193 t_decode=11573 t_detect=117451 us cap_fail=0 dec_fail=0 no_eoi=0
+I (49799) bringup: LIVE frame=84 boxes=0
+I (49929) bringup: LIVE frame=85 t_wait=155 t_decode=11484 t_detect=117794 us cap_fail=0 dec_fail=0 no_eoi=0
+I (49929) bringup: LIVE frame=85 boxes=0
+I (50059) bringup: LIVE frame=86 t_wait=125 t_decode=11521 t_detect=117558 us cap_fail=0 dec_fail=0 no_eoi=0
+I (50059) bringup: LIVE frame=86 boxes=0
+I (50189) bringup: LIVE frame=87 t_wait=155 t_decode=11488 t_detect=117992 us cap_fail=0 dec_fail=0 no_eoi=0
+I (50189) bringup: LIVE frame=87 boxes=0
+I (50319) bringup: LIVE frame=88 t_wait=154 t_decode=11509 t_detect=117569 us cap_fail=0 dec_fail=0 no_eoi=0
+I (50319) bringup: LIVE frame=88 boxes=0
+I (50449) bringup: LIVE frame=89 t_wait=154 t_decode=11590 t_detect=117536 us cap_fail=0 dec_fail=0 no_eoi=0
+I (50449) bringup: LIVE frame=89 boxes=0
+I (50579) bringup: LIVE frame=90 t_wait=154 t_decode=11496 t_detect=117744 us cap_fail=0 dec_fail=0 no_eoi=0
+I (50579) bringup: LIVE frame=90 boxes=0
+I (50709) bringup: LIVE frame=91 t_wait=130 t_decode=11514 t_detect=117543 us cap_fail=0 dec_fail=0 no_eoi=0
+I (50709) bringup: LIVE frame=91 boxes=0
+I (50839) bringup: LIVE frame=92 t_wait=154 t_decode=11492 t_detect=117892 us cap_fail=0 dec_fail=0 no_eoi=0
+I (50839) bringup: LIVE frame=92 boxes=0
+I (50969) bringup: LIVE frame=93 t_wait=154 t_decode=11497 t_detect=117616 us cap_fail=0 dec_fail=0 no_eoi=0
+I (50969) bringup: LIVE frame=93 boxes=0
+I (51099) bringup: LIVE frame=94 t_wait=155 t_decode=11579 t_detect=117453 us cap_fail=0 dec_fail=0 no_eoi=0
+I (51099) bringup: LIVE frame=94 boxes=0
+I (51229) bringup: LIVE frame=95 t_wait=155 t_decode=11483 t_detect=117828 us cap_fail=0 dec_fail=0 no_eoi=0
+I (51229) bringup: LIVE frame=95 boxes=0
+I (51359) bringup: LIVE frame=96 t_wait=136 t_decode=11507 t_detect=117559 us cap_fail=0 dec_fail=0 no_eoi=0
+I (51359) bringup: LIVE frame=96 boxes=0
+I (51489) bringup: LIVE frame=97 t_wait=155 t_decode=11495 t_detect=117858 us cap_fail=0 dec_fail=0 no_eoi=0
+I (51489) bringup: LIVE frame=97 boxes=0
+I (51619) bringup: LIVE frame=98 t_wait=154 t_decode=11498 t_detect=117582 us cap_fail=0 dec_fail=0 no_eoi=0
+I (51619) bringup: LIVE frame=98 boxes=0
+I (51749) bringup: LIVE frame=99 t_wait=153 t_decode=11593 t_detect=117453 us cap_fail=0 dec_fail=0 no_eoi=0
+I (51749) bringup: LIVE frame=99 boxes=0
+I (51879) bringup: LIVE frame=100 t_wait=154 t_decode=11450 t_detect=117901 us cap_fail=0 dec_fail=0 no_eoi=0
+I (51879) bringup: LIVE frame=100 boxes=0
+I (51879) bringup: MEM live: internal free=252019 min=217471 | psram free=5067188 min=4176840 | temp=56.9C
+I (52009) bringup: LIVE frame=101 t_wait=150 t_decode=11502 t_detect=117682 us cap_fail=0 dec_fail=0 no_eoi=0
+I (52009) bringup: LIVE frame=101 boxes=0
+I (52139) bringup: LIVE frame=102 t_wait=156 t_decode=11621 t_detect=117524 us cap_fail=0 dec_fail=0 no_eoi=0
+I (52139) bringup: LIVE frame=102 boxes=0
+I (52269) bringup: LIVE frame=103 t_wait=154 t_decode=11503 t_detect=117711 us cap_fail=0 dec_fail=0 no_eoi=0
+I (52269) bringup: LIVE frame=103 boxes=0
+I (52399) bringup: LIVE frame=104 t_wait=155 t_decode=11583 t_detect=117448 us cap_fail=0 dec_fail=0 no_eoi=0
+I (52399) bringup: LIVE frame=104 boxes=0
+I (52529) bringup: LIVE frame=105 t_wait=155 t_decode=11481 t_detect=117836 us cap_fail=0 dec_fail=0 no_eoi=0
+I (52529) bringup: LIVE frame=105 boxes=0
+I (52659) bringup: LIVE frame=106 t_wait=155 t_decode=11484 t_detect=117656 us cap_fail=0 dec_fail=0 no_eoi=0
+I (52659) bringup: LIVE frame=106 boxes=0
+I (52789) bringup: LIVE frame=107 t_wait=155 t_decode=11633 t_detect=117507 us cap_fail=0 dec_fail=0 no_eoi=0
+I (52789) bringup: LIVE frame=107 boxes=0
+I (52919) bringup: LIVE frame=108 t_wait=154 t_decode=11488 t_detect=117655 us cap_fail=0 dec_fail=0 no_eoi=0
+I (52919) bringup: LIVE frame=108 boxes=0
+I (53049) bringup: LIVE frame=109 t_wait=155 t_decode=11569 t_detect=117448 us cap_fail=0 dec_fail=0 no_eoi=0
+I (53049) bringup: LIVE frame=109 boxes=0
+I (53179) bringup: LIVE frame=110 t_wait=155 t_decode=11499 t_detect=117782 us cap_fail=0 dec_fail=0 no_eoi=0
+I (53179) bringup: LIVE frame=110 boxes=0
+I (53309) bringup: LIVE frame=111 t_wait=155 t_decode=11479 t_detect=117677 us cap_fail=0 dec_fail=0 no_eoi=0
+I (53309) bringup: LIVE frame=111 boxes=0
+I (53439) bringup: LIVE frame=112 t_wait=155 t_decode=11621 t_detect=117481 us cap_fail=0 dec_fail=0 no_eoi=0
+I (53439) bringup: LIVE frame=112 boxes=0
+I (53569) bringup: LIVE frame=113 t_wait=154 t_decode=11490 t_detect=117615 us cap_fail=0 dec_fail=0 no_eoi=0
+I (53569) bringup: LIVE frame=113 boxes=0
+I (53699) bringup: LIVE frame=114 t_wait=155 t_decode=11577 t_detect=117574 us cap_fail=0 dec_fail=0 no_eoi=0
+I (53699) bringup: LIVE frame=114 boxes=0
+E (53769) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (53769) task_wdt:  - IDLE0 (CPU 0)
+E (53769) task_wdt: Tasks currently running:
+E (53769) task_wdt: CPU 0: main
+E (53769) task_wdt: CPU 1: IDLE1
+E (53769) task_wdt: Print CPU 0 (current core) backtrace
+
+
+Backtrace: 0x421806EB:0x3FC9CCC0 0x4037BBD1:0x3FC9CCF0 0x4213CA28:0x3FCA6550 0x4204B10B:0x3FCA65D0 0x4202A5F5:0x3FCA6770 0x4218DEB3:0x3FCA67E0 0x4203DB58:0x3FCA6800 0x4218E14D:0x3FCA6830 0x4200958B:0x3FCA6850 0x421E111B:0x3FCA6960
+
+I (53829) bringup: LIVE frame=115 t_wait=156 t_decode=11485 t_detect=119996 us cap_fail=0 dec_fail=0 no_eoi=0
+I (53829) bringup: LIVE frame=115 boxes=0
+I (53959) bringup: LIVE frame=116 t_wait=155 t_decode=11486 t_detect=117612 us cap_fail=0 dec_fail=0 no_eoi=0
+I (53959) bringup: LIVE frame=116 boxes=0
+I (54089) bringup: LIVE frame=117 t_wait=155 t_decode=11613 t_detect=117510 us cap_fail=0 dec_fail=0 no_eoi=0
+I (54089) bringup: LIVE frame=117 boxes=0
+I (54219) bringup: LIVE frame=118 t_wait=155 t_decode=11486 t_detect=117709 us cap_fail=0 dec_fail=0 no_eoi=0
+I (54219) bringup: LIVE frame=118 boxes=0
+I (54349) bringup: LIVE frame=119 t_wait=123 t_decode=11509 t_detect=117650 us cap_fail=0 dec_fail=0 no_eoi=0
+I (54349) bringup: LIVE frame=119 boxes=0
+I (54479) bringup: LIVE frame=120 t_wait=155 t_decode=11482 t_detect=117939 us cap_fail=0 dec_fail=0 no_eoi=0
+I (54479) bringup: LIVE frame=120 boxes=0
+I (54609) bringup: LIVE frame=121 t_wait=155 t_decode=11496 t_detect=117623 us cap_fail=0 dec_fail=0 no_eoi=0
+I (54609) bringup: LIVE frame=121 boxes=0
+I (54739) bringup: LIVE frame=122 t_wait=154 t_decode=11579 t_detect=117531 us cap_fail=0 dec_fail=0 no_eoi=0
+I (54739) bringup: LIVE frame=122 boxes=0
+I (54869) bringup: LIVE frame=123 t_wait=155 t_decode=11482 t_detect=117801 us cap_fail=0 dec_fail=0 no_eoi=0
+I (54869) bringup: LIVE frame=123 boxes=0
+I (54999) bringup: LIVE frame=124 t_wait=125 t_decode=11522 t_detect=117569 us cap_fail=0 dec_fail=0 no_eoi=0
+I (54999) bringup: LIVE frame=124 boxes=0
+I (55129) bringup: LIVE frame=125 t_wait=155 t_decode=11494 t_detect=117992 us cap_fail=0 dec_fail=0 no_eoi=0
+I (55129) bringup: LIVE frame=125 boxes=0
+I (55259) bringup: LIVE frame=126 t_wait=155 t_decode=11500 t_detect=117580 us cap_fail=0 dec_fail=0 no_eoi=0
+I (55259) bringup: LIVE frame=126 boxes=0
+I (55389) bringup: LIVE frame=127 t_wait=154 t_decode=11588 t_detect=117536 us cap_fail=0 dec_fail=0 no_eoi=0
+I (55389) bringup: LIVE frame=127 boxes=0
+I (55519) bringup: LIVE frame=128 t_wait=154 t_decode=11496 t_detect=117760 us cap_fail=0 dec_fail=0 no_eoi=0
+I (55519) bringup: LIVE frame=128 boxes=0
+I (55649) bringup: LIVE frame=129 t_wait=132 t_decode=11508 t_detect=117543 us cap_fail=0 dec_fail=0 no_eoi=0
+I (55649) bringup: LIVE frame=129 boxes=0
+I (55779) bringup: LIVE frame=130 t_wait=155 t_decode=11488 t_detect=117908 us cap_fail=0 dec_fail=0 no_eoi=0
+I (55779) bringup: LIVE frame=130 boxes=0
+I (55909) bringup: LIVE frame=131 t_wait=155 t_decode=11488 t_detect=117608 us cap_fail=0 dec_fail=0 no_eoi=0
+I (55909) bringup: LIVE frame=131 boxes=0
+I (56039) bringup: LIVE frame=132 t_wait=155 t_decode=11582 t_detect=117452 us cap_fail=0 dec_fail=0 no_eoi=0
+I (56039) bringup: LIVE frame=132 boxes=0
+I (56169) bringup: LIVE frame=133 t_wait=155 t_decode=11490 t_detect=117828 us cap_fail=0 dec_fail=0 no_eoi=0
+I (56169) bringup: LIVE frame=133 boxes=0
+I (56299) bringup: LIVE frame=134 t_wait=138 t_decode=11503 t_detect=117566 us cap_fail=0 dec_fail=0 no_eoi=0
+I (56299) bringup: LIVE frame=134 boxes=0
+I (56429) bringup: LIVE frame=135 t_wait=154 t_decode=11490 t_detect=117859 us cap_fail=0 dec_fail=0 no_eoi=0
+I (56429) bringup: LIVE frame=135 boxes=0
+I (56559) bringup: LIVE frame=136 t_wait=154 t_decode=11503 t_detect=117593 us cap_fail=0 dec_fail=0 no_eoi=0
+I (56559) bringup: LIVE frame=136 boxes=0
+I (56679) bringup: LIVE frame=137 t_wait=154 t_decode=11591 t_detect=117490 us cap_fail=0 dec_fail=0 no_eoi=0
+I (56689) bringup: LIVE frame=137 boxes=0
+I (56819) bringup: LIVE frame=138 t_wait=154 t_decode=11458 t_detect=117940 us cap_fail=0 dec_fail=0 no_eoi=0
+I (56819) bringup: LIVE frame=138 boxes=0
+I (56939) bringup: LIVE frame=139 t_wait=150 t_decode=11490 t_detect=117587 us cap_fail=0 dec_fail=0 no_eoi=0
+I (56949) bringup: LIVE frame=139 boxes=0
+I (57069) bringup: LIVE frame=140 t_wait=153 t_decode=11632 t_detect=117489 us cap_fail=0 dec_fail=0 no_eoi=0
+I (57069) bringup: LIVE frame=140 boxes=0
+I (57199) bringup: LIVE frame=141 t_wait=159 t_decode=11504 t_detect=117714 us cap_fail=0 dec_fail=0 no_eoi=0
+I (57199) bringup: LIVE frame=141 boxes=0
+I (57329) bringup: LIVE frame=142 t_wait=155 t_decode=11585 t_detect=117467 us cap_fail=0 dec_fail=0 no_eoi=0
+I (57329) bringup: LIVE frame=142 boxes=0
+I (57459) bringup: LIVE frame=143 t_wait=154 t_decode=11509 t_detect=117863 us cap_fail=0 dec_fail=0 no_eoi=0
+I (57459) bringup: LIVE frame=143 boxes=0
+I (57589) bringup: LIVE frame=144 t_wait=155 t_decode=11482 t_detect=117675 us cap_fail=0 dec_fail=0 no_eoi=0
+I (57589) bringup: LIVE frame=144 boxes=0
+I (57719) bringup: LIVE frame=145 t_wait=154 t_decode=11635 t_detect=117462 us cap_fail=0 dec_fail=0 no_eoi=0
+I (57719) bringup: LIVE frame=145 boxes=0
+I (57849) bringup: LIVE frame=146 t_wait=154 t_decode=11503 t_detect=117697 us cap_fail=0 dec_fail=0 no_eoi=0
+I (57849) bringup: LIVE frame=146 boxes=0
+I (57979) bringup: LIVE frame=147 t_wait=155 t_decode=11581 t_detect=117434 us cap_fail=0 dec_fail=0 no_eoi=0
+I (57979) bringup: LIVE frame=147 boxes=0
+I (58109) bringup: LIVE frame=148 t_wait=155 t_decode=11500 t_detect=117806 us cap_fail=0 dec_fail=0 no_eoi=0
+I (58109) bringup: LIVE frame=148 boxes=0
+I (58239) bringup: LIVE frame=149 t_wait=154 t_decode=11486 t_detect=117660 us cap_fail=0 dec_fail=0 no_eoi=0
+I (58239) bringup: LIVE frame=149 boxes=0
+I (58369) bringup: LIVE frame=150 t_wait=153 t_decode=11638 t_detect=117497 us cap_fail=0 dec_fail=0 no_eoi=0
+I (58369) bringup: LIVE frame=150 boxes=0
+I (58369) bringup: MEM live: internal free=252019 min=217471 | psram free=5067188 min=4176840 | temp=56.9C
+I (58499) bringup: LIVE frame=151 t_wait=155 t_decode=11500 t_detect=117684 us cap_fail=0 dec_fail=0 no_eoi=0
+I (58499) bringup: LIVE frame=151 boxes=0
+I (58629) bringup: LIVE frame=152 t_wait=154 t_decode=11588 t_detect=117591 us cap_fail=0 dec_fail=0 no_eoi=0
+I (58629) bringup: LIVE frame=152 boxes=0
+I (58759) bringup: LIVE frame=153 t_wait=155 t_decode=11504 t_detect=117897 us cap_fail=0 dec_fail=0 no_eoi=0
+I (58759) bringup: LIVE frame=153 boxes=0
+E (58769) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (58769) task_wdt:  - IDLE0 (CPU 0)
+E (58769) task_wdt: Tasks currently running:
+E (58769) task_wdt: CPU 0: main
+E (58769) task_wdt: CPU 1: IDLE1
+E (58769) task_wdt: Print CPU 0 (current core) backtrace
+
+
+Backtrace: 0x421806EB:0x3FC9CCC0 0x4037BBD1:0x3FC9CCF0 0x4215E4EE:0x3FCA6730 0x421600CD:0x3FCA6780 0x4215DAA7:0x3FCA67B0 0x4203F50A:0x3FCA67F0 0x42009531:0x3FCA6850 0x421E111B:0x3FCA6960
+
+I (58889) bringup: LIVE frame=154 t_wait=153 t_decode=13579 t_detect=117621 us cap_fail=0 dec_fail=0 no_eoi=0
+I (58889) bringup: LIVE frame=154 boxes=0
+I (59019) bringup: LIVE frame=155 t_wait=154 t_decode=11597 t_detect=117555 us cap_fail=0 dec_fail=0 no_eoi=0
+I (59019) bringup: LIVE frame=155 boxes=0
+I (59149) bringup: LIVE frame=156 t_wait=154 t_decode=11499 t_detect=117764 us cap_fail=0 dec_fail=0 no_eoi=0
+I (59149) bringup: LIVE frame=156 boxes=0
+I (59279) bringup: LIVE frame=157 t_wait=126 t_decode=11512 t_detect=117636 us cap_fail=0 dec_fail=0 no_eoi=0
+I (59279) bringup: LIVE frame=157 boxes=0
+I (59409) bringup: LIVE frame=158 t_wait=156 t_decode=11497 t_detect=117908 us cap_fail=0 dec_fail=0 no_eoi=0
+I (59409) bringup: LIVE frame=158 boxes=0
+I (59539) bringup: LIVE frame=159 t_wait=156 t_decode=11494 t_detect=117624 us cap_fail=0 dec_fail=0 no_eoi=0
+I (59539) bringup: LIVE frame=159 boxes=0
+I (59669) bringup: LIVE frame=160 t_wait=155 t_decode=11584 t_detect=117483 us cap_fail=0 dec_fail=0 no_eoi=0
+I (59669) bringup: LIVE frame=160 boxes=0
+I (59799) bringup: LIVE frame=161 t_wait=155 t_decode=11495 t_detect=117788 us cap_fail=0 dec_fail=0 no_eoi=0
+I (59799) bringup: LIVE frame=161 boxes=0
+I (59929) bringup: LIVE frame=162 t_wait=125 t_decode=11523 t_detect=117518 us cap_fail=0 dec_fail=0 no_eoi=0
+I (59929) bringup: LIVE frame=162 boxes=0
+I (60059) bringup: LIVE frame=163 t_wait=155 t_decode=11492 t_detect=117993 us cap_fail=0 dec_fail=0 no_eoi=0
+I (60059) bringup: LIVE frame=163 boxes=0
+I (60189) bringup: LIVE frame=164 t_wait=154 t_decode=11494 t_detect=117566 us cap_fail=0 dec_fail=0 no_eoi=0
+I (60189) bringup: LIVE frame=164 boxes=0
+I (60319) bringup: LIVE frame=165 t_wait=154 t_decode=11593 t_detect=117520 us cap_fail=0 dec_fail=0 no_eoi=0
+I (60319) bringup: LIVE frame=165 boxes=0
+I (60449) bringup: LIVE frame=166 t_wait=155 t_decode=11492 t_detect=117761 us cap_fail=0 dec_fail=0 no_eoi=0
+I (60449) bringup: LIVE frame=166 boxes=0
+I (60579) bringup: LIVE frame=167 t_wait=135 t_decode=11507 t_detect=117549 us cap_fail=0 dec_fail=0 no_eoi=0
+I (60579) bringup: LIVE frame=167 boxes=0
+I (60709) bringup: LIVE frame=168 t_wait=154 t_decode=11494 t_detect=117876 us cap_fail=0 dec_fail=0 no_eoi=0
+I (60709) bringup: LIVE frame=168 boxes=0
+I (60839) bringup: LIVE frame=169 t_wait=154 t_decode=11490 t_detect=117643 us cap_fail=0 dec_fail=0 no_eoi=0
+I (60839) bringup: LIVE frame=169 boxes=0
+I (60969) bringup: LIVE frame=170 t_wait=155 t_decode=11580 t_detect=117486 us cap_fail=0 dec_fail=0 no_eoi=0
+I (60969) bringup: LIVE frame=170 boxes=0
+I (61099) bringup: LIVE frame=171 t_wait=154 t_decode=11455 t_detect=117964 us cap_fail=0 dec_fail=0 no_eoi=0
+I (61099) bringup: LIVE frame=171 boxes=0
+I (61229) bringup: LIVE frame=172 t_wait=138 t_decode=11502 t_detect=117581 us cap_fail=0 dec_fail=0 no_eoi=0
+I (61229) bringup: LIVE frame=172 boxes=0
+I (61359) bringup: LIVE frame=173 t_wait=159 t_decode=11586 t_detect=117406 us cap_fail=0 dec_fail=0 no_eoi=0
+I (61359) bringup: LIVE frame=173 boxes=0
+I (61489) bringup: LIVE frame=174 t_wait=156 t_decode=11480 t_detect=117686 us cap_fail=0 dec_fail=0 no_eoi=0
+I (61489) bringup: LIVE frame=174 boxes=0
+I (61619) bringup: LIVE frame=175 t_wait=155 t_decode=11566 t_detect=117394 us cap_fail=0 dec_fail=0 no_eoi=0
+I (61619) bringup: LIVE frame=175 boxes=0
+I (61749) bringup: LIVE frame=176 t_wait=156 t_decode=11443 t_detect=118046 us cap_fail=0 dec_fail=0 no_eoi=0
+I (61749) bringup: LIVE frame=176 boxes=0
+I (61879) bringup: LIVE frame=177 t_wait=141 t_decode=11482 t_detect=117606 us cap_fail=0 dec_fail=0 no_eoi=0
+I (61879) bringup: LIVE frame=177 boxes=0
+I (62009) bringup: LIVE frame=178 t_wait=156 t_decode=11604 t_detect=117496 us cap_fail=0 dec_fail=0 no_eoi=0
+I (62009) bringup: LIVE frame=178 boxes=0
+I (62139) bringup: LIVE frame=179 t_wait=157 t_decode=11475 t_detect=117711 us cap_fail=0 dec_fail=0 no_eoi=0
+I (62139) bringup: LIVE frame=179 boxes=0
+I (62269) bringup: LIVE frame=180 t_wait=158 t_decode=11556 t_detect=117429 us cap_fail=0 dec_fail=0 no_eoi=0
+I (62269) bringup: LIVE frame=180 boxes=0
+I (62399) bringup: LIVE frame=181 t_wait=157 t_decode=11424 t_detect=118002 us cap_fail=0 dec_fail=0 no_eoi=0
+I (62399) bringup: LIVE frame=181 boxes=0
+I (62529) bringup: LIVE frame=182 t_wait=158 t_decode=11469 t_detect=117651 us cap_fail=0 dec_fail=0 no_eoi=0
+I (62529) bringup: LIVE frame=182 boxes=0
+I (62659) bringup: LIVE frame=183 t_wait=157 t_decode=11608 t_detect=117497 us cap_fail=0 dec_fail=0 no_eoi=0
+I (62659) bringup: LIVE frame=183 boxes=0
+I (62789) bringup: LIVE frame=184 t_wait=160 t_decode=11437 t_detect=117705 us cap_fail=0 dec_fail=0 no_eoi=0
+I (62789) bringup: LIVE frame=184 boxes=0
+I (62919) bringup: LIVE frame=185 t_wait=159 t_decode=11535 t_detect=117441 us cap_fail=0 dec_fail=0 no_eoi=0
+I (62919) bringup: LIVE frame=185 boxes=0
+I (63049) bringup: LIVE frame=186 t_wait=157 t_decode=11461 t_detect=117857 us cap_fail=0 dec_fail=0 no_eoi=0
+I (63049) bringup: LIVE frame=186 boxes=0
+I (63179) bringup: LIVE frame=187 t_wait=157 t_decode=11462 t_detect=117649 us cap_fail=0 dec_fail=0 no_eoi=0
+I (63179) bringup: LIVE frame=187 boxes=0
+I (63309) bringup: LIVE frame=188 t_wait=157 t_decode=11603 t_detect=117458 us cap_fail=0 dec_fail=0 no_eoi=0
+I (63309) bringup: LIVE frame=188 boxes=0
+I (63439) bringup: LIVE frame=189 t_wait=156 t_decode=11467 t_detect=117715 us cap_fail=0 dec_fail=0 no_eoi=0
+I (63439) bringup: LIVE frame=189 boxes=0
+I (63569) bringup: LIVE frame=190 t_wait=156 t_decode=11552 t_detect=117459 us cap_fail=0 dec_fail=0 no_eoi=0
+I (63569) bringup: LIVE frame=190 boxes=0
+I (63699) bringup: LIVE frame=191 t_wait=157 t_decode=11482 t_detect=117751 us cap_fail=0 dec_fail=0 no_eoi=0
+I (63699) bringup: LIVE frame=191 boxes=0
+E (63769) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (63769) task_wdt:  - IDLE0 (CPU 0)
+E (63769) task_wdt: Tasks currently running:
+E (63769) task_wdt: CPU 0: main
+E (63769) task_wdt: CPU 1: IDLE1
+E (63769) task_wdt: Print CPU 0 (current core) backtrace
+
+
+Backtrace: 0x421806EB:0x3FC9CCC0 0x4037BBD1:0x3FC9CCF0 0x4213CA49:0x3FCA6550 0x4204B10B:0x3FCA65D0 0x4202A5F5:0x3FCA6770 0x4218DEB3:0x3FCA67E0 0x4203DB58:0x3FCA6800 0x4218E14D:0x3FCA6830 0x4200958B:0x3FCA6850 0x421E111B:0x3FCA6960
+
+I (63829) bringup: LIVE frame=192 t_wait=156 t_decode=11469 t_detect=119947 us cap_fail=0 dec_fail=0 no_eoi=0
+I (63829) bringup: LIVE frame=192 boxes=0
+I (63959) bringup: LIVE frame=193 t_wait=156 t_decode=11600 t_detect=117502 us cap_fail=0 dec_fail=0 no_eoi=0
+I (63959) bringup: LIVE frame=193 boxes=0
+I (64089) bringup: LIVE frame=194 t_wait=156 t_decode=11481 t_detect=117653 us cap_fail=0 dec_fail=0 no_eoi=0
+I (64089) bringup: LIVE frame=194 boxes=0
+I (64219) bringup: LIVE frame=195 t_wait=125 t_decode=11495 t_detect=117734 us cap_fail=0 dec_fail=0 no_eoi=0
+I (64219) bringup: LIVE frame=195 boxes=0
+I (64349) bringup: LIVE frame=196 t_wait=157 t_decode=11481 t_detect=117932 us cap_fail=0 dec_fail=0 no_eoi=0
+I (64349) bringup: LIVE frame=196 boxes=0
+I (64479) bringup: LIVE frame=197 t_wait=156 t_decode=11472 t_detect=117628 us cap_fail=0 dec_fail=0 no_eoi=0
+I (64479) bringup: LIVE frame=197 boxes=0
+I (64609) bringup: LIVE frame=198 t_wait=157 t_decode=11604 t_detect=117518 us cap_fail=0 dec_fail=0 no_eoi=0
+I (64609) bringup: LIVE frame=198 boxes=0
+I (64739) bringup: LIVE frame=199 t_wait=156 t_decode=11480 t_detect=117780 us cap_fail=0 dec_fail=0 no_eoi=0
+I (64739) bringup: LIVE frame=199 boxes=0
+I (64869) bringup: LIVE frame=200 t_wait=127 t_decode=11486 t_detect=117626 us cap_fail=0 dec_fail=0 no_eoi=0
+I (64869) bringup: LIVE frame=200 boxes=0
+I (64869) bringup: MEM live: internal free=252019 min=217471 | psram free=5067188 min=4176840 | temp=57.9C
+I (64999) bringup: LIVE frame=201 t_wait=157 t_decode=11486 t_detect=117947 us cap_fail=0 dec_fail=0 no_eoi=0
+I (64999) bringup: LIVE frame=201 boxes=0
+I (65129) bringup: LIVE frame=202 t_wait=158 t_decode=11471 t_detect=117612 us cap_fail=0 dec_fail=0 no_eoi=0
+I (65129) bringup: LIVE frame=202 boxes=0
+I (65259) bringup: LIVE frame=203 t_wait=157 t_decode=11550 t_detect=117515 us cap_fail=0 dec_fail=0 no_eoi=0
+I (65259) bringup: LIVE frame=203 boxes=0
+I (65389) bringup: LIVE frame=204 t_wait=156 t_decode=11462 t_detect=117799 us cap_fail=0 dec_fail=0 no_eoi=0
+I (65389) bringup: LIVE frame=204 boxes=0
+I (65519) bringup: LIVE frame=205 t_wait=127 t_decode=11494 t_detect=117545 us cap_fail=0 dec_fail=0 no_eoi=0
+I (65519) bringup: LIVE frame=205 boxes=0
+I (65649) bringup: LIVE frame=206 t_wait=157 t_decode=11471 t_detect=117960 us cap_fail=0 dec_fail=0 no_eoi=0
+I (65649) bringup: LIVE frame=206 boxes=0
+I (65779) bringup: LIVE frame=207 t_wait=155 t_decode=11487 t_detect=117597 us cap_fail=0 dec_fail=0 no_eoi=0
+I (65779) bringup: LIVE frame=207 boxes=0
+I (65909) bringup: LIVE frame=208 t_wait=156 t_decode=11568 t_detect=117521 us cap_fail=0 dec_fail=0 no_eoi=0
+I (65909) bringup: LIVE frame=208 boxes=0
+I (66039) bringup: LIVE frame=209 t_wait=157 t_decode=11474 t_detect=117806 us cap_fail=0 dec_fail=0 no_eoi=0
+I (66039) bringup: LIVE frame=209 boxes=0
+I (66159) bringup: LIVE frame=210 t_wait=150 t_decode=11475 t_detect=117610 us cap_fail=0 dec_fail=0 no_eoi=0
+I (66169) bringup: LIVE frame=210 boxes=0
+I (66289) bringup: LIVE frame=211 t_wait=157 t_decode=11599 t_detect=117515 us cap_fail=0 dec_fail=0 no_eoi=0
+I (66289) bringup: LIVE frame=211 boxes=0
+I (66419) bringup: LIVE frame=212 t_wait=162 t_decode=11480 t_detect=117568 us cap_fail=0 dec_fail=0 no_eoi=0
+I (66419) bringup: LIVE frame=212 boxes=0
+I (66549) bringup: LIVE frame=213 t_wait=157 t_decode=11568 t_detect=117512 us cap_fail=0 dec_fail=0 no_eoi=0
+I (66549) bringup: LIVE frame=213 boxes=0
+I (66679) bringup: LIVE frame=214 t_wait=157 t_decode=11430 t_detect=117911 us cap_fail=0 dec_fail=0 no_eoi=0
+I (66679) bringup: LIVE frame=214 boxes=0
+I (66809) bringup: LIVE frame=215 t_wait=153 t_decode=11465 t_detect=117589 us cap_fail=0 dec_fail=0 no_eoi=0
+I (66809) bringup: LIVE frame=215 boxes=0
+I (66939) bringup: LIVE frame=216 t_wait=158 t_decode=11596 t_detect=117501 us cap_fail=0 dec_fail=0 no_eoi=0
+I (66939) bringup: LIVE frame=216 boxes=0
+I (67069) bringup: LIVE frame=217 t_wait=156 t_decode=11483 t_detect=117636 us cap_fail=0 dec_fail=0 no_eoi=0
+I (67069) bringup: LIVE frame=217 boxes=0
+I (67199) bringup: LIVE frame=218 t_wait=157 t_decode=11560 t_detect=117396 us cap_fail=0 dec_fail=0 no_eoi=0
+I (67199) bringup: LIVE frame=218 boxes=0
+I (67329) bringup: LIVE frame=219 t_wait=157 t_decode=11437 t_detect=117932 us cap_fail=0 dec_fail=0 no_eoi=0
+I (67329) bringup: LIVE frame=219 boxes=0
+I (67459) bringup: LIVE frame=220 t_wait=152 t_decode=11466 t_detect=117612 us cap_fail=0 dec_fail=0 no_eoi=0
+I (67459) bringup: LIVE frame=220 boxes=0
+I (67589) bringup: LIVE frame=221 t_wait=156 t_decode=11602 t_detect=117509 us cap_fail=0 dec_fail=0 no_eoi=0
+I (67589) bringup: LIVE frame=221 boxes=0
+I (67719) bringup: LIVE frame=222 t_wait=157 t_decode=11477 t_detect=117674 us cap_fail=0 dec_fail=0 no_eoi=0
+I (67719) bringup: LIVE frame=222 boxes=0
+I (67849) bringup: LIVE frame=223 t_wait=157 t_decode=11563 t_detect=117477 us cap_fail=0 dec_fail=0 no_eoi=0
+I (67849) bringup: LIVE frame=223 boxes=0
+I (67979) bringup: LIVE frame=224 t_wait=157 t_decode=11434 t_detect=117936 us cap_fail=0 dec_fail=0 no_eoi=0
+I (67979) bringup: LIVE frame=224 boxes=0
+I (68109) bringup: LIVE frame=225 t_wait=157 t_decode=11462 t_detect=117666 us cap_fail=0 dec_fail=0 no_eoi=0
+I (68109) bringup: LIVE frame=225 boxes=0
+I (68239) bringup: LIVE frame=226 t_wait=157 t_decode=11603 t_detect=117521 us cap_fail=0 dec_fail=0 no_eoi=0
+I (68239) bringup: LIVE frame=226 boxes=0
+I (68369) bringup: LIVE frame=227 t_wait=157 t_decode=11479 t_detect=117688 us cap_fail=0 dec_fail=0 no_eoi=0
+I (68369) bringup: LIVE frame=227 boxes=0
+I (68499) bringup: LIVE frame=228 t_wait=157 t_decode=11546 t_detect=117436 us cap_fail=0 dec_fail=0 no_eoi=0
+I (68499) bringup: LIVE frame=228 boxes=0
+I (68629) bringup: LIVE frame=229 t_wait=158 t_decode=11480 t_detect=117826 us cap_fail=0 dec_fail=0 no_eoi=0
+I (68629) bringup: LIVE frame=229 boxes=0
+I (68759) bringup: LIVE frame=230 t_wait=157 t_decode=11460 t_detect=117649 us cap_fail=0 dec_fail=0 no_eoi=0
+I (68759) bringup: LIVE frame=230 boxes=0
+E (68769) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (68769) task_wdt:  - IDLE0 (CPU 0)
+E (68769) task_wdt: Tasks currently running:
+E (68769) task_wdt: CPU 0: main
+E (68769) task_wdt: CPU 1: IDLE1
+E (68769) task_wdt: Print CPU 0 (current core) backtrace
+
+
+Backtrace: 0x421806EB:0x3FC9CCC0 0x4037BBD1:0x3FC9CCF0 0x4037F277:0x3FCA6720 0x4216947D:0x3FCA6740 0x42160109:0x3FCA6780 0x4215DAA7:0x3FCA67B0 0x4203F50A:0x3FCA67F0 0x42009531:0x3FCA6850 0x421E111B:0x3FCA6960
+
+I (68889) bringup: LIVE frame=231 t_wait=157 t_decode=13544 t_detect=117510 us cap_fail=0 dec_fail=0 no_eoi=0
+I (68889) bringup: LIVE frame=231 boxes=0
+I (69019) bringup: LIVE frame=232 t_wait=158 t_decode=11471 t_detect=117644 us cap_fail=0 dec_fail=0 no_eoi=0
+I (69019) bringup: LIVE frame=232 boxes=0
+I (69149) bringup: LIVE frame=233 t_wait=157 t_decode=11556 t_detect=117460 us cap_fail=0 dec_fail=0 no_eoi=0
+I (69149) bringup: LIVE frame=233 boxes=0
+I (69279) bringup: LIVE frame=234 t_wait=159 t_decode=11465 t_detect=117901 us cap_fail=0 dec_fail=0 no_eoi=0
+I (69279) bringup: LIVE frame=234 boxes=0
+I (69409) bringup: LIVE frame=235 t_wait=156 t_decode=11456 t_detect=117637 us cap_fail=0 dec_fail=0 no_eoi=0
+I (69409) bringup: LIVE frame=235 boxes=0
+I (69539) bringup: LIVE frame=236 t_wait=157 t_decode=11597 t_detect=117533 us cap_fail=0 dec_fail=0 no_eoi=0
+I (69539) bringup: LIVE frame=236 boxes=0
+I (69669) bringup: LIVE frame=237 t_wait=157 t_decode=11476 t_detect=117638 us cap_fail=0 dec_fail=0 no_eoi=0
+I (69669) bringup: LIVE frame=237 boxes=0
+I (69799) bringup: LIVE frame=238 t_wait=126 t_decode=11488 t_detect=117673 us cap_fail=0 dec_fail=0 no_eoi=0
+I (69799) bringup: LIVE frame=238 boxes=0
+I (69929) bringup: LIVE frame=239 t_wait=157 t_decode=11469 t_detect=117925 us cap_fail=0 dec_fail=0 no_eoi=0
+I (69929) bringup: LIVE frame=239 boxes=0
+I (70059) bringup: LIVE frame=240 t_wait=157 t_decode=11466 t_detect=117636 us cap_fail=0 dec_fail=0 no_eoi=0
+I (70059) bringup: LIVE frame=240 boxes=0
+I (70189) bringup: LIVE frame=241 t_wait=158 t_decode=11592 t_detect=117461 us cap_fail=0 dec_fail=0 no_eoi=0
+I (70189) bringup: LIVE frame=241 boxes=0
+I (70319) bringup: LIVE frame=242 t_wait=156 t_decode=11467 t_detect=117781 us cap_fail=0 dec_fail=0 no_eoi=0
+I (70319) bringup: LIVE frame=242 boxes=0
+I (70449) bringup: LIVE frame=243 t_wait=127 t_decode=11490 t_detect=117685 us cap_fail=0 dec_fail=0 no_eoi=0
+I (70449) bringup: LIVE frame=243 boxes=0
+I (70579) bringup: LIVE frame=244 t_wait=157 t_decode=11474 t_detect=117942 us cap_fail=0 dec_fail=0 no_eoi=0
+I (70579) bringup: LIVE frame=244 boxes=0
+I (70709) bringup: LIVE frame=245 t_wait=156 t_decode=11470 t_detect=117559 us cap_fail=0 dec_fail=0 no_eoi=0
+I (70709) bringup: LIVE frame=245 boxes=0
+I (70839) bringup: LIVE frame=246 t_wait=157 t_decode=11563 t_detect=117491 us cap_fail=0 dec_fail=0 no_eoi=0
+I (70839) bringup: LIVE frame=246 boxes=0
+I (70969) bringup: LIVE frame=247 t_wait=157 t_decode=11473 t_detect=117782 us cap_fail=0 dec_fail=0 no_eoi=0
+I (70969) bringup: LIVE frame=247 boxes=0
+I (71099) bringup: LIVE frame=248 t_wait=131 t_decode=11495 t_detect=117559 us cap_fail=0 dec_fail=0 no_eoi=0
+I (71099) bringup: LIVE frame=248 boxes=0
+I (71229) bringup: LIVE frame=249 t_wait=156 t_decode=11479 t_detect=117911 us cap_fail=0 dec_fail=0 no_eoi=0
+I (71229) bringup: LIVE frame=249 boxes=0
+I (71359) bringup: LIVE frame=250 t_wait=157 t_decode=11473 t_detect=117616 us cap_fail=0 dec_fail=0 no_eoi=0
+I (71359) bringup: LIVE frame=250 boxes=0
+I (71359) bringup: MEM live: internal free=252019 min=217471 | psram free=5067188 min=4176840 | temp=58.9C
+I (71489) bringup: LIVE frame=251 t_wait=158 t_decode=11568 t_detect=117534 us cap_fail=0 dec_fail=0 no_eoi=0
+I (71489) bringup: LIVE frame=251 boxes=0
+I (71619) bringup: LIVE frame=252 t_wait=158 t_decode=11466 t_detect=117816 us cap_fail=0 dec_fail=0 no_eoi=0
+I (71619) bringup: LIVE frame=252 boxes=0
+I (71749) bringup: LIVE frame=253 t_wait=137 t_decode=11482 t_detect=117572 us cap_fail=0 dec_fail=0 no_eoi=0
+I (71749) bringup: LIVE frame=253 boxes=0
+I (71879) bringup: LIVE frame=254 t_wait=158 t_decode=11467 t_detect=117897 us cap_fail=0 dec_fail=0 no_eoi=0
+I (71879) bringup: LIVE frame=254 boxes=0
+I (72009) bringup: LIVE frame=255 t_wait=157 t_decode=11475 t_detect=117580 us cap_fail=0 dec_fail=0 no_eoi=0
+I (72009) bringup: LIVE frame=255 boxes=0
+I (72139) bringup: LIVE frame=256 t_wait=156 t_decode=11571 t_detect=117529 us cap_fail=0 dec_fail=0 no_eoi=0
+I (72139) bringup: LIVE frame=256 boxes=0
+I (72269) bringup: LIVE frame=257 t_wait=155 t_decode=11433 t_detect=117892 us cap_fail=0 dec_fail=0 no_eoi=0
+I (72269) bringup: LIVE frame=257 boxes=0
+I (72399) bringup: LIVE frame=258 t_wait=149 t_decode=11467 t_detect=117600 us cap_fail=0 dec_fail=0 no_eoi=0
+I (72399) bringup: LIVE frame=258 boxes=0
+I (72529) bringup: LIVE frame=259 t_wait=157 t_decode=11597 t_detect=117505 us cap_fail=0 dec_fail=0 no_eoi=0
+I (72529) bringup: LIVE frame=259 boxes=0
+I (72659) bringup: LIVE frame=260 t_wait=157 t_decode=11471 t_detect=117645 us cap_fail=0 dec_fail=0 no_eoi=0
+I (72659) bringup: LIVE frame=260 boxes=0
+I (72789) bringup: LIVE frame=261 t_wait=156 t_decode=11565 t_detect=117424 us cap_fail=0 dec_fail=0 no_eoi=0
+I (72789) bringup: LIVE frame=261 boxes=0
+I (72919) bringup: LIVE frame=262 t_wait=158 t_decode=11426 t_detect=117983 us cap_fail=0 dec_fail=0 no_eoi=0
+I (72919) bringup: LIVE frame=262 boxes=0
+I (73039) bringup: LIVE frame=263 t_wait=153 t_decode=11460 t_detect=117605 us cap_fail=0 dec_fail=0 no_eoi=0
+I (73049) bringup: LIVE frame=263 boxes=0
+I (73169) bringup: LIVE frame=264 t_wait=156 t_decode=11605 t_detect=117508 us cap_fail=0 dec_fail=0 no_eoi=0
+I (73179) bringup: LIVE frame=264 boxes=0
+I (73299) bringup: LIVE frame=265 t_wait=156 t_decode=11476 t_detect=117679 us cap_fail=0 dec_fail=0 no_eoi=0
+I (73299) bringup: LIVE frame=265 boxes=0
+I (73429) bringup: LIVE frame=266 t_wait=162 t_decode=11565 t_detect=117477 us cap_fail=0 dec_fail=0 no_eoi=0
+I (73429) bringup: LIVE frame=266 boxes=0
+I (73559) bringup: LIVE frame=267 t_wait=157 t_decode=11441 t_detect=117930 us cap_fail=0 dec_fail=0 no_eoi=0
+I (73559) bringup: LIVE frame=267 boxes=0
+I (73689) bringup: LIVE frame=268 t_wait=156 t_decode=11466 t_detect=117664 us cap_fail=0 dec_fail=0 no_eoi=0
+I (73689) bringup: LIVE frame=268 boxes=0
+E (73769) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (73769) task_wdt:  - IDLE0 (CPU 0)
+E (73769) task_wdt: Tasks currently running:
+E (73769) task_wdt: CPU 0: main
+E (73769) task_wdt: CPU 1: IDLE1
+E (73769) task_wdt: Print CPU 0 (current core) backtrace
+
+
+Backtrace: 0x421806EB:0x3FC9CCC0 0x4037BBD1:0x3FC9CCF0 0x4215AD9F:0x3FCA6650 0x4204B5AF:0x3FCA66D0 0x4202A5FC:0x3FCA6770 0x4218DEB3:0x3FCA67E0 0x4203DB58:0x3FCA6800 0x4218E14D:0x3FCA6830 0x4200958B:0x3FCA6850 0x421E111B:0x3FCA6960
+
+I (73829) bringup: LIVE frame=269 t_wait=155 t_decode=11617 t_detect=119926 us cap_fail=0 dec_fail=0 no_eoi=0
+I (73829) bringup: LIVE frame=269 boxes=0
+I (73959) bringup: LIVE frame=270 t_wait=157 t_decode=11475 t_detect=117649 us cap_fail=0 dec_fail=0 no_eoi=0
+I (73959) bringup: LIVE frame=270 boxes=0
+I (74089) bringup: LIVE frame=271 t_wait=156 t_decode=11548 t_detect=117463 us cap_fail=0 dec_fail=0 no_eoi=0
+I (74089) bringup: LIVE frame=271 boxes=0
+I (74219) bringup: LIVE frame=272 t_wait=157 t_decode=11473 t_detect=117909 us cap_fail=0 dec_fail=0 no_eoi=0
+I (74219) bringup: LIVE frame=272 boxes=0
+I (74349) bringup: LIVE frame=273 t_wait=155 t_decode=11462 t_detect=117635 us cap_fail=0 dec_fail=0 no_eoi=0
+I (74349) bringup: LIVE frame=273 boxes=0
+I (74469) bringup: LIVE frame=274 t_wait=157 t_decode=11597 t_detect=117527 us cap_fail=0 dec_fail=0 no_eoi=0
+I (74479) bringup: LIVE frame=274 boxes=0
+I (74599) bringup: LIVE frame=275 t_wait=157 t_decode=11469 t_detect=117624 us cap_fail=0 dec_fail=0 no_eoi=0
+I (74599) bringup: LIVE frame=275 boxes=0
+I (74729) bringup: LIVE frame=276 t_wait=126 t_decode=11484 t_detect=117670 us cap_fail=0 dec_fail=0 no_eoi=0
+I (74729) bringup: LIVE frame=276 boxes=0
+I (74859) bringup: LIVE frame=277 t_wait=162 t_decode=11470 t_detect=117919 us cap_fail=0 dec_fail=0 no_eoi=0
+I (74859) bringup: LIVE frame=277 boxes=0
+I (74989) bringup: LIVE frame=278 t_wait=162 t_decode=11472 t_detect=117635 us cap_fail=0 dec_fail=0 no_eoi=0
+I (74989) bringup: LIVE frame=278 boxes=0
+I (75119) bringup: LIVE frame=279 t_wait=158 t_decode=11593 t_detect=117453 us cap_fail=0 dec_fail=0 no_eoi=0
+I (75119) bringup: LIVE frame=279 boxes=0
+I (75249) bringup: LIVE frame=280 t_wait=157 t_decode=11467 t_detect=117780 us cap_fail=0 dec_fail=0 no_eoi=0
+I (75249) bringup: LIVE frame=280 boxes=0
+I (75379) bringup: LIVE frame=281 t_wait=127 t_decode=11486 t_detect=117672 us cap_fail=0 dec_fail=0 no_eoi=0
+I (75379) bringup: LIVE frame=281 boxes=0
+I (75509) bringup: LIVE frame=282 t_wait=157 t_decode=11481 t_detect=117937 us cap_fail=0 dec_fail=0 no_eoi=0
+I (75509) bringup: LIVE frame=282 boxes=0
+I (75639) bringup: LIVE frame=283 t_wait=158 t_decode=11470 t_detect=117558 us cap_fail=0 dec_fail=0 no_eoi=0
+I (75639) bringup: LIVE frame=283 boxes=0
+I (75769) bringup: LIVE frame=284 t_wait=202 t_decode=11557 t_detect=117485 us cap_fail=0 dec_fail=0 no_eoi=0
+I (75769) bringup: LIVE frame=284 boxes=0
+I (75899) bringup: LIVE frame=285 t_wait=157 t_decode=11473 t_detect=117790 us cap_fail=0 dec_fail=0 no_eoi=0
+I (75899) bringup: LIVE frame=285 boxes=0
+I (76029) bringup: LIVE frame=286 t_wait=132 t_decode=11487 t_detect=117555 us cap_fail=0 dec_fail=0 no_eoi=0
+I (76029) bringup: LIVE frame=286 boxes=0
+I (76159) bringup: LIVE frame=287 t_wait=157 t_decode=11469 t_detect=117904 us cap_fail=0 dec_fail=0 no_eoi=0
+I (76159) bringup: LIVE frame=287 boxes=0
+I (76289) bringup: LIVE frame=288 t_wait=157 t_decode=11463 t_detect=117622 us cap_fail=0 dec_fail=0 no_eoi=0
+I (76289) bringup: LIVE frame=288 boxes=0
+I (76419) bringup: LIVE frame=289 t_wait=157 t_decode=11551 t_detect=117509 us cap_fail=0 dec_fail=0 no_eoi=0
+I (76419) bringup: LIVE frame=289 boxes=0
+I (76549) bringup: LIVE frame=290 t_wait=156 t_decode=11467 t_detect=117797 us cap_fail=0 dec_fail=0 no_eoi=0
+I (76549) bringup: LIVE frame=290 boxes=0
+I (76679) bringup: LIVE frame=291 t_wait=127 t_decode=11500 t_detect=117536 us cap_fail=0 dec_fail=0 no_eoi=0
+I (76679) bringup: LIVE frame=291 boxes=0
+I (76809) bringup: LIVE frame=292 t_wait=158 t_decode=11470 t_detect=117973 us cap_fail=0 dec_fail=0 no_eoi=0
+I (76809) bringup: LIVE frame=292 boxes=0
+I (76939) bringup: LIVE frame=293 t_wait=157 t_decode=11456 t_detect=117585 us cap_fail=0 dec_fail=0 no_eoi=0
+I (76939) bringup: LIVE frame=293 boxes=0
+I (77069) bringup: LIVE frame=294 t_wait=156 t_decode=11564 t_detect=117508 us cap_fail=0 dec_fail=0 no_eoi=0
+I (77069) bringup: LIVE frame=294 boxes=0
+I (77199) bringup: LIVE frame=295 t_wait=157 t_decode=11476 t_detect=117771 us cap_fail=0 dec_fail=0 no_eoi=0
+I (77199) bringup: LIVE frame=295 boxes=0
+I (77329) bringup: LIVE frame=296 t_wait=151 t_decode=11466 t_detect=117566 us cap_fail=0 dec_fail=0 no_eoi=0
+I (77329) bringup: LIVE frame=296 boxes=0
+I (77459) bringup: LIVE frame=297 t_wait=157 t_decode=11466 t_detect=117841 us cap_fail=0 dec_fail=0 no_eoi=0
+I (77459) bringup: LIVE frame=297 boxes=0
+I (77589) bringup: LIVE frame=298 t_wait=157 t_decode=11469 t_detect=117615 us cap_fail=0 dec_fail=0 no_eoi=0
+I (77589) bringup: LIVE frame=298 boxes=0
+I (77719) bringup: LIVE frame=299 t_wait=157 t_decode=11554 t_detect=117553 us cap_fail=0 dec_fail=0 no_eoi=0
+I (77719) bringup: LIVE frame=299 boxes=0
+I (77849) bringup: LIVE frame=300 t_wait=158 t_decode=11424 t_detect=117980 us cap_fail=0 dec_fail=0 no_eoi=0
+I (77849) bringup: LIVE frame=300 boxes=0
+I (77849) bringup: MEM live: internal free=252019 min=217471 | psram free=5067188 min=4176840 | temp=58.9C
+I (77979) bringup: LIVE frame=301 t_wait=141 t_decode=11472 t_detect=117654 us cap_fail=0 dec_fail=0 no_eoi=0
+I (77979) bringup: LIVE frame=301 boxes=0
+I (78109) bringup: LIVE frame=302 t_wait=158 t_decode=11601 t_detect=117493 us cap_fail=0 dec_fail=0 no_eoi=0
+I (78109) bringup: LIVE frame=302 boxes=0
+I (78239) bringup: LIVE frame=303 t_wait=156 t_decode=11467 t_detect=117687 us cap_fail=0 dec_fail=0 no_eoi=0
+I (78239) bringup: LIVE frame=303 boxes=0
+I (78369) bringup: LIVE frame=304 t_wait=157 t_decode=11552 t_detect=117435 us cap_fail=0 dec_fail=0 no_eoi=0
+I (78369) bringup: LIVE frame=304 boxes=0
+I (78499) bringup: LIVE frame=305 t_wait=156 t_decode=11429 t_detect=117985 us cap_fail=0 dec_fail=0 no_eoi=0
+I (78499) bringup: LIVE frame=305 boxes=0
+I (78629) bringup: LIVE frame=306 t_wait=157 t_decode=11463 t_detect=117658 us cap_fail=0 dec_fail=0 no_eoi=0
+I (78629) bringup: LIVE frame=306 boxes=0
+I (78759) bringup: LIVE frame=307 t_wait=158 t_decode=11594 t_detect=117475 us cap_fail=0 dec_fail=0 no_eoi=0
+I (78759) bringup: LIVE frame=307 boxes=0
+E (78769) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (78769) task_wdt:  - IDLE0 (CPU 0)
+E (78769) task_wdt: Tasks currently running:
+E (78769) task_wdt: CPU 0: main
+E (78769) task_wdt: CPU 1: IDLE1
+E (78769) task_wdt: Print CPU 0 (current core) backtrace
+
+
+Backtrace: 0x421806EB:0x3FC9CCC0 0x4037BBD1:0x3FC9CCF0 0x40056FA1:0x3FCA6730 0x4216952D:0x3FCA6740 0x42160139:0x3FCA6780 0x4215DAA7:0x3FCA67B0 0x4203F50A:0x3FCA67F0 0x42009531:0x3FCA6850 0x421E111B:0x3FCA6960
+
+I (78889) bringup: LIVE frame=308 t_wait=156 t_decode=13785 t_detect=117626 us cap_fail=0 dec_fail=0 no_eoi=0
+I (78889) bringup: LIVE frame=308 boxes=0
+I (79019) bringup: LIVE frame=309 t_wait=157 t_decode=11537 t_detect=117388 us cap_fail=0 dec_fail=0 no_eoi=0
+I (79019) bringup: LIVE frame=309 boxes=0
+I (79149) bringup: LIVE frame=310 t_wait=157 t_decode=11474 t_detect=117887 us cap_fail=0 dec_fail=0 no_eoi=0
+I (79149) bringup: LIVE frame=310 boxes=0
+I (79279) bringup: LIVE frame=311 t_wait=156 t_decode=11460 t_detect=117622 us cap_fail=0 dec_fail=0 no_eoi=0
+I (79279) bringup: LIVE frame=311 boxes=0
+I (79409) bringup: LIVE frame=312 t_wait=158 t_decode=11594 t_detect=117484 us cap_fail=0 dec_fail=0 no_eoi=0
+I (79409) bringup: LIVE frame=312 boxes=0
+I (79539) bringup: LIVE frame=313 t_wait=156 t_decode=11474 t_detect=117609 us cap_fail=0 dec_fail=0 no_eoi=0
+I (79539) bringup: LIVE frame=313 boxes=0
+I (79669) bringup: LIVE frame=314 t_wait=157 t_decode=11539 t_detect=117349 us cap_fail=0 dec_fail=0 no_eoi=0
+I (79669) bringup: LIVE frame=314 boxes=0
+I (79799) bringup: LIVE frame=315 t_wait=156 t_decode=11477 t_detect=117902 us cap_fail=0 dec_fail=0 no_eoi=0
+I (79799) bringup: LIVE frame=315 boxes=0
+I (79929) bringup: LIVE frame=316 t_wait=156 t_decode=11467 t_detect=117612 us cap_fail=0 dec_fail=0 no_eoi=0
+I (79929) bringup: LIVE frame=316 boxes=0
+I (80059) bringup: LIVE frame=317 t_wait=157 t_decode=11590 t_detect=117510 us cap_fail=0 dec_fail=0 no_eoi=0
+I (80059) bringup: LIVE frame=317 boxes=0
+I (80189) bringup: LIVE frame=318 t_wait=156 t_decode=11467 t_detect=117645 us cap_fail=0 dec_fail=0 no_eoi=0
+I (80189) bringup: LIVE frame=318 boxes=0
+I (80319) bringup: LIVE frame=319 t_wait=126 t_decode=11483 t_detect=117746 us cap_fail=0 dec_fail=0 no_eoi=0
+I (80319) bringup: LIVE frame=319 boxes=0
+I (80449) bringup: LIVE frame=320 t_wait=158 t_decode=11475 t_detect=117921 us cap_fail=0 dec_fail=0 no_eoi=0
+I (80449) bringup: LIVE frame=320 boxes=0
+I (80579) bringup: LIVE frame=321 t_wait=157 t_decode=11464 t_detect=117627 us cap_fail=0 dec_fail=0 no_eoi=0
+I (80579) bringup: LIVE frame=321 boxes=0
+I (80709) bringup: LIVE frame=322 t_wait=157 t_decode=11593 t_detect=117497 us cap_fail=0 dec_fail=0 no_eoi=0
+I (80709) bringup: LIVE frame=322 boxes=0
+I (80839) bringup: LIVE frame=323 t_wait=159 t_decode=11462 t_detect=117771 us cap_fail=0 dec_fail=0 no_eoi=0
+I (80839) bringup: LIVE frame=323 boxes=0
+I (80969) bringup: LIVE frame=324 t_wait=127 t_decode=11479 t_detect=117645 us cap_fail=0 dec_fail=0 no_eoi=0
+I (80969) bringup: LIVE frame=324 boxes=0
+I (81099) bringup: LIVE frame=325 t_wait=156 t_decode=11466 t_detect=117927 us cap_fail=0 dec_fail=0 no_eoi=0
+I (81099) bringup: LIVE frame=325 boxes=0
+I (81229) bringup: LIVE frame=326 t_wait=157 t_decode=11469 t_detect=117592 us cap_fail=0 dec_fail=0 no_eoi=0
+I (81229) bringup: LIVE frame=326 boxes=0
+I (81359) bringup: LIVE frame=327 t_wait=196 t_decode=11546 t_detect=117441 us cap_fail=0 dec_fail=0 no_eoi=0
+I (81359) bringup: LIVE frame=327 boxes=0
+I (81489) bringup: LIVE frame=328 t_wait=156 t_decode=11458 t_detect=117766 us cap_fail=0 dec_fail=0 no_eoi=0
+I (81489) bringup: LIVE frame=328 boxes=0
+I (81619) bringup: LIVE frame=329 t_wait=126 t_decode=11492 t_detect=117568 us cap_fail=0 dec_fail=0 no_eoi=0
+I (81619) bringup: LIVE frame=329 boxes=0
+I (81749) bringup: LIVE frame=330 t_wait=158 t_decode=11471 t_detect=117987 us cap_fail=0 dec_fail=0 no_eoi=0
+I (81749) bringup: LIVE frame=330 boxes=0
+I (81869) bringup: LIVE frame=331 t_wait=157 t_decode=11470 t_detect=117600 us cap_fail=0 dec_fail=0 no_eoi=0
+I (81879) bringup: LIVE frame=331 boxes=0
+I (81999) bringup: LIVE frame=332 t_wait=156 t_decode=11558 t_detect=117535 us cap_fail=0 dec_fail=0 no_eoi=0
+I (81999) bringup: LIVE frame=332 boxes=0
+I (82129) bringup: LIVE frame=333 t_wait=163 t_decode=11462 t_detect=117735 us cap_fail=0 dec_fail=0 no_eoi=0
+I (82129) bringup: LIVE frame=333 boxes=0
+I (82259) bringup: LIVE frame=334 t_wait=134 t_decode=11492 t_detect=117556 us cap_fail=0 dec_fail=0 no_eoi=0
+I (82259) bringup: LIVE frame=334 boxes=0
+I (82389) bringup: LIVE frame=335 t_wait=157 t_decode=11474 t_detect=117887 us cap_fail=0 dec_fail=0 no_eoi=0
+I (82389) bringup: LIVE frame=335 boxes=0
+I (82519) bringup: LIVE frame=336 t_wait=157 t_decode=11469 t_detect=117584 us cap_fail=0 dec_fail=0 no_eoi=0
+I (82519) bringup: LIVE frame=336 boxes=0
+I (82649) bringup: LIVE frame=337 t_wait=157 t_decode=11568 t_detect=117491 us cap_fail=0 dec_fail=0 no_eoi=0
+I (82649) bringup: LIVE frame=337 boxes=0
+I (82779) bringup: LIVE frame=338 t_wait=156 t_decode=11466 t_detect=117802 us cap_fail=0 dec_fail=0 no_eoi=0
+I (82779) bringup: LIVE frame=338 boxes=0
+I (82909) bringup: LIVE frame=339 t_wait=138 t_decode=11479 t_detect=117579 us cap_fail=0 dec_fail=0 no_eoi=0
+I (82909) bringup: LIVE frame=339 boxes=0
+I (83039) bringup: LIVE frame=340 t_wait=158 t_decode=11466 t_detect=117889 us cap_fail=0 dec_fail=0 no_eoi=0
+I (83039) bringup: LIVE frame=340 boxes=0
+I (83169) bringup: LIVE frame=341 t_wait=157 t_decode=11467 t_detect=117584 us cap_fail=0 dec_fail=0 no_eoi=0
+I (83169) bringup: LIVE frame=341 boxes=0
+I (83299) bringup: LIVE frame=342 t_wait=158 t_decode=11554 t_detect=117529 us cap_fail=0 dec_fail=0 no_eoi=0
+I (83299) bringup: LIVE frame=342 boxes=0
+I (83429) bringup: LIVE frame=343 t_wait=203 t_decode=11420 t_detect=117896 us cap_fail=0 dec_fail=0 no_eoi=0
+I (83429) bringup: LIVE frame=343 boxes=0
+I (83559) bringup: LIVE frame=344 t_wait=150 t_decode=11459 t_detect=117586 us cap_fail=0 dec_fail=0 no_eoi=0
+I (83559) bringup: LIVE frame=344 boxes=0
+I (83689) bringup: LIVE frame=345 t_wait=157 t_decode=11595 t_detect=117497 us cap_fail=0 dec_fail=0 no_eoi=0
+I (83689) bringup: LIVE frame=345 boxes=0
+E (83769) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (83769) task_wdt:  - IDLE0 (CPU 0)
+E (83769) task_wdt: Tasks currently running:
+E (83769) task_wdt: CPU 0: main
+E (83769) task_wdt: CPU 1: IDLE1
+E (83769) task_wdt: Print CPU 0 (current core) backtrace
+
+
+Backtrace: 0x421806EB:0x3FC9CCC0 0x4037BBD1:0x3FC9CCF0 0x4215AE6B:0x3FCA6650 0x4204B86E:0x3FCA66D0 0x4202A5FC:0x3FCA6770 0x4218DEB3:0x3FCA67E0 0x4203DB58:0x3FCA6800 0x4218E14D:0x3FCA6830 0x4200958B:0x3FCA6850 0x421E111B:0x3FCA6960
+
+I (83819) bringup: LIVE frame=346 t_wait=157 t_decode=11473 t_detect=120016 us cap_fail=0 dec_fail=0 no_eoi=0
+I (83819) bringup: LIVE frame=346 boxes=0
+I (83949) bringup: LIVE frame=347 t_wait=157 t_decode=11560 t_detect=117615 us cap_fail=0 dec_fail=0 no_eoi=0
+I (83949) bringup: LIVE frame=347 boxes=0
+I (84079) bringup: LIVE frame=348 t_wait=159 t_decode=11467 t_detect=117889 us cap_fail=0 dec_fail=0 no_eoi=0
+I (84079) bringup: LIVE frame=348 boxes=0
+I (84209) bringup: LIVE frame=349 t_wait=157 t_decode=11460 t_detect=117741 us cap_fail=0 dec_fail=0 no_eoi=0
+I (84209) bringup: LIVE frame=349 boxes=0
+I (84339) bringup: LIVE frame=350 t_wait=158 t_decode=11589 t_detect=117515 us cap_fail=0 dec_fail=0 no_eoi=0
+I (84339) bringup: LIVE frame=350 boxes=0
+I (84339) bringup: MEM live: internal free=252019 min=217471 | psram free=5067188 min=4176840 | temp=58.9C
+I (84469) bringup: LIVE frame=351 t_wait=159 t_decode=11478 t_detect=117673 us cap_fail=0 dec_fail=0 no_eoi=0
+I (84469) bringup: LIVE frame=351 boxes=0
+I (84599) bringup: LIVE frame=352 t_wait=157 t_decode=11551 t_detect=117458 us cap_fail=0 dec_fail=0 no_eoi=0
+I (84599) bringup: LIVE frame=352 boxes=0
+I (84729) bringup: LIVE frame=353 t_wait=158 t_decode=11468 t_detect=117905 us cap_fail=0 dec_fail=0 no_eoi=0
+I (84729) bringup: LIVE frame=353 boxes=0
+I (84859) bringup: LIVE frame=354 t_wait=156 t_decode=11452 t_detect=117674 us cap_fail=0 dec_fail=0 no_eoi=0
+I (84859) bringup: LIVE frame=354 boxes=0
+I (84989) bringup: LIVE frame=355 t_wait=157 t_decode=11590 t_detect=117531 us cap_fail=0 dec_fail=0 no_eoi=0
+I (84989) bringup: LIVE frame=355 boxes=0
+I (85119) bringup: LIVE frame=356 t_wait=158 t_decode=11465 t_detect=117623 us cap_fail=0 dec_fail=0 no_eoi=0
+I (85119) bringup: LIVE frame=356 boxes=0
+I (85249) bringup: LIVE frame=357 t_wait=225 t_decode=11441 t_detect=117438 us cap_fail=0 dec_fail=0 no_eoi=0
+I (85249) bringup: LIVE frame=357 boxes=0
+I (85379) bringup: LIVE frame=358 t_wait=157 t_decode=11473 t_detect=117906 us cap_fail=0 dec_fail=0 no_eoi=0
+I (85379) bringup: LIVE frame=358 boxes=0
+I (85509) bringup: LIVE frame=359 t_wait=158 t_decode=11458 t_detect=117617 us cap_fail=0 dec_fail=0 no_eoi=0
+I (85509) bringup: LIVE frame=359 boxes=0
+I (85639) bringup: LIVE frame=360 t_wait=156 t_decode=11593 t_detect=117541 us cap_fail=0 dec_fail=0 no_eoi=0
+I (85639) bringup: LIVE frame=360 boxes=0
+I (85769) bringup: LIVE frame=361 t_wait=158 t_decode=11463 t_detect=117706 us cap_fail=0 dec_fail=0 no_eoi=0
+I (85769) bringup: LIVE frame=361 boxes=0
+I (85899) bringup: LIVE frame=362 t_wait=126 t_decode=11474 t_detect=117645 us cap_fail=0 dec_fail=0 no_eoi=0
+I (85899) bringup: LIVE frame=362 boxes=0
+I (86029) bringup: LIVE frame=363 t_wait=155 t_decode=11470 t_detect=117924 us cap_fail=0 dec_fail=0 no_eoi=0
+I (86029) bringup: LIVE frame=363 boxes=0
+I (86159) bringup: LIVE frame=364 t_wait=157 t_decode=11474 t_detect=117636 us cap_fail=0 dec_fail=0 no_eoi=0
+I (86159) bringup: LIVE frame=364 boxes=0
+I (86289) bringup: LIVE frame=365 t_wait=157 t_decode=11593 t_detect=117470 us cap_fail=0 dec_fail=0 no_eoi=0
+I (86289) bringup: LIVE frame=365 boxes=0
+I (86419) bringup: LIVE frame=366 t_wait=156 t_decode=11466 t_detect=117778 us cap_fail=0 dec_fail=0 no_eoi=0
+I (86419) bringup: LIVE frame=366 boxes=0
+I (86549) bringup: LIVE frame=367 t_wait=127 t_decode=11485 t_detect=117644 us cap_fail=0 dec_fail=0 no_eoi=0
+I (86549) bringup: LIVE frame=367 boxes=0
+I (86679) bringup: LIVE frame=368 t_wait=157 t_decode=11466 t_detect=117972 us cap_fail=0 dec_fail=0 no_eoi=0
+I (86679) bringup: LIVE frame=368 boxes=0
+I (86809) bringup: LIVE frame=369 t_wait=158 t_decode=11467 t_detect=117555 us cap_fail=0 dec_fail=0 no_eoi=0
+I (86809) bringup: LIVE frame=369 boxes=0
+I (86939) bringup: LIVE frame=370 t_wait=156 t_decode=11550 t_detect=117558 us cap_fail=0 dec_fail=0 no_eoi=0
+I (86939) bringup: LIVE frame=370 boxes=0
+I (87069) bringup: LIVE frame=371 t_wait=157 t_decode=11466 t_detect=117785 us cap_fail=0 dec_fail=0 no_eoi=0
+I (87069) bringup: LIVE frame=371 boxes=0
+I (87199) bringup: LIVE frame=372 t_wait=134 t_decode=11479 t_detect=117540 us cap_fail=0 dec_fail=0 no_eoi=0
+I (87199) bringup: LIVE frame=372 boxes=0
+I (87329) bringup: LIVE frame=373 t_wait=157 t_decode=11465 t_detect=117885 us cap_fail=0 dec_fail=0 no_eoi=0
+I (87329) bringup: LIVE frame=373 boxes=0
+I (87459) bringup: LIVE frame=374 t_wait=156 t_decode=11467 t_detect=117604 us cap_fail=0 dec_fail=0 no_eoi=0
+I (87459) bringup: LIVE frame=374 boxes=0
+I (87589) bringup: LIVE frame=375 t_wait=157 t_decode=11550 t_detect=117496 us cap_fail=0 dec_fail=0 no_eoi=0
+I (87589) bringup: LIVE frame=375 boxes=0
+I (87719) bringup: LIVE frame=376 t_wait=157 t_decode=11461 t_detect=117819 us cap_fail=0 dec_fail=0 no_eoi=0
+I (87719) bringup: LIVE frame=376 boxes=0
+I (87849) bringup: LIVE frame=377 t_wait=133 t_decode=11484 t_detect=117574 us cap_fail=0 dec_fail=0 no_eoi=0
+I (87849) bringup: LIVE frame=377 boxes=0
+I (87979) bringup: LIVE frame=378 t_wait=158 t_decode=11466 t_detect=117912 us cap_fail=0 dec_fail=0 no_eoi=0
+I (87979) bringup: LIVE frame=378 boxes=0
+I (88109) bringup: LIVE frame=379 t_wait=157 t_decode=11467 t_detect=117580 us cap_fail=0 dec_fail=0 no_eoi=0
+I (88109) bringup: LIVE frame=379 boxes=0
+I (88239) bringup: LIVE frame=380 t_wait=156 t_decode=11567 t_detect=117542 us cap_fail=0 dec_fail=0 no_eoi=0
+I (88239) bringup: LIVE frame=380 boxes=0
+I (88369) bringup: LIVE frame=381 t_wait=201 t_decode=11424 t_detect=117900 us cap_fail=0 dec_fail=0 no_eoi=0
+I (88369) bringup: LIVE frame=381 boxes=0
+I (88499) bringup: LIVE frame=382 t_wait=150 t_decode=11468 t_detect=117600 us cap_fail=0 dec_fail=0 no_eoi=0
+I (88499) bringup: LIVE frame=382 boxes=0
+I (88629) bringup: LIVE frame=383 t_wait=156 t_decode=11603 t_detect=117461 us cap_fail=0 dec_fail=0 no_eoi=0
+I (88629) bringup: LIVE frame=383 boxes=0
+I (88759) bringup: LIVE frame=384 t_wait=157 t_decode=11475 t_detect=117633 us cap_fail=0 dec_fail=0 no_eoi=0
+I (88759) bringup: LIVE frame=384 boxes=0
+E (88769) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (88769) task_wdt:  - IDLE0 (CPU 0)
+E (88769) task_wdt: Tasks currently running:
+E (88769) task_wdt: CPU 0: main
+E (88769) task_wdt: CPU 1: IDLE1
+E (88769) task_wdt: Print CPU 0 (current core) backtrace
+
+
+Backtrace: 0x421806EB:0x3FC9CCC0 0x4037BBD1:0x3FC9CCF0 0x420E6EF2:0x3FCA65D0 0x420EF912:0x3FCA6650 0x42040FF3:0x3FCA66D0 0x42041903:0x3FCA6730 0x4203F76F:0x3FCA67B0 0x4203DB3D:0x3FCA6800 0x4218E14D:0x3FCA6830 0x4200958B:0x3FCA6850 0x421E111B:0x3FCA6960
+
+I (88889) bringup: LIVE frame=385 t_wait=157 t_decode=11560 t_detect=119958 us cap_fail=0 dec_fail=0 no_eoi=0
+I (88889) bringup: LIVE frame=385 boxes=0
+I (89019) bringup: LIVE frame=386 t_wait=158 t_decode=11466 t_detect=117916 us cap_fail=0 dec_fail=0 no_eoi=0
+I (89019) bringup: LIVE frame=386 boxes=0
+I (89149) bringup: LIVE frame=387 t_wait=157 t_decode=11452 t_detect=117753 us cap_fail=0 dec_fail=0 no_eoi=0
+I (89149) bringup: LIVE frame=387 boxes=0
+I (89279) bringup: LIVE frame=388 t_wait=157 t_decode=11592 t_detect=117524 us cap_fail=0 dec_fail=0 no_eoi=0
+I (89279) bringup: LIVE frame=388 boxes=0
+I (89409) bringup: LIVE frame=389 t_wait=157 t_decode=11470 t_detect=117600 us cap_fail=0 dec_fail=0 no_eoi=0
+I (89409) bringup: LIVE frame=389 boxes=0
+I (89539) bringup: LIVE frame=390 t_wait=157 t_decode=11552 t_detect=117538 us cap_fail=0 dec_fail=0 no_eoi=0
+I (89539) bringup: LIVE frame=390 boxes=0
+I (89669) bringup: LIVE frame=391 t_wait=158 t_decode=11467 t_detect=117894 us cap_fail=0 dec_fail=0 no_eoi=0
+I (89669) bringup: LIVE frame=391 boxes=0
+I (89799) bringup: LIVE frame=392 t_wait=157 t_decode=11453 t_detect=117768 us cap_fail=0 dec_fail=0 no_eoi=0
+I (89799) bringup: LIVE frame=392 boxes=0
+I (89929) bringup: LIVE frame=393 t_wait=157 t_decode=11597 t_detect=117512 us cap_fail=0 dec_fail=0 no_eoi=0
+I (89929) bringup: LIVE frame=393 boxes=0
+I (90059) bringup: LIVE frame=394 t_wait=157 t_decode=11473 t_detect=117638 us cap_fail=0 dec_fail=0 no_eoi=0
+I (90059) bringup: LIVE frame=394 boxes=0
+I (90189) bringup: LIVE frame=395 t_wait=157 t_decode=11539 t_detect=117471 us cap_fail=0 dec_fail=0 no_eoi=0
+I (90189) bringup: LIVE frame=395 boxes=0
+I (90319) bringup: LIVE frame=396 t_wait=158 t_decode=11464 t_detect=117903 us cap_fail=0 dec_fail=0 no_eoi=0
+I (90319) bringup: LIVE frame=396 boxes=0
+I (90449) bringup: LIVE frame=397 t_wait=157 t_decode=11457 t_detect=117633 us cap_fail=0 dec_fail=0 no_eoi=0
+I (90449) bringup: LIVE frame=397 boxes=0
+I (90579) bringup: LIVE frame=398 t_wait=156 t_decode=11595 t_detect=117539 us cap_fail=0 dec_fail=0 no_eoi=0
+I (90579) bringup: LIVE frame=398 boxes=0
+I (90699) bringup: LIVE frame=399 t_wait=158 t_decode=11460 t_detect=117633 us cap_fail=0 dec_fail=0 no_eoi=0
+I (90709) bringup: LIVE frame=399 boxes=0
+I (90829) bringup: LIVE frame=400 t_wait=126 t_decode=11484 t_detect=117666 us cap_fail=0 dec_fail=0 no_eoi=0
+I (90829) bringup: LIVE frame=400 boxes=0
+I (90839) bringup: MEM live: internal free=252019 min=217471 | psram free=5067188 min=4176840 | temp=59.9C
+I (90969) bringup: LIVE frame=401 t_wait=158 t_decode=11465 t_detect=117961 us cap_fail=0 dec_fail=0 no_eoi=0
+I (90969) bringup: LIVE frame=401 boxes=0
+I (91089) bringup: LIVE frame=402 t_wait=157 t_decode=11473 t_detect=117586 us cap_fail=0 dec_fail=0 no_eoi=0
+I (91099) bringup: LIVE frame=402 boxes=0
+I (91219) bringup: LIVE frame=403 t_wait=157 t_decode=11541 t_detect=117426 us cap_fail=0 dec_fail=0 no_eoi=0
+I (91219) bringup: LIVE frame=403 boxes=0
+I (91349) bringup: LIVE frame=404 t_wait=157 t_decode=11453 t_detect=117797 us cap_fail=0 dec_fail=0 no_eoi=0
+I (91349) bringup: LIVE frame=404 boxes=0
+I (91479) bringup: LIVE frame=405 t_wait=133 t_decode=11495 t_detect=117539 us cap_fail=0 dec_fail=0 no_eoi=0
+I (91479) bringup: LIVE frame=405 boxes=0
+I (91609) bringup: LIVE frame=406 t_wait=158 t_decode=11469 t_detect=117966 us cap_fail=0 dec_fail=0 no_eoi=0
+I (91609) bringup: LIVE frame=406 boxes=0
+I (91739) bringup: LIVE frame=407 t_wait=157 t_decode=11475 t_detect=117586 us cap_fail=0 dec_fail=0 no_eoi=0
+I (91739) bringup: LIVE frame=407 boxes=0
+I (91869) bringup: LIVE frame=408 t_wait=156 t_decode=11565 t_detect=117544 us cap_fail=0 dec_fail=0 no_eoi=0
+I (91869) bringup: LIVE frame=408 boxes=0
+I (91999) bringup: LIVE frame=409 t_wait=158 t_decode=11464 t_detect=117749 us cap_fail=0 dec_fail=0 no_eoi=0
+I (91999) bringup: LIVE frame=409 boxes=0
+I (92129) bringup: LIVE frame=410 t_wait=134 t_decode=11492 t_detect=117565 us cap_fail=0 dec_fail=0 no_eoi=0
+I (92129) bringup: LIVE frame=410 boxes=0
+I (92259) bringup: LIVE frame=411 t_wait=158 t_decode=11468 t_detect=117887 us cap_fail=0 dec_fail=0 no_eoi=0
+I (92259) bringup: LIVE frame=411 boxes=0
+I (92389) bringup: LIVE frame=412 t_wait=159 t_decode=11458 t_detect=117606 us cap_fail=0 dec_fail=0 no_eoi=0
+I (92389) bringup: LIVE frame=412 boxes=0
+I (92519) bringup: LIVE frame=413 t_wait=158 t_decode=11543 t_detect=117494 us cap_fail=0 dec_fail=0 no_eoi=0
+I (92519) bringup: LIVE frame=413 boxes=0
+I (92649) bringup: LIVE frame=414 t_wait=158 t_decode=11455 t_detect=117818 us cap_fail=0 dec_fail=0 no_eoi=0
+I (92649) bringup: LIVE frame=414 boxes=0
+I (92779) bringup: LIVE frame=415 t_wait=139 t_decode=11471 t_detect=117582 us cap_fail=0 dec_fail=0 no_eoi=0
+I (92779) bringup: LIVE frame=415 boxes=0
+I (92909) bringup: LIVE frame=416 t_wait=157 t_decode=11463 t_detect=117891 us cap_fail=0 dec_fail=0 no_eoi=0
+I (92909) bringup: LIVE frame=416 boxes=0
+I (93039) bringup: LIVE frame=417 t_wait=157 t_decode=11472 t_detect=117577 us cap_fail=0 dec_fail=0 no_eoi=0
+I (93039) bringup: LIVE frame=417 boxes=0
+I (93169) bringup: LIVE frame=418 t_wait=156 t_decode=11556 t_detect=117526 us cap_fail=0 dec_fail=0 no_eoi=0
+I (93169) bringup: LIVE frame=418 boxes=0
+I (93299) bringup: LIVE frame=419 t_wait=157 t_decode=11422 t_detect=117893 us cap_fail=0 dec_fail=0 no_eoi=0
+I (93299) bringup: LIVE frame=419 boxes=0
+I (93429) bringup: LIVE frame=420 t_wait=150 t_decode=11464 t_detect=117595 us cap_fail=0 dec_fail=0 no_eoi=0
+I (93429) bringup: LIVE frame=420 boxes=0
+I (93559) bringup: LIVE frame=421 t_wait=156 t_decode=11599 t_detect=117513 us cap_fail=0 dec_fail=0 no_eoi=0
+I (93559) bringup: LIVE frame=421 boxes=0
+I (93689) bringup: LIVE frame=422 t_wait=157 t_decode=11469 t_detect=117639 us cap_fail=0 dec_fail=0 no_eoi=0
+I (93689) bringup: LIVE frame=422 boxes=0
+E (93769) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (93769) task_wdt:  - IDLE0 (CPU 0)
+E (93769) task_wdt: Tasks currently running:
+E (93769) task_wdt: CPU 0: main
+E (93769) task_wdt: CPU 1: IDLE1
+E (93769) task_wdt: Print CPU 0 (current core) backtrace
+
+
+Backtrace: 0x421806EB:0x3FC9CCC0 0x4037BBD1:0x3FC9CCF0 0x4204B56E:0x3FCA66D0 0x4202A5FC:0x3FCA6770 0x4218DEB3:0x3FCA67E0 0x4203DB58:0x3FCA6800 0x4218E14D:0x3FCA6830 0x4200958B:0x3FCA6850 0x421E111B:0x3FCA6960
+
+I (93819) bringup: LIVE frame=423 t_wait=157 t_decode=11557 t_detect=119886 us cap_fail=0 dec_fail=0 no_eoi=0
+I (93819) bringup: LIVE frame=423 boxes=0
+I (93949) bringup: LIVE frame=424 t_wait=158 t_decode=11472 t_detect=117921 us cap_fail=0 dec_fail=0 no_eoi=0
+I (93949) bringup: LIVE frame=424 boxes=0
+I (94079) bringup: LIVE frame=425 t_wait=156 t_decode=11454 t_detect=117742 us cap_fail=0 dec_fail=0 no_eoi=0
+I (94079) bringup: LIVE frame=425 boxes=0
+I (94209) bringup: LIVE frame=426 t_wait=157 t_decode=11586 t_detect=117510 us cap_fail=0 dec_fail=0 no_eoi=0
+I (94209) bringup: LIVE frame=426 boxes=0
+I (94339) bringup: LIVE frame=427 t_wait=156 t_decode=11474 t_detect=117590 us cap_fail=0 dec_fail=0 no_eoi=0
+I (94339) bringup: LIVE frame=427 boxes=0
+I (94469) bringup: LIVE frame=428 t_wait=156 t_decode=11553 t_detect=117492 us cap_fail=0 dec_fail=0 no_eoi=0
+I (94469) bringup: LIVE frame=428 boxes=0
+I (94599) bringup: LIVE frame=429 t_wait=159 t_decode=11467 t_detect=117923 us cap_fail=0 dec_fail=0 no_eoi=0
+I (94599) bringup: LIVE frame=429 boxes=0
+I (94729) bringup: LIVE frame=430 t_wait=156 t_decode=11459 t_detect=117741 us cap_fail=0 dec_fail=0 no_eoi=0
+I (94729) bringup: LIVE frame=430 boxes=0
+I (94859) bringup: LIVE frame=431 t_wait=157 t_decode=11601 t_detect=117513 us cap_fail=0 dec_fail=0 no_eoi=0
+I (94859) bringup: LIVE frame=431 boxes=0
+I (94989) bringup: LIVE frame=432 t_wait=157 t_decode=11470 t_detect=117628 us cap_fail=0 dec_fail=0 no_eoi=0
+I (94989) bringup: LIVE frame=432 boxes=0
+I (95119) bringup: LIVE frame=433 t_wait=156 t_decode=11548 t_detect=117473 us cap_fail=0 dec_fail=0 no_eoi=0
+I (95119) bringup: LIVE frame=433 boxes=0
+I (95249) bringup: LIVE frame=434 t_wait=159 t_decode=11454 t_detect=117925 us cap_fail=0 dec_fail=0 no_eoi=0
+I (95249) bringup: LIVE frame=434 boxes=0
+I (95379) bringup: LIVE frame=435 t_wait=157 t_decode=11454 t_detect=117615 us cap_fail=0 dec_fail=0 no_eoi=0
+I (95379) bringup: LIVE frame=435 boxes=0
+I (95509) bringup: LIVE frame=436 t_wait=157 t_decode=11594 t_detect=117531 us cap_fail=0 dec_fail=0 no_eoi=0
+I (95509) bringup: LIVE frame=436 boxes=0
+I (95639) bringup: LIVE frame=437 t_wait=159 t_decode=11465 t_detect=117622 us cap_fail=0 dec_fail=0 no_eoi=0
+I (95639) bringup: LIVE frame=437 boxes=0
+I (95769) bringup: LIVE frame=438 t_wait=127 t_decode=11476 t_detect=117676 us cap_fail=0 dec_fail=0 no_eoi=0
+I (95769) bringup: LIVE frame=438 boxes=0
+I (95899) bringup: LIVE frame=439 t_wait=159 t_decode=11456 t_detect=117925 us cap_fail=0 dec_fail=0 no_eoi=0
+I (95899) bringup: LIVE frame=439 boxes=0
+I (96029) bringup: LIVE frame=440 t_wait=156 t_decode=11468 t_detect=117632 us cap_fail=0 dec_fail=0 no_eoi=0
+I (96029) bringup: LIVE frame=440 boxes=0
+I (96159) bringup: LIVE frame=441 t_wait=158 t_decode=11592 t_detect=117459 us cap_fail=0 dec_fail=0 no_eoi=0
+I (96159) bringup: LIVE frame=441 boxes=0
+I (96289) bringup: LIVE frame=442 t_wait=157 t_decode=11454 t_detect=117786 us cap_fail=0 dec_fail=0 no_eoi=0
+I (96289) bringup: LIVE frame=442 boxes=0
+I (96419) bringup: LIVE frame=443 t_wait=127 t_decode=11485 t_detect=117681 us cap_fail=0 dec_fail=0 no_eoi=0
+I (96419) bringup: LIVE frame=443 boxes=0
+I (96549) bringup: LIVE frame=444 t_wait=157 t_decode=11474 t_detect=117952 us cap_fail=0 dec_fail=0 no_eoi=0
+I (96549) bringup: LIVE frame=444 boxes=0
+I (96679) bringup: LIVE frame=445 t_wait=157 t_decode=11459 t_detect=117559 us cap_fail=0 dec_fail=0 no_eoi=0
+I (96679) bringup: LIVE frame=445 boxes=0
+I (96809) bringup: LIVE frame=446 t_wait=202 t_decode=11558 t_detect=117491 us cap_fail=0 dec_fail=0 no_eoi=0
+I (96809) bringup: LIVE frame=446 boxes=0
+I (96939) bringup: LIVE frame=447 t_wait=158 t_decode=11468 t_detect=117766 us cap_fail=0 dec_fail=0 no_eoi=0
+I (96939) bringup: LIVE frame=447 boxes=0
+I (97069) bringup: LIVE frame=448 t_wait=132 t_decode=11488 t_detect=117561 us cap_fail=0 dec_fail=0 no_eoi=0
+I (97069) bringup: LIVE frame=448 boxes=0
+I (97199) bringup: LIVE frame=449 t_wait=157 t_decode=11468 t_detect=117907 us cap_fail=0 dec_fail=0 no_eoi=0
+I (97199) bringup: LIVE frame=449 boxes=0
+I (97329) bringup: LIVE frame=450 t_wait=157 t_decode=11466 t_detect=117617 us cap_fail=0 dec_fail=0 no_eoi=0
+I (97329) bringup: LIVE frame=450 boxes=0
+I (97329) bringup: MEM live: internal free=252019 min=217471 | psram free=5067188 min=4176840 | temp=59.9C
+I (97459) bringup: LIVE frame=451 t_wait=157 t_decode=11562 t_detect=117526 us cap_fail=0 dec_fail=0 no_eoi=0
+I (97459) bringup: LIVE frame=451 boxes=0
+I (97589) bringup: LIVE frame=452 t_wait=158 t_decode=11465 t_detect=117809 us cap_fail=0 dec_fail=0 no_eoi=0
+I (97589) bringup: LIVE frame=452 boxes=0
+I (97719) bringup: LIVE frame=453 t_wait=138 t_decode=11481 t_detect=117584 us cap_fail=0 dec_fail=0 no_eoi=0
+I (97719) bringup: LIVE frame=453 boxes=0
+I (97849) bringup: LIVE frame=454 t_wait=157 t_decode=11468 t_detect=117903 us cap_fail=0 dec_fail=0 no_eoi=0
+I (97849) bringup: LIVE frame=454 boxes=0
+I (97979) bringup: LIVE frame=455 t_wait=157 t_decode=11472 t_detect=117582 us cap_fail=0 dec_fail=0 no_eoi=0
+I (97979) bringup: LIVE frame=455 boxes=0
+I (98109) bringup: LIVE frame=456 t_wait=156 t_decode=11565 t_detect=117510 us cap_fail=0 dec_fail=0 no_eoi=0
+I (98109) bringup: LIVE frame=456 boxes=0
+I (98239) bringup: LIVE frame=457 t_wait=158 t_decode=11421 t_detect=117904 us cap_fail=0 dec_fail=0 no_eoi=0
+I (98239) bringup: LIVE frame=457 boxes=0
+I (98369) bringup: LIVE frame=458 t_wait=153 t_decode=11450 t_detect=117593 us cap_fail=0 dec_fail=0 no_eoi=0
+I (98369) bringup: LIVE frame=458 boxes=0
+I (98499) bringup: LIVE frame=459 t_wait=156 t_decode=11600 t_detect=117512 us cap_fail=0 dec_fail=0 no_eoi=0
+I (98499) bringup: LIVE frame=459 boxes=0
+I (98619) bringup: LIVE frame=460 t_wait=157 t_decode=11472 t_detect=117634 us cap_fail=0 dec_fail=0 no_eoi=0
+I (98629) bringup: LIVE frame=460 boxes=0
+I (98749) bringup: LIVE frame=461 t_wait=157 t_decode=11556 t_detect=117397 us cap_fail=0 dec_fail=0 no_eoi=0
+I (98749) bringup: LIVE frame=461 boxes=0
+E (98769) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (98769) task_wdt:  - IDLE0 (CPU 0)
+E (98769) task_wdt: Tasks currently running:
+E (98769) task_wdt: CPU 0: main
+E (98769) task_wdt: CPU 1: IDLE1
+E (98769) task_wdt: Print CPU 0 (current core) backtrace
+
+
+Backtrace: 0x421806EB:0x3FC9CCC0 0x4037BBD1:0x3FC9CCF0 0x420E6EE9:0x3FCA65D0 0x420EF912:0x3FCA6650 0x42040FF3:0x3FCA66D0 0x42041903:0x3FCA6730 0x4203F76F:0x3FCA67B0 0x4203DB3D:0x3FCA6800 0x4218E14D:0x3FCA6830 0x4200958B:0x3FCA6850 0x421E111B:0x3FCA6960
+
+I (98889) bringup: LIVE frame=462 t_wait=158 t_decode=11431 t_detect=120182 us cap_fail=0 dec_fail=0 no_eoi=0
+I (98889) bringup: LIVE frame=462 boxes=0
+I (99019) bringup: LIVE frame=463 t_wait=156 t_decode=11458 t_detect=117754 us cap_fail=0 dec_fail=0 no_eoi=0
+I (99019) bringup: LIVE frame=463 boxes=0
+I (99149) bringup: LIVE frame=464 t_wait=156 t_decode=11584 t_detect=117524 us cap_fail=0 dec_fail=0 no_eoi=0
+I (99149) bringup: LIVE frame=464 boxes=0
+I (99279) bringup: LIVE frame=465 t_wait=157 t_decode=11466 t_detect=117596 us cap_fail=0 dec_fail=0 no_eoi=0
+I (99279) bringup: LIVE frame=465 boxes=0
+I (99409) bringup: LIVE frame=466 t_wait=157 t_decode=11545 t_detect=117539 us cap_fail=0 dec_fail=0 no_eoi=0
+I (99409) bringup: LIVE frame=466 boxes=0
+I (99539) bringup: LIVE frame=467 t_wait=157 t_decode=11468 t_detect=117889 us cap_fail=0 dec_fail=0 no_eoi=0
+I (99539) bringup: LIVE frame=467 boxes=0
+I (99669) bringup: LIVE frame=468 t_wait=156 t_decode=11457 t_detect=117760 us cap_fail=0 dec_fail=0 no_eoi=0
+I (99669) bringup: LIVE frame=468 boxes=0
+I (99799) bringup: LIVE frame=469 t_wait=157 t_decode=11598 t_detect=117514 us cap_fail=0 dec_fail=0 no_eoi=0
+I (99799) bringup: LIVE frame=469 boxes=0
+I (99919) bringup: LIVE frame=470 t_wait=158 t_decode=11460 t_detect=117644 us cap_fail=0 dec_fail=0 no_eoi=0
+I (99929) bringup: LIVE frame=470 boxes=0
+I (100049) bringup: LIVE frame=471 t_wait=157 t_decode=11539 t_detect=117459 us cap_fail=0 dec_fail=0 no_eoi=0
+I (100049) bringup: LIVE frame=471 boxes=0
+I (100179) bringup: LIVE frame=472 t_wait=164 t_decode=11460 t_detect=117892 us cap_fail=0 dec_fail=0 no_eoi=0
+I (100179) bringup: LIVE frame=472 boxes=0
+I (100309) bringup: LIVE frame=473 t_wait=163 t_decode=11454 t_detect=117628 us cap_fail=0 dec_fail=0 no_eoi=0
+I (100309) bringup: LIVE frame=473 boxes=0
+I (100439) bringup: LIVE frame=474 t_wait=157 t_decode=11592 t_detect=117529 us cap_fail=0 dec_fail=0 no_eoi=0
+I (100439) bringup: LIVE frame=474 boxes=0
+I (100569) bringup: LIVE frame=475 t_wait=158 t_decode=11471 t_detect=117626 us cap_fail=0 dec_fail=0 no_eoi=0
+I (100569) bringup: LIVE frame=475 boxes=0
+I (100699) bringup: LIVE frame=476 t_wait=127 t_decode=11484 t_detect=117674 us cap_fail=0 dec_fail=0 no_eoi=0
+I (100699) bringup: LIVE frame=476 boxes=0
+I (100829) bringup: LIVE frame=477 t_wait=156 t_decode=11475 t_detect=117916 us cap_fail=0 dec_fail=0 no_eoi=0
+I (100829) bringup: LIVE frame=477 boxes=0
+I (100959) bringup: LIVE frame=478 t_wait=155 t_decode=11481 t_detect=117633 us cap_fail=0 dec_fail=0 no_eoi=0
+I (100959) bringup: LIVE frame=478 boxes=0
+I (101089) bringup: LIVE frame=479 t_wait=157 t_decode=11599 t_detect=117451 us cap_fail=0 dec_fail=0 no_eoi=0
+I (101089) bringup: LIVE frame=479 boxes=0
+I (101219) bringup: LIVE frame=480 t_wait=156 t_decode=11464 t_detect=117780 us cap_fail=0 dec_fail=0 no_eoi=0
+I (101219) bringup: LIVE frame=480 boxes=0
+I (101349) bringup: LIVE frame=481 t_wait=126 t_decode=11487 t_detect=117681 us cap_fail=0 dec_fail=0 no_eoi=0
+I (101349) bringup: LIVE frame=481 boxes=0
+I (101479) bringup: LIVE frame=482 t_wait=157 t_decode=11477 t_detect=117940 us cap_fail=0 dec_fail=0 no_eoi=0
+I (101479) bringup: LIVE frame=482 boxes=0
+I (101609) bringup: LIVE frame=483 t_wait=157 t_decode=11470 t_detect=117565 us cap_fail=0 dec_fail=0 no_eoi=0
+I (101609) bringup: LIVE frame=483 boxes=0
+I (101739) bringup: LIVE frame=484 t_wait=157 t_decode=11563 t_detect=117475 us cap_fail=0 dec_fail=0 no_eoi=0
+I (101739) bringup: LIVE frame=484 boxes=0
+I (101869) bringup: LIVE frame=485 t_wait=157 t_decode=11467 t_detect=117788 us cap_fail=0 dec_fail=0 no_eoi=0
+I (101869) bringup: LIVE frame=485 boxes=0
+I (101999) bringup: LIVE frame=486 t_wait=132 t_decode=11480 t_detect=117567 us cap_fail=0 dec_fail=0 no_eoi=0
+I (101999) bringup: LIVE frame=486 boxes=0
+I (102129) bringup: LIVE frame=487 t_wait=157 t_decode=11463 t_detect=117906 us cap_fail=0 dec_fail=0 no_eoi=0
+I (102129) bringup: LIVE frame=487 boxes=0
+I (102259) bringup: LIVE frame=488 t_wait=158 t_decode=11463 t_detect=117619 us cap_fail=0 dec_fail=0 no_eoi=0
+I (102259) bringup: LIVE frame=488 boxes=0
+I (102389) bringup: LIVE frame=489 t_wait=157 t_decode=11548 t_detect=117515 us cap_fail=0 dec_fail=0 no_eoi=0
+I (102389) bringup: LIVE frame=489 boxes=0
+I (102519) bringup: LIVE frame=490 t_wait=157 t_decode=11462 t_detect=117798 us cap_fail=0 dec_fail=0 no_eoi=0
+I (102519) bringup: LIVE frame=490 boxes=0
+I (102649) bringup: LIVE frame=491 t_wait=128 t_decode=11487 t_detect=117542 us cap_fail=0 dec_fail=0 no_eoi=0
+I (102649) bringup: LIVE frame=491 boxes=0
+I (102779) bringup: LIVE frame=492 t_wait=157 t_decode=11466 t_detect=117967 us cap_fail=0 dec_fail=0 no_eoi=0
+I (102779) bringup: LIVE frame=492 boxes=0
+I (102909) bringup: LIVE frame=493 t_wait=158 t_decode=11461 t_detect=117591 us cap_fail=0 dec_fail=0 no_eoi=0
+I (102909) bringup: LIVE frame=493 boxes=0
+I (103039) bringup: LIVE frame=494 t_wait=156 t_decode=11565 t_detect=117543 us cap_fail=0 dec_fail=0 no_eoi=0
+I (103039) bringup: LIVE frame=494 boxes=0
+I (103169) bringup: LIVE frame=495 t_wait=157 t_decode=11473 t_detect=117797 us cap_fail=0 dec_fail=0 no_eoi=0
+I (103169) bringup: LIVE frame=495 boxes=0
+I (103299) bringup: LIVE frame=496 t_wait=150 t_decode=11456 t_detect=117626 us cap_fail=0 dec_fail=0 no_eoi=0
+I (103299) bringup: LIVE frame=496 boxes=0
+I (103429) bringup: LIVE frame=497 t_wait=157 t_decode=11588 t_detect=117524 us cap_fail=0 dec_fail=0 no_eoi=0
+I (103429) bringup: LIVE frame=497 boxes=0
+I (103559) bringup: LIVE frame=498 t_wait=156 t_decode=11473 t_detect=117584 us cap_fail=0 dec_fail=0 no_eoi=0
+I (103559) bringup: LIVE frame=498 boxes=0
+I (103689) bringup: LIVE frame=499 t_wait=156 t_decode=11558 t_detect=117519 us cap_fail=0 dec_fail=0 no_eoi=0
+I (103689) bringup: LIVE frame=499 boxes=0
+E (103769) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (103769) task_wdt:  - IDLE0 (CPU 0)
+E (103769) task_wdt: Tasks currently running:
+E (103769) task_wdt: CPU 0: main
+E (103769) task_wdt: CPU 1: IDLE1
+E (103769) task_wdt: Print CPU 0 (current core) backtrace
+
+
+Backtrace: 0x421806EB:0x3FC9CCC0 0x4037BBD1:0x3FC9CCF0 0x403883AA:0x3FCA6690 0x40387E29:0x3FCA66B0 0x40387EDE:0x3FCA66D0 0x40379EE1:0x3FCA66F0 0x403893CD:0x3FCA6710 0x42183871:0x3FCA6730 0x421830E1:0x3FCA6750 0x4202A685:0x3FCA6770 0x4218DEB3:0x3FCA67E0 0x4203DB58:0x3FCA6800 0x4218E14D:0x3FCA6830 0x4200958B:0x3FCA6850 0x421E111B:0x3FCA6960
+
+I (103819) bringup: LIVE frame=500 t_wait=157 t_decode=11421 t_detect=120434 us cap_fail=0 dec_fail=0 no_eoi=0
+I (103819) bringup: LIVE frame=500 boxes=0
+I (103819) bringup: MEM live: internal free=252019 min=217471 | psram free=5067188 min=4176840 | temp=59.9C
+I (103949) bringup: LIVE frame=501 t_wait=158 t_decode=11470 t_detect=117770 us cap_fail=0 dec_fail=0 no_eoi=0
+I (103949) bringup: LIVE frame=501 boxes=0
+I (104079) bringup: LIVE frame=502 t_wait=157 t_decode=11594 t_detect=117532 us cap_fail=0 dec_fail=0 no_eoi=0
+I (104079) bringup: LIVE frame=502 boxes=0
+I (104209) bringup: LIVE frame=503 t_wait=158 t_decode=11468 t_detect=117631 us cap_fail=0 dec_fail=0 no_eoi=0
+I (104209) bringup: LIVE frame=503 boxes=0
+I (104339) bringup: LIVE frame=504 t_wait=156 t_decode=11543 t_detect=117478 us cap_fail=0 dec_fail=0 no_eoi=0
+I (104339) bringup: LIVE frame=504 boxes=0
+I (104469) bringup: LIVE frame=505 t_wait=158 t_decode=11458 t_detect=117908 us cap_fail=0 dec_fail=0 no_eoi=0
+I (104469) bringup: LIVE frame=505 boxes=0
+I (104599) bringup: LIVE frame=506 t_wait=156 t_decode=11455 t_detect=117743 us cap_fail=0 dec_fail=0 no_eoi=0
+I (104599) bringup: LIVE frame=506 boxes=0
+I (104729) bringup: LIVE frame=507 t_wait=157 t_decode=11589 t_detect=117548 us cap_fail=0 dec_fail=0 no_eoi=0
+I (104729) bringup: LIVE frame=507 boxes=0
+I (104859) bringup: LIVE frame=508 t_wait=158 t_decode=11467 t_detect=117626 us cap_fail=0 dec_fail=0 no_eoi=0
+I (104859) bringup: LIVE frame=508 boxes=0
+I (104989) bringup: LIVE frame=509 t_wait=226 t_decode=11444 t_detect=117426 us cap_fail=0 dec_fail=0 no_eoi=0
+I (104989) bringup: LIVE frame=509 boxes=0
+I (105119) bringup: LIVE frame=510 t_wait=158 t_decode=11470 t_detect=117906 us cap_fail=0 dec_fail=0 no_eoi=0
+I (105119) bringup: LIVE frame=510 boxes=0
+I (105249) bringup: LIVE frame=511 t_wait=157 t_decode=11460 t_detect=117608 us cap_fail=0 dec_fail=0 no_eoi=0
+I (105249) bringup: LIVE frame=511 boxes=0
+I (105379) bringup: LIVE frame=512 t_wait=156 t_decode=11594 t_detect=117546 us cap_fail=0 dec_fail=0 no_eoi=0
+I (105379) bringup: LIVE frame=512 boxes=0
+I (105509) bringup: LIVE frame=513 t_wait=157 t_decode=11471 t_detect=117637 us cap_fail=0 dec_fail=0 no_eoi=0
+I (105509) bringup: LIVE frame=513 boxes=0
+I (105639) bringup: LIVE frame=514 t_wait=127 t_decode=11476 t_detect=117652 us cap_fail=0 dec_fail=0 no_eoi=0
+I (105639) bringup: LIVE frame=514 boxes=0
+I (105769) bringup: LIVE frame=515 t_wait=156 t_decode=11462 t_detect=117916 us cap_fail=0 dec_fail=0 no_eoi=0
+I (105769) bringup: LIVE frame=515 boxes=0
+I (105899) bringup: LIVE frame=516 t_wait=156 t_decode=11466 t_detect=117637 us cap_fail=0 dec_fail=0 no_eoi=0
+I (105899) bringup: LIVE frame=516 boxes=0
+I (106029) bringup: LIVE frame=517 t_wait=157 t_decode=11594 t_detect=117471 us cap_fail=0 dec_fail=0 no_eoi=0
+I (106029) bringup: LIVE frame=517 boxes=0
+I (106159) bringup: LIVE frame=518 t_wait=156 t_decode=11457 t_detect=117785 us cap_fail=0 dec_fail=0 no_eoi=0
+I (106159) bringup: LIVE frame=518 boxes=0
+I (106289) bringup: LIVE frame=519 t_wait=126 t_decode=11476 t_detect=117646 us cap_fail=0 dec_fail=0 no_eoi=0
+I (106289) bringup: LIVE frame=519 boxes=0
+I (106419) bringup: LIVE frame=520 t_wait=157 t_decode=11472 t_detect=117974 us cap_fail=0 dec_fail=0 no_eoi=0
+I (106419) bringup: LIVE frame=520 boxes=0
+I (106549) bringup: LIVE frame=521 t_wait=158 t_decode=11464 t_detect=117557 us cap_fail=0 dec_fail=0 no_eoi=0
+I (106549) bringup: LIVE frame=521 boxes=0
+I (106679) bringup: LIVE frame=522 t_wait=157 t_decode=11558 t_detect=117547 us cap_fail=0 dec_fail=0 no_eoi=0
+I (106679) bringup: LIVE frame=522 boxes=0
+I (106809) bringup: LIVE frame=523 t_wait=157 t_decode=11460 t_detect=117752 us cap_fail=0 dec_fail=0 no_eoi=0
+I (106809) bringup: LIVE frame=523 boxes=0
+I (106939) bringup: LIVE frame=524 t_wait=134 t_decode=11480 t_detect=117562 us cap_fail=0 dec_fail=0 no_eoi=0
+I (106939) bringup: LIVE frame=524 boxes=0
+I (107069) bringup: LIVE frame=525 t_wait=158 t_decode=11460 t_detect=117930 us cap_fail=0 dec_fail=0 no_eoi=0
+I (107069) bringup: LIVE frame=525 boxes=0
+I (107199) bringup: LIVE frame=526 t_wait=157 t_decode=11459 t_detect=117604 us cap_fail=0 dec_fail=0 no_eoi=0
+I (107199) bringup: LIVE frame=526 boxes=0
+I (107329) bringup: LIVE frame=527 t_wait=157 t_decode=11545 t_detect=117500 us cap_fail=0 dec_fail=0 no_eoi=0
+I (107329) bringup: LIVE frame=527 boxes=0
+I (107459) bringup: LIVE frame=528 t_wait=158 t_decode=11449 t_detect=117806 us cap_fail=0 dec_fail=0 no_eoi=0
+I (107459) bringup: LIVE frame=528 boxes=0
+I (107589) bringup: LIVE frame=529 t_wait=134 t_decode=11480 t_detect=117582 us cap_fail=0 dec_fail=0 no_eoi=0
+I (107589) bringup: LIVE frame=529 boxes=0
+I (107719) bringup: LIVE frame=530 t_wait=157 t_decode=11469 t_detect=117863 us cap_fail=0 dec_fail=0 no_eoi=0
+I (107719) bringup: LIVE frame=530 boxes=0
+I (107839) bringup: LIVE frame=531 t_wait=157 t_decode=11469 t_detect=117573 us cap_fail=0 dec_fail=0 no_eoi=0
+I (107849) bringup: LIVE frame=531 boxes=0
+I (107969) bringup: LIVE frame=532 t_wait=158 t_decode=11552 t_detect=117537 us cap_fail=0 dec_fail=0 no_eoi=0
+I (107969) bringup: LIVE frame=532 boxes=0
+I (108099) bringup: LIVE frame=533 t_wait=208 t_decode=11419 t_detect=117798 us cap_fail=0 dec_fail=0 no_eoi=0
+I (108099) bringup: LIVE frame=533 boxes=0
+I (108229) bringup: LIVE frame=534 t_wait=151 t_decode=11459 t_detect=117593 us cap_fail=0 dec_fail=0 no_eoi=0
+I (108229) bringup: LIVE frame=534 boxes=0
+I (108359) bringup: LIVE frame=535 t_wait=157 t_decode=11594 t_detect=117462 us cap_fail=0 dec_fail=0 no_eoi=0
+I (108359) bringup: LIVE frame=535 boxes=0
+I (108489) bringup: LIVE frame=536 t_wait=157 t_decode=11473 t_detect=117636 us cap_fail=0 dec_fail=0 no_eoi=0
+I (108489) bringup: LIVE frame=536 boxes=0
+I (108619) bringup: LIVE frame=537 t_wait=156 t_decode=11556 t_detect=117420 us cap_fail=0 dec_fail=0 no_eoi=0
+I (108619) bringup: LIVE frame=537 boxes=0
+I (108749) bringup: LIVE frame=538 t_wait=158 t_decode=11422 t_detect=117905 us cap_fail=0 dec_fail=0 no_eoi=0
+I (108749) bringup: LIVE frame=538 boxes=0
+E (108769) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (108769) task_wdt:  - IDLE0 (CPU 0)
+E (108769) task_wdt: Tasks currently running:
+E (108769) task_wdt: CPU 0: main
+E (108769) task_wdt: CPU 1: IDLE1
+E (108769) task_wdt: Print CPU 0 (current core) backtrace
+
+
+Backtrace: 0x421806EB:0x3FC9CCC0 0x4037BBD1:0x3FC9CCF0 0x420E6F11:0x3FCA65D0 0x420EF912:0x3FCA6650 0x42040FF3:0x3FCA66D0 0x42041903:0x3FCA6730 0x4203F76F:0x3FCA67B0 0x4203DB3D:0x3FCA6800 0x4218E14D:0x3FCA6830 0x4200958B:0x3FCA6850 0x421E111B:0x3FCA6960
+
+I (108889) bringup: LIVE frame=539 t_wait=153 t_decode=11453 t_detect=120048 us cap_fail=0 dec_fail=0 no_eoi=0
+I (108889) bringup: LIVE frame=539 boxes=0
+I (109009) bringup: LIVE frame=540 t_wait=157 t_decode=11594 t_detect=117498 us cap_fail=0 dec_fail=0 no_eoi=0
+I (109019) bringup: LIVE frame=540 boxes=0
+I (109139) bringup: LIVE frame=541 t_wait=158 t_decode=11455 t_detect=117651 us cap_fail=0 dec_fail=0 no_eoi=0
+I (109139) bringup: LIVE frame=541 boxes=0
+I (109269) bringup: LIVE frame=542 t_wait=166 t_decode=11533 t_detect=117552 us cap_fail=0 dec_fail=0 no_eoi=0
+I (109269) bringup: LIVE frame=542 boxes=0
+I (109399) bringup: LIVE frame=543 t_wait=159 t_decode=11466 t_detect=117913 us cap_fail=0 dec_fail=0 no_eoi=0
+I (109399) bringup: LIVE frame=543 boxes=0
+I (109529) bringup: LIVE frame=544 t_wait=158 t_decode=11456 t_detect=117720 us cap_fail=0 dec_fail=0 no_eoi=0
+I (109529) bringup: LIVE frame=544 boxes=0
+I (109659) bringup: LIVE frame=545 t_wait=159 t_decode=11584 t_detect=117504 us cap_fail=0 dec_fail=0 no_eoi=0
+I (109659) bringup: LIVE frame=545 boxes=0
+I (109789) bringup: LIVE frame=546 t_wait=157 t_decode=11473 t_detect=117620 us cap_fail=0 dec_fail=0 no_eoi=0
+I (109789) bringup: LIVE frame=546 boxes=0
+I (109919) bringup: LIVE frame=547 t_wait=157 t_decode=11557 t_detect=117499 us cap_fail=0 dec_fail=0 no_eoi=0
+I (109919) bringup: LIVE frame=547 boxes=0
+I (110049) bringup: LIVE frame=548 t_wait=157 t_decode=11473 t_detect=117905 us cap_fail=0 dec_fail=0 no_eoi=0
+I (110049) bringup: LIVE frame=548 boxes=0
+I (110179) bringup: LIVE frame=549 t_wait=155 t_decode=11463 t_detect=117734 us cap_fail=0 dec_fail=0 no_eoi=0
+I (110179) bringup: LIVE frame=549 boxes=0
+I (110309) bringup: LIVE frame=550 t_wait=157 t_decode=11599 t_detect=117536 us cap_fail=0 dec_fail=0 no_eoi=0
+I (110309) bringup: LIVE frame=550 boxes=0
+I (110309) bringup: MEM live: internal free=252019 min=217471 | psram free=5067188 min=4176840 | temp=59.9C
+I (110439) bringup: LIVE frame=551 t_wait=158 t_decode=11479 t_detect=117690 us cap_fail=0 dec_fail=0 no_eoi=0
+I (110439) bringup: LIVE frame=551 boxes=0
+I (110569) bringup: LIVE frame=552 t_wait=127 t_decode=11484 t_detect=117644 us cap_fail=0 dec_fail=0 no_eoi=0
+I (110569) bringup: LIVE frame=552 boxes=0
+I (110699) bringup: LIVE frame=553 t_wait=155 t_decode=11465 t_detect=117919 us cap_fail=0 dec_fail=0 no_eoi=0
+I (110699) bringup: LIVE frame=553 boxes=0
+I (110829) bringup: LIVE frame=554 t_wait=158 t_decode=11466 t_detect=117639 us cap_fail=0 dec_fail=0 no_eoi=0
+I (110829) bringup: LIVE frame=554 boxes=0
+I (110959) bringup: LIVE frame=555 t_wait=157 t_decode=11585 t_detect=117473 us cap_fail=0 dec_fail=0 no_eoi=0
+I (110959) bringup: LIVE frame=555 boxes=0
+I (111089) bringup: LIVE frame=556 t_wait=158 t_decode=11449 t_detect=117781 us cap_fail=0 dec_fail=0 no_eoi=0
+I (111089) bringup: LIVE frame=556 boxes=0
+I (111219) bringup: LIVE frame=557 t_wait=127 t_decode=11485 t_detect=117643 us cap_fail=0 dec_fail=0 no_eoi=0
+I (111219) bringup: LIVE frame=557 boxes=0
+I (111349) bringup: LIVE frame=558 t_wait=158 t_decode=11467 t_detect=117967 us cap_fail=0 dec_fail=0 no_eoi=0
+I (111349) bringup: LIVE frame=558 boxes=0
+I (111479) bringup: LIVE frame=559 t_wait=158 t_decode=11462 t_detect=117557 us cap_fail=0 dec_fail=0 no_eoi=0
+I (111479) bringup: LIVE frame=559 boxes=0
+I (111609) bringup: LIVE frame=560 t_wait=157 t_decode=11553 t_detect=117564 us cap_fail=0 dec_fail=0 no_eoi=0
+I (111609) bringup: LIVE frame=560 boxes=0
+I (111739) bringup: LIVE frame=561 t_wait=156 t_decode=11468 t_detect=117790 us cap_fail=0 dec_fail=0 no_eoi=0
+I (111739) bringup: LIVE frame=561 boxes=0
+I (111869) bringup: LIVE frame=562 t_wait=135 t_decode=11477 t_detect=117553 us cap_fail=0 dec_fail=0 no_eoi=0
+I (111869) bringup: LIVE frame=562 boxes=0
+I (111999) bringup: LIVE frame=563 t_wait=157 t_decode=11461 t_detect=117887 us cap_fail=0 dec_fail=0 no_eoi=0
+I (111999) bringup: LIVE frame=563 boxes=0
+I (112129) bringup: LIVE frame=564 t_wait=158 t_decode=11453 t_detect=117614 us cap_fail=0 dec_fail=0 no_eoi=0
+I (112129) bringup: LIVE frame=564 boxes=0
+I (112259) bringup: LIVE frame=565 t_wait=158 t_decode=11551 t_detect=117500 us cap_fail=0 dec_fail=0 no_eoi=0
+I (112259) bringup: LIVE frame=565 boxes=0
+I (112389) bringup: LIVE frame=566 t_wait=159 t_decode=11450 t_detect=117811 us cap_fail=0 dec_fail=0 no_eoi=0
+I (112389) bringup: LIVE frame=566 boxes=0
+I (112519) bringup: LIVE frame=567 t_wait=131 t_decode=11479 t_detect=117567 us cap_fail=0 dec_fail=0 no_eoi=0
+I (112519) bringup: LIVE frame=567 boxes=0
+I (112649) bringup: LIVE frame=568 t_wait=159 t_decode=11463 t_detect=117943 us cap_fail=0 dec_fail=0 no_eoi=0
+I (112649) bringup: LIVE frame=568 boxes=0
+I (112779) bringup: LIVE frame=569 t_wait=158 t_decode=11466 t_detect=117577 us cap_fail=0 dec_fail=0 no_eoi=0
+I (112779) bringup: LIVE frame=569 boxes=0
+I (112909) bringup: LIVE frame=570 t_wait=157 t_decode=11553 t_detect=117542 us cap_fail=0 dec_fail=0 no_eoi=0
+I (112909) bringup: LIVE frame=570 boxes=0
+I (113039) bringup: LIVE frame=571 t_wait=202 t_decode=11420 t_detect=117810 us cap_fail=0 dec_fail=0 no_eoi=0
+I (113039) bringup: LIVE frame=571 boxes=0
+I (113169) bringup: LIVE frame=572 t_wait=150 t_decode=11456 t_detect=117608 us cap_fail=0 dec_fail=0 no_eoi=0
+I (113169) bringup: LIVE frame=572 boxes=0
+I (113299) bringup: LIVE frame=573 t_wait=156 t_decode=11590 t_detect=117486 us cap_fail=0 dec_fail=0 no_eoi=0
+I (113299) bringup: LIVE frame=573 boxes=0
+I (113429) bringup: LIVE frame=574 t_wait=158 t_decode=11464 t_detect=117612 us cap_fail=0 dec_fail=0 no_eoi=0
+I (113429) bringup: LIVE frame=574 boxes=0
+I (113559) bringup: LIVE frame=575 t_wait=156 t_decode=11556 t_detect=117426 us cap_fail=0 dec_fail=0 no_eoi=0
+I (113559) bringup: LIVE frame=575 boxes=0
+I (113689) bringup: LIVE frame=576 t_wait=157 t_decode=11420 t_detect=117924 us cap_fail=0 dec_fail=0 no_eoi=0
+I (113689) bringup: LIVE frame=576 boxes=0
+E (113769) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (113769) task_wdt:  - IDLE0 (CPU 0)
+E (113769) task_wdt: Tasks currently running:
+E (113769) task_wdt: CPU 0: main
+E (113769) task_wdt: CPU 1: IDLE1
+E (113769) task_wdt: Print CPU 0 (current core) backtrace
+
+
+Backtrace: 0x421806EB:0x3FC9CCC0 0x4037BBD1:0x3FC9CCF0 0x4213CA7D:0x3FCA6550 0x4204B10B:0x3FCA65D0 0x4202A5F5:0x3FCA6770 0x4218DEB3:0x3FCA67E0 0x4203DB58:0x3FCA6800 0x4218E14D:0x3FCA6830 0x4200958B:0x3FCA6850 0x421E111B:0x3FCA6960
+
+I (113819) bringup: LIVE frame=577 t_wait=152 t_decode=11453 t_detect=119730 us cap_fail=0 dec_fail=0 no_eoi=0
+I (113819) bringup: LIVE frame=577 boxes=0
+I (113949) bringup: LIVE frame=578 t_wait=156 t_decode=11601 t_detect=117539 us cap_fail=0 dec_fail=0 no_eoi=0
+I (113949) bringup: LIVE frame=578 boxes=0
+I (114079) bringup: LIVE frame=579 t_wait=156 t_decode=11465 t_detect=117650 us cap_fail=0 dec_fail=0 no_eoi=0
+I (114079) bringup: LIVE frame=579 boxes=0
+I (114209) bringup: LIVE frame=580 t_wait=156 t_decode=11554 t_detect=117617 us cap_fail=0 dec_fail=0 no_eoi=0
+I (114209) bringup: LIVE frame=580 boxes=0
+I (114339) bringup: LIVE frame=581 t_wait=158 t_decode=11469 t_detect=117899 us cap_fail=0 dec_fail=0 no_eoi=0
+I (114339) bringup: LIVE frame=581 boxes=0
+I (114469) bringup: LIVE frame=582 t_wait=156 t_decode=11454 t_detect=117742 us cap_fail=0 dec_fail=0 no_eoi=0
+I (114469) bringup: LIVE frame=582 boxes=0
+I (114599) bringup: LIVE frame=583 t_wait=156 t_decode=11594 t_detect=117519 us cap_fail=0 dec_fail=0 no_eoi=0
+I (114599) bringup: LIVE frame=583 boxes=0
+I (114729) bringup: LIVE frame=584 t_wait=157 t_decode=11459 t_detect=117604 us cap_fail=0 dec_fail=0 no_eoi=0
+I (114729) bringup: LIVE frame=584 boxes=0
+I (114859) bringup: LIVE frame=585 t_wait=157 t_decode=11546 t_detect=117478 us cap_fail=0 dec_fail=0 no_eoi=0
+I (114859) bringup: LIVE frame=585 boxes=0
+I (114989) bringup: LIVE frame=586 t_wait=158 t_decode=11462 t_detect=117920 us cap_fail=0 dec_fail=0 no_eoi=0
+I (114989) bringup: LIVE frame=586 boxes=0
+I (115119) bringup: LIVE frame=587 t_wait=156 t_decode=11450 t_detect=117742 us cap_fail=0 dec_fail=0 no_eoi=0
+I (115119) bringup: LIVE frame=587 boxes=0
+I (115249) bringup: LIVE frame=588 t_wait=158 t_decode=11588 t_detect=117531 us cap_fail=0 dec_fail=0 no_eoi=0
+I (115249) bringup: LIVE frame=588 boxes=0
+I (115379) bringup: LIVE frame=589 t_wait=158 t_decode=11461 t_detect=117621 us cap_fail=0 dec_fail=0 no_eoi=0
+I (115379) bringup: LIVE frame=589 boxes=0
+I (115509) bringup: LIVE frame=590 t_wait=156 t_decode=11540 t_detect=117432 us cap_fail=0 dec_fail=0 no_eoi=0
+I (115509) bringup: LIVE frame=590 boxes=0
+I (115639) bringup: LIVE frame=591 t_wait=158 t_decode=11463 t_detect=117923 us cap_fail=0 dec_fail=0 no_eoi=0
+I (115639) bringup: LIVE frame=591 boxes=0
+I (115769) bringup: LIVE frame=592 t_wait=156 t_decode=11451 t_detect=117618 us cap_fail=0 dec_fail=0 no_eoi=0
+I (115769) bringup: LIVE frame=592 boxes=0
+I (115899) bringup: LIVE frame=593 t_wait=156 t_decode=11589 t_detect=117532 us cap_fail=0 dec_fail=0 no_eoi=0
+I (115899) bringup: LIVE frame=593 boxes=0
+I (116029) bringup: LIVE frame=594 t_wait=157 t_decode=11464 t_detect=117643 us cap_fail=0 dec_fail=0 no_eoi=0
+I (116029) bringup: LIVE frame=594 boxes=0
+I (116159) bringup: LIVE frame=595 t_wait=127 t_decode=11473 t_detect=117652 us cap_fail=0 dec_fail=0 no_eoi=0
+I (116159) bringup: LIVE frame=595 boxes=0
+I (116289) bringup: LIVE frame=596 t_wait=157 t_decode=11460 t_detect=117928 us cap_fail=0 dec_fail=0 no_eoi=0
+I (116289) bringup: LIVE frame=596 boxes=0
+I (116409) bringup: LIVE frame=597 t_wait=158 t_decode=11458 t_detect=117637 us cap_fail=0 dec_fail=0 no_eoi=0
+I (116419) bringup: LIVE frame=597 boxes=0
+I (116539) bringup: LIVE frame=598 t_wait=157 t_decode=11587 t_detect=117469 us cap_fail=0 dec_fail=0 no_eoi=0
+I (116539) bringup: LIVE frame=598 boxes=0
+I (116669) bringup: LIVE frame=599 t_wait=158 t_decode=11451 t_detect=117785 us cap_fail=0 dec_fail=0 no_eoi=0
+I (116669) bringup: LIVE frame=599 boxes=0
+I (116799) bringup: LIVE frame=600 t_wait=133 t_decode=11476 t_detect=117670 us cap_fail=0 dec_fail=0 no_eoi=0
+I (116799) bringup: LIVE frame=600 boxes=0
+I (116799) bringup: MEM live: internal free=252019 min=217471 | psram free=5067188 min=4176840 | temp=60.9C
+I (116929) bringup: LIVE frame=601 t_wait=159 t_decode=11479 t_detect=118007 us cap_fail=0 dec_fail=0 no_eoi=0
+I (116939) bringup: LIVE frame=601 boxes=0
+I (117059) bringup: LIVE frame=602 t_wait=158 t_decode=11468 t_detect=117583 us cap_fail=0 dec_fail=0 no_eoi=0
+I (117059) bringup: LIVE frame=602 boxes=0
+I (117189) bringup: LIVE frame=603 t_wait=156 t_decode=11568 t_detect=117529 us cap_fail=0 dec_fail=0 no_eoi=0
+I (117189) bringup: LIVE frame=603 boxes=0
+I (117319) bringup: LIVE frame=604 t_wait=157 t_decode=11472 t_detect=117752 us cap_fail=0 dec_fail=0 no_eoi=0
+I (117319) bringup: LIVE frame=604 boxes=0
+I (117449) bringup: LIVE frame=605 t_wait=135 t_decode=11493 t_detect=117557 us cap_fail=0 dec_fail=0 no_eoi=0
+I (117449) bringup: LIVE frame=605 boxes=0
+I (117579) bringup: LIVE frame=606 t_wait=157 t_decode=11472 t_detect=117895 us cap_fail=0 dec_fail=0 no_eoi=0
+I (117579) bringup: LIVE frame=606 boxes=0
+I (117709) bringup: LIVE frame=607 t_wait=158 t_decode=11470 t_detect=117611 us cap_fail=0 dec_fail=0 no_eoi=0
+I (117709) bringup: LIVE frame=607 boxes=0
+I (117839) bringup: LIVE frame=608 t_wait=158 t_decode=11551 t_detect=117517 us cap_fail=0 dec_fail=0 no_eoi=0
+I (117839) bringup: LIVE frame=608 boxes=0
+I (117969) bringup: LIVE frame=609 t_wait=158 t_decode=11463 t_detect=117817 us cap_fail=0 dec_fail=0 no_eoi=0
+I (117969) bringup: LIVE frame=609 boxes=0
+I (118099) bringup: LIVE frame=610 t_wait=139 t_decode=11479 t_detect=117627 us cap_fail=0 dec_fail=0 no_eoi=0
+I (118099) bringup: LIVE frame=610 boxes=0
+I (118229) bringup: LIVE frame=611 t_wait=158 t_decode=11596 t_detect=117526 us cap_fail=0 dec_fail=0 no_eoi=0
+I (118229) bringup: LIVE frame=611 boxes=0
+I (118359) bringup: LIVE frame=612 t_wait=157 t_decode=11460 t_detect=117602 us cap_fail=0 dec_fail=0 no_eoi=0
+I (118359) bringup: LIVE frame=612 boxes=0
+I (118489) bringup: LIVE frame=613 t_wait=157 t_decode=11557 t_detect=117508 us cap_fail=0 dec_fail=0 no_eoi=0
+I (118489) bringup: LIVE frame=613 boxes=0
+I (118619) bringup: LIVE frame=614 t_wait=156 t_decode=11424 t_detect=117980 us cap_fail=0 dec_fail=0 no_eoi=0
+I (118619) bringup: LIVE frame=614 boxes=0
+I (118749) bringup: LIVE frame=615 t_wait=141 t_decode=11458 t_detect=117573 us cap_fail=0 dec_fail=0 no_eoi=0
+I (118749) bringup: LIVE frame=615 boxes=0
+E (118769) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (118769) task_wdt:  - IDLE0 (CPU 0)
+E (118769) task_wdt: Tasks currently running:
+E (118769) task_wdt: CPU 0: main
+E (118769) task_wdt: CPU 1: IDLE1
+E (118769) task_wdt: Print CPU 0 (current core) backtrace
+
+
+Backtrace: 0x421806EB:0x3FC9CCC0 0x4037BBD1:0x3FC9CCF0 0x420E6EF8:0x3FCA65D0 0x420EF912:0x3FCA6650 0x42040FF3:0x3FCA66D0 0x42041903:0x3FCA6730 0x4203F76F:0x3FCA67B0 0x4203DB3D:0x3FCA6800 0x4218E14D:0x3FCA6830 0x4200958B:0x3FCA6850 0x421E111B:0x3FCA6960
+
+I (118879) bringup: LIVE frame=616 t_wait=157 t_decode=11596 t_detect=119747 us cap_fail=0 dec_fail=0 no_eoi=0
+I (118879) bringup: LIVE frame=616 boxes=0
+I (119009) bringup: LIVE frame=617 t_wait=156 t_decode=11484 t_detect=117634 us cap_fail=0 dec_fail=0 no_eoi=0
+I (119009) bringup: LIVE frame=617 boxes=0
+I (119139) bringup: LIVE frame=618 t_wait=156 t_decode=11562 t_detect=117581 us cap_fail=0 dec_fail=0 no_eoi=0
+I (119139) bringup: LIVE frame=618 boxes=0
+I (119269) bringup: LIVE frame=619 t_wait=156 t_decode=11471 t_detect=117832 us cap_fail=0 dec_fail=0 no_eoi=0
+I (119269) bringup: LIVE frame=619 boxes=0
+I (119399) bringup: LIVE frame=620 t_wait=155 t_decode=11474 t_detect=117631 us cap_fail=0 dec_fail=0 no_eoi=0
+I (119399) bringup: LIVE frame=620 boxes=0
+I (119529) bringup: LIVE frame=621 t_wait=156 t_decode=11597 t_detect=117496 us cap_fail=0 dec_fail=0 no_eoi=0
+I (119529) bringup: LIVE frame=621 boxes=0
+I (119659) bringup: LIVE frame=622 t_wait=156 t_decode=11479 t_detect=117604 us cap_fail=0 dec_fail=0 no_eoi=0
+I (119659) bringup: LIVE frame=622 boxes=0
+I (119789) bringup: LIVE frame=623 t_wait=155 t_decode=11558 t_detect=117515 us cap_fail=0 dec_fail=0 no_eoi=0
+I (119789) bringup: LIVE frame=623 boxes=0
+I (119919) bringup: LIVE frame=624 t_wait=156 t_decode=11474 t_detect=117889 us cap_fail=0 dec_fail=0 no_eoi=0
+I (119919) bringup: LIVE frame=624 boxes=0
+I (120049) bringup: LIVE frame=625 t_wait=155 t_decode=11476 t_detect=117613 us cap_fail=0 dec_fail=0 no_eoi=0
+I (120049) bringup: LIVE frame=625 boxes=0
+I (120179) bringup: LIVE frame=626 t_wait=157 t_decode=11599 t_detect=117475 us cap_fail=0 dec_fail=0 no_eoi=0
+I (120179) bringup: LIVE frame=626 boxes=0

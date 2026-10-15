@@ -1,0 +1,9 @@
+firmware/build/
+firmware/managed_components/
+firmware/sdkconfig
+firmware/sdkconfig.old
+__pycache__/
+runs/
+firmware/main/wifi_secrets.h
+.vscode/# Camera frames can show people; keep them local, never in git
+docs/logs/**/frames/*.jpg
