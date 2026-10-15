@@ -2,3 +2,5 @@
 numpy==2.4.6
 opencv-python==4.14.0.94
 pytest==8.4.2
+pyserial==3.5
+esptool==4.12.0  # same as the ESP-IDF 5.5.3 env; scripts use its underscore command names

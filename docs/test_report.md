@@ -118,3 +118,15 @@ Modules: `protocol.py` (framing/codecs), `pipeline.py` (frame_id join, stats, tr
 | Presence overlay on live data | renders; almost no detections in view (max 0.0002 detections/frame/cell over 5,014 frames) | VERIFIED ON HARDWARE (rendering only; not validated with people walking) |
 | Interactive keys (o/r/g/m/s/c/q) in the window | handlers written; only exercised headless (no key presses) | NOT TESTED |
 | Live recording on (JPEGs to disk) | covered by unit test only; not run live to avoid saving images of people in the office | SIMULATED-UNIT-TESTED |
+
+## 2026-10-15: Gate 4 docs and scripts (baseline data NOT collected)
+
+| Item | Result | Label |
+|---|---|---|
+| `scripts/flash_all.ps1` → `verify_board.py --all --flash` on unit #1 | merged image flashed (hash verified); MAC 8c:bf:ea:8e:6d:d8, rev v0.2, 8 MB flash, 8 MB PSRAM, sensor 0x3660, capture test 1000/1000, self-test 3 boxes, IP 192.168.1.248. Result **FAIL, correctly**: image built from an uncommitted tree (`3a81649-dirty`) | VERIFIED ON HARDWARE (re-run after the Gate 4 commit for a clean PASS) |
+| `flash_all.sh` | thin wrapper, same script | NOT TESTED (no Linux machine) |
+| `collect_baseline.py` smoke test (1 repeat × 5 modes, 8 s each, 3 s warm-up; output discarded, *not a baseline*) | all 5 trials completed; summary.csv + baseline.json + per-trial run folders written; detected the `-dirty` firmware and warned | VERIFIED ON HARDWARE (script function only) |
+| Baseline: reference scene, 3 repeats × 5 modes × 60 s, heatsink fitted | — | BLOCKED (no heatsink; reference scene not set up) |
+| Tag `baseline-v1` | — | BLOCKED (waits for the baseline) |
+| Docs: README, setup_windows, setup_linux, flashing_and_recovery, experiments, student_quickstart, mentor_notes | written | Windows steps follow what was run on the reference PC; **setup_linux NOT TESTED**; erase_region and SoftAP recovery VERIFIED ON HARDWARE (Gate 2) |
+| "Students can run an unmodified baseline from the quickstart alone" | — | NOT TESTED (needs a student dry run) |
