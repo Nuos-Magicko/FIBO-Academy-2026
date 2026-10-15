@@ -123,7 +123,8 @@ Modules: `protocol.py` (framing/codecs), `pipeline.py` (frame_id join, stats, tr
 
 | Item | Result | Label |
 |---|---|---|
-| `scripts/flash_all.ps1` → `verify_board.py --all --flash` on unit #1 | merged image flashed (hash verified); MAC 8c:bf:ea:8e:6d:d8, rev v0.2, 8 MB flash, 8 MB PSRAM, sensor 0x3660, capture test 1000/1000, self-test 3 boxes, IP 192.168.1.248. Result **FAIL, correctly**: image built from an uncommitted tree (`3a81649-dirty`) | VERIFIED ON HARDWARE (re-run after the Gate 4 commit for a clean PASS) |
+| `scripts/flash_all.ps1` → `verify_board.py --all --flash` on unit #1 | merged image flashed (hash verified); MAC 8c:bf:ea:8e:6d:d8, rev v0.2, 8 MB flash, 8 MB PSRAM, sensor 0x3660, capture test 1000/1000, self-test 3 boxes, IP 192.168.1.248. Result **FAIL, correctly**: image built from an uncommitted tree (`3a81649-dirty`) | VERIFIED ON HARDWARE |
+| Re-run from the clean Gate 4 commit (`2959028`, `idf.py reconfigure` + build + merge-bin) | **PASS**: fw `2959028`, sensor 0x3660, 8 MB PSRAM, 8 MB flash, capture 1000/1000 (27.8 fps), self-test 3 boxes, IP 192.168.1.248, flash hash verified | VERIFIED ON HARDWARE |
 | `flash_all.sh` | thin wrapper, same script | NOT TESTED (no Linux machine) |
 | `collect_baseline.py` smoke test (1 repeat × 5 modes, 8 s each, 3 s warm-up; output discarded, *not a baseline*) | all 5 trials completed; summary.csv + baseline.json + per-trial run folders written; detected the `-dirty` firmware and warned | VERIFIED ON HARDWARE (script function only) |
 | Baseline: reference scene, 3 repeats × 5 modes × 60 s, heatsink fitted | — | BLOCKED (no heatsink; reference scene not set up) |
