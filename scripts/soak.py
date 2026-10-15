@@ -2,7 +2,7 @@
 
 usage: python scripts/soak.py --port COM3 --minutes 60 --label noheatsink [--host IP]
 
-Writes runs/soak_<time>_<label>/: serial.log, metrics.csv (device METRICS),
+Writes runs/soak_<time>_<label>/: serial.log, metrics.jsonl (device METRICS, flattened keys),
 host_stats.csv (receiver, every 10 s), frames/ (JPEG + boxes every 10 min), summary.json.
 Needs pyserial (present in the ESP-IDF Python env).
 """
@@ -110,8 +110,7 @@ def main():
     pending = {}  # frame_id -> set of record names, for pairing
     last_seq = None
     next_frame_save = 0.0
-    mf = open(out / "metrics.csv", "w", newline="")
-    mw = None
+    mf = open(out / "metrics.jsonl", "w")
     hf = open(out / "host_stats.csv", "w", newline="")
     hw = csv.writer(hf)
     hw.writerow(["host_time", "elapsed_s", "frames", "rx_fps_10s", "rx_bytes_per_s_10s", "seq_gaps",
@@ -150,16 +149,13 @@ def main():
                 stats["seq_gaps"] += 1
             last_seq = r.seq
             if r.name == "METRICS":
-                m = protocol.decode_metrics(r.payload)
+                m = protocol.flatten(protocol.decode_json(r.payload))
                 m = {"host_time": datetime.now().isoformat(timespec="seconds"), **m}
-                if mw is None:
-                    mw = csv.DictWriter(mf, fieldnames=list(m.keys()), extrasaction="ignore")
-                    mw.writeheader()
-                mw.writerow(m)
+                mf.write(json.dumps(m) + "\n")
                 stats["metrics"] += 1
-                temps.append(m["temp_c"])
-                int_min.append(m["int_min"])
-                ps_min.append(m["ps_min"])
+                temps.append(m.get("temp_c"))
+                int_min.append(m.get("mem.int_min", m.get("int_min")))
+                ps_min.append(m.get("mem.ps_min", m.get("ps_min")))
                 last_metrics = m
             elif r.name in ("JPEG_FRAME", "DETECTIONS"):
                 pending.setdefault(r.frame_id, {})[r.name] = r
@@ -193,8 +189,8 @@ def main():
                          stats["reconnects"], ser.boots])
             hf.flush()
             print(f"[{round(now - t_start):5d}s] fps={win_frames / (now - win_t):.2f} "
-                  f"temp={last_metrics.get('temp_c')} int_min={last_metrics.get('int_min')} "
-                  f"ps_min={last_metrics.get('ps_min')} dropped={last_metrics.get('tx_dropped')} "
+                  f"temp={last_metrics.get('temp_c')} int_min={last_metrics.get('mem.int_min')} "
+                  f"ps_min={last_metrics.get('mem.ps_min')} dropped={last_metrics.get('counters.tx_dropped')} "
                   f"boots={ser.boots}", flush=True)
             win_frames, win_bytes, win_t = 0, 0, now
 

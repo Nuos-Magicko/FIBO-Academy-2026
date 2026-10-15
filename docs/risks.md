@@ -9,9 +9,11 @@
 | R5 | Venue Wi-Fi congestion | Untested | STA + SoftAP; U.FL antenna mandatory |
 | R6 | Model recall on overhead/small people | Untested on live scenes | Document the mount (2–2.5 m, oblique) |
 | R7 | Mixed OV2640/OV3660 units | Unit #1 = OV3660 | PID check at boot with a `sensor_mismatch` event; per-unit verify script |
-| R8 | Per-stage `t_pre/t_infer/t_post` not exposed by `PedestrianDetect::run` | Open | Gate 2: use esp-dl internals or report `t_detect` as one stage and document it |
+| R8 | Per-stage `t_pre/t_infer/t_post` not exposed by `PedestrianDetect::run` | Closed (Gate 2) | `TimedPico` in vision.cpp repeats `DetectImpl::run`'s three steps with timestamps; same model and postprocessor. Re-check if esp-dl changes `DetectImpl::run` |
 | R9 | IDF install folder name (v5.5.1) ≠ actual version (v5.5.3) | Noted | Pinned `idf: ==5.5.3`; setup docs to require 5.5.3 |
 | R10 | Task watchdog starvation from a busy-looping vision task | Fixed in bring-up (`vTaskDelay(1)`) | Gate 2: vision task on core 1 with explicit yield policy |
-| R12 | Wi-Fi send stalls up to 4.9 s (15% frames dropped in the 1 h soak) | Observed, not fixed | Drop-oldest absorbs it; send timeout 5 s is close, so a longer stall would disconnect the client (reconnect path exists but is untested on hardware) |
-| R13 | `wifi_secrets.h` appearing is not seen by incremental builds | Workaround: touch main.cpp / fullclean | Gate 2: credentials in NVS |
+| R12 | Wi-Fi send stalls up to 4.9 s (15% frames dropped in the 1 h soak) | Observed, not fixed | Drop-oldest absorbs it; send timeout 5 s is close, so a longer stall drops the client; reconnect verified on hardware in Gate 2 |
+| R13 | `wifi_secrets.h` appearing is not seen by incremental builds | Mitigated: credentials can now be set via COMMAND + NVS | Still touch `settings.cpp` / fullclean after adding the file |
+| R14 | A saved wrong SSID sends the board to SoftAP, where a PC on the venue network can't reach it | Known | Recovery: `esptool --port COMx erase_region 0x9000 0x6000` (erases NVS → compile-time defaults). Goes in flashing_and_recovery.md |
+| R15 | Wi-Fi password sent in clear over TCP by `set sta_pass` | Accepted for a closed camp network | Not for production; HELLO never echoes it |
 | R11 | Very small JPEGs (~3.6 KB) in the first live test | Closed: saved soak frames show a partly blocked, sideways scene; JPEG 2.7–9.7 KB over the soak | Mount camera upright for detection tests |
