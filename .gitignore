@@ -2,10 +2,12 @@ firmware/build/
 firmware/managed_components/
 firmware/sdkconfig
 firmware/sdkconfig.old
+firmware/main/config/wifi_secrets.h
 __pycache__/
 runs/
-firmware/main/wifi_secrets.h
-.vscode/# Camera frames can show people; keep them local, never in git
-docs/logs/**/frames/*.jpg
-pc/.venv/
 boards.csv
+pc/.venv/
+.vscode/
+# Camera frames can show people; keep them local, never in git
+docs/logs/**/frames/*.jpg
+docs/measurements/**/frames/*.jpg

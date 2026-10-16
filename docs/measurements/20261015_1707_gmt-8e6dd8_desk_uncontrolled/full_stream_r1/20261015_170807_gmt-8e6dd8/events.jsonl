@@ -1,0 +1,7 @@
+{"host_time": "2026-10-15T17:08:07.952", "t_dev_us": 931441465, "severity": "warn", "code": "queue_drop_burst", "text": "11 bundles dropped in window", "t_event_us": 931059850}
+{"host_time": "2026-10-15T17:08:23.198", "t_dev_us": 946644745, "severity": "warn", "code": "queue_drop_burst", "text": "16 bundles dropped in window", "t_event_us": 946246735}
+{"host_time": "2026-10-15T17:08:30.532", "t_dev_us": 953988678, "severity": "warn", "code": "queue_drop_burst", "text": "10 bundles dropped in window", "t_event_us": 953888385}
+{"host_time": "2026-10-15T17:08:35.671", "t_dev_us": 959034991, "severity": "warn", "code": "queue_drop_burst", "text": "17 bundles dropped in window", "t_event_us": 958818464}
+{"host_time": "2026-10-15T17:08:44.195", "t_dev_us": 967635141, "severity": "warn", "code": "queue_drop_burst", "text": "22 bundles dropped in window", "t_event_us": 967299600}
+{"host_time": "2026-10-15T17:08:49.260", "t_dev_us": 972608721, "severity": "warn", "code": "queue_drop_burst", "text": "16 bundles dropped in window", "t_event_us": 972112953}
+{"host_time": "2026-10-15T17:08:53.837", "t_dev_us": 977317487, "severity": "warn", "code": "queue_drop_burst", "text": "15 bundles dropped in window", "t_event_us": 977036276}

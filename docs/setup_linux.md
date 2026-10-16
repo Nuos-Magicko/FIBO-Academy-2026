@@ -7,8 +7,8 @@
 sudo apt install python3 python3-venv          # Debian/Ubuntu; Python 3.11+
 python3 -m venv pc/.venv
 pc/.venv/bin/pip install -r pc/requirements.txt
-pc/.venv/bin/python -m pytest pc/tests -q          # expect: 27 passed
-pc/.venv/bin/python pc/viewer.py --replay samples/synthetic_run
+pc/.venv/bin/python -m pytest pc/tests -q          # expect: 34 passed
+pc/.venv/bin/python pc/main.py viewer --replay samples/synthetic_run
 ```
 The viewer needs a desktop session. Over SSH, use `--snapshot out.png` to render headless.
 
@@ -26,7 +26,7 @@ git clone -b v5.5.3 --recursive https://github.com/espressif/esp-idf.git ~/esp/e
 . ~/esp/esp-idf/export.sh
 idf.py --version                    # must print v5.5.3
 
-cp firmware/main/wifi_secrets.example.h firmware/main/wifi_secrets.h   # fill in a 2.4 GHz network
+cp firmware/main/config/wifi_secrets.example.h firmware/main/config/wifi_secrets.h   # fill in a 2.4 GHz network
 cd firmware
 idf.py set-target esp32s3
 idf.py build
@@ -36,7 +36,7 @@ After adding or deleting `wifi_secrets.h`, run `idf.py fullclean` (incremental b
 
 ## 4. Flash and check
 ```bash
-chmod +x scripts/flash_all.sh
-./scripts/flash_all.sh
+chmod +x pc/tools/flash_all.sh
+./pc/tools/flash_all.sh
 ```
 Details and recovery: `flashing_and_recovery.md`.

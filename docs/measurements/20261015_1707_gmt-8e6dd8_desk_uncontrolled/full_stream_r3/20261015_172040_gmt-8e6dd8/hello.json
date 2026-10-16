@@ -1,0 +1,42 @@
+[
+ {
+  "host_time": "2026-10-15T17:20:40.567",
+  "proto_version": 1,
+  "device_id": "gmt-8e6dd8",
+  "mac": "8c:bf:ea:8e:6d:d8",
+  "fw_version": "2959028",
+  "fw_build": "Oct 15 2026 16:51:37",
+  "idf": "v5.5.3",
+  "esp_dl": "3.3.13",
+  "esp32_camera": "2.1.8",
+  "pedestrian_detect": "0.3.2",
+  "model": "pico_s8_v1_s3",
+  "chip": "esp32s3",
+  "chip_rev": "v0.2",
+  "flash_bytes": 8388608,
+  "psram_bytes": 8388608,
+  "sensor_pid": "0x3660",
+  "grid_cols": 20,
+  "grid_rows": 15,
+  "box_coords": "frame_px",
+  "reset_reason": "USB",
+  "wifi": "sta_connected",
+  "ip": "192.168.1.248",
+  "config": {
+   "mode": "full_stream",
+   "frame_size": "QVGA",
+   "jpeg_quality": 12,
+   "xclk_hz": 20000000,
+   "warmup_frames": 10,
+   "infer_every_n": 1,
+   "infer_only_runs": 65535,
+   "metrics_interval_ms": 1000,
+   "grid_every_n": 50,
+   "score_thr": 0.699999988079071,
+   "thermal_warn_c": 80,
+   "metrics_verbose": false,
+   "wifi_mode": "sta",
+   "sta_ssid": "GMT_THAI 2.4G"
+  }
+ }
+]

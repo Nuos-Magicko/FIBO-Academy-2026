@@ -2,18 +2,20 @@
 
 These notes help you **run** the camp. They deliberately contain no answers about what limits the system or how to speed it up: students should find, argue and test that themselves. If you know an answer, ask a question that leads to a measurement instead of giving it away.
 
+`performance_report.md` has preliminary numbers for preparing yourself. Don't share it with students before they have measured the system.
+
 ## Before the camp
-- [ ] One heatsink per board. The heatsink soak (`scripts/soak.py --label heatsink`) is still to be run and recorded in `test_report.md` (BLOCKED at the time of writing: no heatsink).
-- [ ] Build one image from a **committed** tree and flash every board with `scripts/flash_all.ps1`. Keep `boards.csv`, and stick the MAC on each board. Set aside any board that fails, especially a sensor other than `0x3660`.
+- [ ] One heatsink per board. The heatsink soak (`pc/main.py soak --label heatsink`) is still to be run and recorded in `test_report.md` (BLOCKED at the time of writing: no heatsink).
+- [ ] Build one image from a **committed** tree and flash every board with `pc/tools/flash_all.ps1`. Keep `boards.csv`, and stick the MAC on each board. Set aside any board that fails, especially a sensor other than `0x3660`.
 - [ ] A **2.4 GHz** network at the venue that both boards and laptops can join, plus a fallback plan: each board can also run its own network (`flashing_and_recovery.md`).
 - [ ] Reference scenes ready (`experiments.md` §7): silhouettes or a photo at a fixed distance, a looping walking video with clear rights, tripods or clamps, fixed lighting.
 - [ ] Room thermometer (students must record the room temperature).
-- [ ] Run `collect_baseline.py` once on the reference scene and tag the commit `baseline-v1` (handoff Gate 4), so every team starts from the same recorded baseline.
-- [ ] Laptops: Python venv installed, and `pytest pc/tests` passes (27 tests).
+- [ ] Run `pc/main.py baseline` once on the reference scene and tag the commit `baseline-v1` (handoff Gate 4), so every team starts from the same recorded baseline.
+- [ ] Laptops: Python venv installed, and `pytest pc/tests` passes (34 tests).
 
 ## Each session
 1. Boards on direct USB ports or powered hubs; antennas on; heatsinks on.
-2. Run `verify_board.py --all` at the start of the day. It's quick insurance against a swapped or reflashed board.
+2. Run `pc/main.py verify-board --all` at the start of the day. It's quick insurance against a swapped or reflashed board.
 3. Let boards stream at least 2 minutes before any measurement.
 4. Remind teams: recording images stays off unless everyone in view has agreed.
 

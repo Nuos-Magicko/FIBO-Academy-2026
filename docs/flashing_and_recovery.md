@@ -8,10 +8,10 @@ All commands run from the repository root with the project venv (`pc\.venv\Scrip
 2. Plug in the boards: direct laptop ports or a **powered** hub.
 3. Run:
    ```powershell
-   .\scripts\flash_all.ps1                                   # Windows
-   ./scripts/flash_all.sh                                    # Linux
-   python scripts/verify_board.py --all                      # verify only, no flashing
-   python scripts/verify_board.py --port COM7 --flash        # one board
+   .\pc\tools\flash_all.ps1                                   # Windows
+   ./pc/tools/flash_all.sh                                    # Linux
+   python pc/main.py verify-board --all                      # verify only, no flashing
+   python pc/main.py verify-board --port COM7 --flash        # one board
    ```
    Boards are done one at a time, about 2 minutes each: flash, reboot, a 1000-frame capture test, the still-image self-test, then Wi-Fi.
 4. Each board prints a line, which is also appended to `boards.csv`. Label the board with its MAC.
@@ -27,8 +27,8 @@ Seeed shipped both OV2640 and OV3660 during a transition period. An OV2640 board
 | Symptom | Fix |
 |---|---|
 | No COM port / `/dev/ttyACM*` appears | Try another cable (many are charge-only) and a direct port. Still nothing: hold **BOOT** (the small button by the USB-C connector), plug in, release; this forces download mode. Then flash again. |
-| esptool "Failed to connect" / "No serial data received" | Same as above (BOOT + replug). Close anything that holds the port (`idf.py monitor`, `serial_capture.py`, `soak.py`). |
-| Board flashed but unreachable on Wi-Fi | The serial log shows why: `python scripts/serial_capture.py COM3 120 boot.log`, then look for `wifi_disconnected reason=201` (network not found: wrong name, or a 5 GHz network) or `reason=202`, `15` or `204` (usually a wrong password). |
+| esptool "Failed to connect" / "No serial data received" | Same as above (BOOT + replug). Close anything that holds the port (`idf.py monitor`, `pc/main.py serial-log`, `pc/main.py soak`). |
+| Board flashed but unreachable on Wi-Fi | The serial log shows why: `python pc/main.py serial-log COM3 120 boot.log`, then look for `wifi_disconnected reason=201` (network not found: wrong name, or a 5 GHz network) or `reason=202`, `15` or `204` (usually a wrong password). |
 | A wrong network name or password was **saved** from the viewer/test client | After 8 failed tries (about 2 minutes) the board starts its own network `GMT-PF-xxxx` (password `gmtcamp2026`, 192.168.4.1). Either connect a PC to that network and send `{"cmd":"set","values":{"sta_ssid":"…","sta_pass":"…"}}` + `save` + `reboot`, or erase the saved settings over USB (next row). |
 | Reset all saved settings to the image's defaults | `python -m esptool --chip esp32s3 --port COM3 erase_region 0x9000 0x6000` (erases only the NVS settings partition; verified on hardware). |
 | Anything else odd: start over | `python -m esptool --chip esp32s3 --port COM3 erase_flash`, then flash again. |
@@ -41,7 +41,7 @@ Seeed shipped both OV2640 and OV3660 during a transition period. An OV2640 board
 ## Changing settings without rebuilding
 Any client can send COMMANDs (see `protocol.md`). For example, with the test client:
 ```bash
-python pc/test_client.py 192.168.1.248 --seconds 3 --cmd '{"cmd":"set","values":{"xclk_hz":10000000}}' --cmd '{"cmd":"save"}'
+python pc/main.py check 192.168.1.248 --seconds 3 --cmd '{"cmd":"set","values":{"xclk_hz":10000000}}' --cmd '{"cmd":"save"}'
 ```
 `save` keeps the change across reboots. Wi-Fi keys need `save` then `reboot`. The Wi-Fi password travels in plain text over the local network; this is acceptable for a closed camp network only.
 

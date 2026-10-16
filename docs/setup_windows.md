@@ -8,10 +8,10 @@
    pc\.venv\Scripts\pip install -r pc\requirements.txt
    pc\.venv\Scripts\python -m pytest pc\tests -q
    ```
-   The last line should report `27 passed`.
+   The last line should report `34 passed`.
 3. Check the viewer without hardware:
    ```bash
-   pc\.venv\Scripts\python pc\viewer.py --replay samples\synthetic_run
+   pc\.venv\Scripts\python pc\main.py viewer --replay samples\synthetic_run
    ```
 
 ## 2. Board connection
@@ -22,7 +22,7 @@
 1. Install ESP-IDF **v5.5.3** with the Espressif Installation Manager (EIM).
    - Check the version with `idf.py --version`; don't trust the install folder name. On the reference PC, the folder was named `v5.5.1` but contained v5.5.3.
    - The project pins `idf: ==5.5.3` and refuses other versions.
-2. Wi-Fi credentials: copy `firmware\main\wifi_secrets.example.h` to `firmware\main\wifi_secrets.h` and fill in a 2.4 GHz network.
+2. Wi-Fi credentials: copy `firmware\main\config\wifi_secrets.example.h` to `firmware\main\config\wifi_secrets.h` and fill in a 2.4 GHz network.
    - The copy is git-ignored. **Don't** edit the example file: it is tracked.
    - Without the file, the board starts its own network `GMT-PF-xxxx` (password `gmtcamp2026`, board at 192.168.4.1).
    - Credentials can also be changed later without rebuilding (see `flashing_and_recovery.md`).
@@ -35,12 +35,12 @@
    idf.py merge-bin -o gmt_people_flow_merged.bin   # single image for flash_all / verify_board
    ```
    The first build downloads the pinned components (`dependencies.lock`) and takes a few minutes.
-4. After **adding or deleting** `wifi_secrets.h`, an incremental build won't notice. Run `idf.py fullclean`, or touch `main\settings.cpp`, before building.
-5. Build from a **committed** tree for camp boards. Otherwise the firmware version ends in `-dirty`, and `verify_board.py` fails it on purpose.
+4. After **adding or deleting** `wifi_secrets.h`, an incremental build won't notice. Run `idf.py fullclean`, or touch `main\config\settings.cpp`, before building.
+5. Build from a **committed** tree for camp boards. Otherwise the firmware version ends in `-dirty`, and `pc/main.py verify-board` fails it on purpose.
 
 ## 4. Flash and check
 ```powershell
-.\scripts\flash_all.ps1        # every connected board: flash merged image, then verify
+.\pc\tools\flash_all.ps1        # every connected board: flash merged image, then verify
 ```
 See `flashing_and_recovery.md` for single boards, manual esptool commands and fixes.
 
@@ -48,4 +48,4 @@ See `flashing_and_recovery.md` for single boards, manual esptool commands and fi
 ```powershell
 idf.py -p COM3 monitor          # Ctrl+] to exit; resets the board
 ```
-Or, without ESP-IDF: `pc\.venv\Scripts\python scripts\serial_capture.py COM3 60 boot.log`.
+Or, without ESP-IDF: `pc\.venv\Scripts\python pc\main.py serial-log COM3 60 boot.log`.

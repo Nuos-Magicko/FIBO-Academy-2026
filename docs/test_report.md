@@ -41,9 +41,9 @@ Log: `docs/logs/gate1_softap_check_2026-10-15.log`.
 | Die temperature with Wi-Fi on (SoftAP, no traffic) | 53 °C → 65 °C within ~40 s of Wi-Fi start | VERIFIED ON HARDWARE (trend; soak pending) |
 | PC parser (`pc/protocol.py`): fragmentation, garbage prefix, CRC corruption, oversize | self-check passes | SIMULATED-UNIT-TESTED |
 | `scripts/soak.py` against a fake local device: 399 frames, forced reconnect | 399/399 received, 0 seq gaps, 0 CRC errors, 0 missing pairs, frames + metrics.csv written | SIMULATED-UNIT-TESTED |
-| Device CRC (`esp_rom_crc32_le`) matches zlib crc32 on the PC | not yet exercised | NOT TESTED |
-| STA join of the configured network (2026-10-15 14:10) | `wifi_disconnected reason=201` (NO_AP_FOUND) ×10 in 35 s. PC scan sees that SSID on 5 GHz only. | BLOCKED (network is not 2.4 GHz) |
-| TCP stream device → PC | blocked: PC internet is Wi-Fi only (GMT_THAI 5G, 5 GHz); the board needs a 2.4 GHz network | BLOCKED (waiting for `wifi_secrets.h`) |
+| Device CRC (`esp_rom_crc32_le`) matches zlib crc32 on the PC | not yet exercised at this point; superseded: 0 CRC errors over the 1 h soak below | NOT TESTED here, VERIFIED later |
+| STA join of the configured network (2026-10-15 14:10) | `wifi_disconnected reason=201` (NO_AP_FOUND) ×10 in 35 s. PC scan sees that SSID on 5 GHz only. | BLOCKED (network is not 2.4 GHz); superseded: STA on GMT_THAI 2.4G worked from 14:20 |
+| TCP stream device → PC | blocked: PC internet is Wi-Fi only (GMT_THAI 5G, 5 GHz); the board needs a 2.4 GHz network | BLOCKED at this point; superseded by the soak below |
 
 ## 2026-10-15 14:20–15:21: Gate 1.4 soak, run 1 of 2: NO heatsink (supervised)
 
@@ -131,3 +131,47 @@ Modules: `protocol.py` (framing/codecs), `pipeline.py` (frame_id join, stats, tr
 | Tag `baseline-v1` | — | BLOCKED (waits for the baseline) |
 | Docs: README, setup_windows, setup_linux, flashing_and_recovery, experiments, student_quickstart, mentor_notes | written | Windows steps follow what was run on the reference PC; **setup_linux NOT TESTED**; erase_region and SoftAP recovery VERIFIED ON HARDWARE (Gate 2) |
 | "Students can run an unmodified baseline from the quickstart alone" | — | NOT TESTED (needs a student dry run) |
+
+## 2026-10-15 17:07–18:36: preliminary performance characterization, fw `2959028` (see `performance_report.md`)
+
+Not the reference baseline: no heatsink, uncontrolled desk scene, room temperature not measured.
+
+| Item | Result | Label |
+|---|---|---|
+| Mode characterization, 3 repeats × 5 modes × 60 s (`docs/measurements/20261015_1707_…`) | all 15 trials complete; e.g. full_stream 7.33 ± 0.03 fps processed, t_infer 111.6 ms, t_proc 135.1 ms; metadata_stream 0 drops; camera_only 27.65 fps | VERIFIED ON HARDWARE (preliminary conditions) |
+| **1 h soak on the final firmware** (`docs/measurements/soak_20261015_1727_…`) | 0 unexpected resets, 0 Wi-Fi disconnects, 0 capture timeouts, 0 seq/CRC errors, 0 missing pairs; int_min flat from minute 23 (66,011 B), ps_min flat from minute 5; max die temp 73.9 °C (no heatsink); 6.1 % of frames dropped by drop-oldest | VERIFIED ON HARDWARE: memory bounded on the final firmware |
+| End-to-end capture → display, 180 s (`docs/measurements/latency_20261015_1833_viewer/`) | median 158 ms, p90 291 ms, max 646 ms, ± 6.2 ms median clock bound | VERIFIED ON HARDWARE |
+| `collect_baseline.py` trial-boundary fix (false missing pair) | 2 × 2 smoke trials: every trial starts on a frame boundary, 0 missing pairs | VERIFIED ON HARDWARE |
+| `collect_baseline.py` final restore fix (command lost on immediate close) | fix written: waits for the confirming HELLO | BUILD-VERIFIED ONLY (the code path runs at the end of a full baseline; not re-run yet) |
+
+## 2026-10-16: code clean-up (self-documenting names, docstrings instead of comments), re-verified
+
+No intended behavior change. Wire names (counters, settings keys, JSON fields, log formats) were kept.
+
+| Item | Result | Label |
+|---|---|---|
+| Firmware build after refactor | clean, 0 warnings | BUILD-VERIFIED ONLY |
+| `verify_board.py` (refactored) on unit #1 | MAC, rev, 8 MB / 8 MB, sensor 0x3660, capture 1000/1000, self-test 3 boxes, IP; FAIL only for `-dirty` (uncommitted tree), as designed | VERIFIED ON HARDWARE |
+| full_stream 15 s with ping (`test_client.py`, refactored) | 110/110 pairs, 0 mismatch / seq / CRC errors; ±5.4 ms clock bound; t_pre 8.8, t_infer 111.3, t_post 0.2, t_proc 135.2 ms | VERIFIED ON HARDWARE |
+| Commands and modes | metadata_stream, inference_only (t_proc 199.6 ms), camera_only, back to full_stream; invalid value / unknown key / unknown cmd rejected with the same messages, nothing applied | VERIFIED ON HARDWARE |
+| Slow reader | drops counted (tx_dropped 8 = frame_id gaps 8), delivered bundles all paired | VERIFIED ON HARDWARE |
+| Viewer live and replay (headless) | live: 78 pairs, 0 seq gaps; replay counters identical to before | VERIFIED ON HARDWARE / SIMULATED-UNIT-TESTED |
+| `collect_baseline.py` (refactored) incl. final restore | trials complete; board back in full_stream with infer_only_runs 100 afterwards (restore fix now exercised on hardware) | VERIFIED ON HARDWARE |
+| `soak.py` (refactored), 2 min | reset + IP from serial, 859 frames, 0 resets / seq / CRC / missing pairs | VERIFIED ON HARDWARE |
+| Synthetic generator | output byte-identical to the committed sample | SIMULATED-UNIT-TESTED |
+| `report_baseline.py` | tables identical to the previous version's output | SIMULATED-UNIT-TESTED |
+| `pytest pc/tests` | 34 passed (tests split per behavior; `record_size` test added) | SIMULATED-UNIT-TESTED |
+
+## 2026-10-16: folder restructure (firmware modules in folders, `pc/main.py` as the single entry point), re-verified
+
+`app.h` split into per-module headers; firmware sources grouped into `config/ vision/ network/ telemetry/ utils/ assets/`; PC code grouped into `ui/ analysis/ connection/ recording/ tools/ utils/`; `scripts/` folded into `pc/tools/` as `pc/main.py` commands. `wifi_secrets.h` moved to `firmware/main/config/` and `.gitignore` updated (checked with `git check-ignore`). The synthetic sample was regenerated because its built-in note now names `pc/main.py make-synthetic` (+13 bytes; all counters unchanged).
+
+| Item | Result | Label |
+|---|---|---|
+| Firmware build | clean, 0 warnings; Wi-Fi credentials still compiled in from the new location | BUILD-VERIFIED ONLY |
+| `pc/tools/flash_all.ps1` → `main.py verify-board` | flashed (hash verified); every hardware check passed; FAIL only for `-dirty` | VERIFIED ON HARDWARE |
+| `main.py check` (ping, `--set`, bad value) | 86/86 pairs, 0 seq/CRC errors, ±9.5 ms; mode switches; `cmd_error` for an out-of-range value | VERIFIED ON HARDWARE |
+| `main.py viewer` live and replay | live 73 pairs, 0 seq gaps, 0 missing; replay counters unchanged | VERIFIED ON HARDWARE / SIMULATED-UNIT-TESTED |
+| `main.py baseline`, `serial-log`, `soak` (1 min) | complete; soak writes to repo `runs/`, 411 frames, 0 resets/seq/CRC/missing | VERIFIED ON HARDWARE |
+| `main.py report` | identical tables to the original script | SIMULATED-UNIT-TESTED |
+| `pytest pc/tests` | 34 passed | SIMULATED-UNIT-TESTED |

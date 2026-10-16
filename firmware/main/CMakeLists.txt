@@ -1,9 +1,13 @@
-idf_component_register(SRCS "main.cpp" "settings.cpp" "camera.cpp" "vision.cpp" "net.cpp" "wifi.cpp"
-                            "protocol.cpp" "commands.cpp" "metrics.cpp" "events.cpp" "grid.cpp" "thermal.cpp"
+idf_component_register(SRCS "main.cpp"
+                            "config/settings.cpp"
+                            "vision/vision.cpp" "vision/camera.cpp" "vision/grid.cpp"
+                            "network/net.cpp" "network/wifi.cpp" "network/protocol.cpp" "network/commands.cpp"
+                            "telemetry/metrics.cpp" "telemetry/events.cpp" "telemetry/thermal.cpp"
+                            "utils/device.cpp"
                        INCLUDE_DIRS "."
                        REQUIRES pedestrian_detect esp-dl esp32-camera esp_driver_tsens esp_psram spi_flash
                                 esp_timer esp_wifi esp_netif nvs_flash lwip json esp_app_format
-                       EMBED_FILES "pedestrian.jpg")
+                       EMBED_FILES "assets/pedestrian.jpg")
 
 # Component versions for HELLO, read from the managed components actually used in this build.
 foreach(pair "ESP_DL_VER;espressif__esp-dl" "ESP32_CAMERA_VER;espressif__esp32-camera"

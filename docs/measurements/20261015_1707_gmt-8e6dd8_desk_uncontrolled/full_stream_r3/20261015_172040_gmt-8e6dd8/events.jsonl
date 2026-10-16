@@ -1,0 +1,2 @@
+{"host_time": "2026-10-15T17:20:44.324", "t_dev_us": 1687819298, "severity": "warn", "code": "queue_drop_burst", "text": "18 bundles dropped in window", "t_event_us": 1687734112}
+{"host_time": "2026-10-15T17:21:38.264", "t_dev_us": 1741709885, "severity": "warn", "code": "queue_drop_burst", "text": "12 bundles dropped in window", "t_event_us": 1741607487}

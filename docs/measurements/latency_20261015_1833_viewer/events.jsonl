@@ -1,0 +1,4 @@
+{"host_time": "2026-10-15T18:33:40.718", "t_dev_us": 4005078093, "severity": "warn", "code": "client_lost", "text": "errno=104", "t_event_us": 4005046628}
+{"host_time": "2026-10-15T18:33:40.718", "t_dev_us": 4005079597, "severity": "info", "code": "client_connected", "text": "count=10", "t_event_us": 4005055602}
+{"host_time": "2026-10-15T18:34:12.937", "t_dev_us": 4037265662, "severity": "warn", "code": "queue_drop_burst", "text": "16 bundles dropped in window", "t_event_us": 4037047722}
+{"host_time": "2026-10-15T18:34:23.854", "t_dev_us": 4048176045, "severity": "warn", "code": "queue_drop_burst", "text": "16 bundles dropped in window", "t_event_us": 4047988811}

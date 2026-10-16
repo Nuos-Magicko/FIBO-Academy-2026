@@ -1,64 +1,128 @@
 # Student quickstart
 
-You will run an existing embedded-AI system **unmodified**, measure it, and explain what limits it, the way working engineers do. Your mentor has flashed your board and given you its **IP address** and **MAC label**.
+In this camp you work like a real engineer. You get a working system: a small camera board that finds people using AI and sends what it sees to your laptop. You will **measure** how it behaves, make a **guess about what limits it**, and **test** your guess with careful experiments.
+
+Before you start, your mentor gives you:
+- the board, with a label showing its **MAC address** (its unique hardware number);
+- the board's **IP address** (its address on the Wi-Fi network, for example `192.168.1.248`).
+
+Words you don't know are explained in the [glossary](glossary.md).
+
+---
 
 ## Safety and privacy first
-- The board gets hot (60–70 °C measured with no heatsink). Don't touch the chip or the heatsink while it runs. Don't put it inside a closed plastic box.
-- The camera sees people. **Recording images is off by default.** Turn it on (key **s**) only when everyone in view has agreed. Telemetry logs never contain images.
 
-## 1. Set up the PC (once)
-Windows, in the project folder:
+- **The chip gets hot.** About 60–74 °C was measured without a heatsink. Don't touch the chip or the metal heatsink while the board is running. Don't put the board inside a closed plastic box.
+- **The camera can see people.** Saving pictures is **off** at the start. Only turn it on (key `s`) when everyone the camera can see has said yes. The measurement files never contain pictures.
+
+---
+
+## 1. Set up your laptop (only once)
+
+Open a terminal in the project folder. On Windows, type:
 ```bash
 python -m venv pc\.venv
 pc\.venv\Scripts\pip install -r pc\requirements.txt
 ```
-On Linux/macOS, use `python3` and `pc/.venv/bin/pip`. Test it without the board:
+On a Mac or Linux laptop, type `python3` instead of `python`, and `pc/.venv/bin/pip` instead of `pc\.venv\Scripts\pip`.
+
+Now test it without the board:
 ```bash
-pc\.venv\Scripts\python pc\viewer.py --replay samples\synthetic_run
+pc\.venv\Scripts\python pc\main.py viewer --replay samples\synthetic_run
 ```
-You should see moving coloured boxes labelled SYNTHETIC. Close the window with **q**.
+You should see coloured boxes moving across a grey picture with the word SYNTHETIC. This is made-up data that goes through the same program as real data. Press `q` to close the window.
+
+---
 
 ## 2. Connect the board
-1. Plug the board into a USB port on the laptop (or a powered hub). Check that the Wi-Fi antenna is attached.
-2. Wait about 1 minute; it runs self-tests at every boot.
-3. Your laptop must be on the same Wi-Fi network as the board (ask your mentor which one).
-4. Start the viewer:
+
+1. Check that the **Wi-Fi antenna** (the small flat sticker on a wire) is plugged into the board.
+2. Plug the board into a USB port on your laptop, or into a powered USB hub.
+3. **Wait about one minute.** Every time the board starts, it tests its camera and its AI first.
+4. Make sure your laptop is on the **same Wi-Fi network** as the board. Ask your mentor which one.
+5. Start the viewer, writing your board's IP address instead of `<board-ip>`:
    ```bash
-   pc\.venv\Scripts\python pc\viewer.py --host <board-ip>
+   pc\.venv\Scripts\python pc\main.py viewer --host <board-ip>
    ```
 
-## 3. Read the screen
-- **Left:** the camera image, green boxes (detected people, with scores), yellow dots (each box's bottom-center, the point the heatmaps use), and the `frame_id`.
-- **Right, DEVICE:** what the board reports about itself every second: processed/sent fps, inference time, temperature, dropped frames.
-- **Right, HOST:** what your laptop measures: received fps, drawing time, gaps, and the capture→display estimate **with its ± uncertainty**.
-- **Bottom:** what the current overlay means, with units, and its limitations. Read them before drawing conclusions from a heatmap.
+If the viewer says `connect failed`, check the IP address and the Wi-Fi network, then ask your mentor.
 
-| Key | Does |
+---
+
+## 3. Read the screen
+
+**On the left: the camera picture.**
+- **Green boxes** are people the AI found. The number above each box is the **score**: how sure the AI is, from 0 to 1.
+- **Yellow dots** are the middle of the bottom edge of each box, roughly where the person's feet are. The heatmaps use this point.
+- **`frame_id`** in the corner is the number of this picture. It goes up by one for every picture the board processes.
+
+**On the right: the numbers.**
+- **DEVICE** is what the board says about itself, updated once per second:
+  - how many frames per second it **processed** and **sent**;
+  - how long the AI took (**t_infer**);
+  - how long one whole frame took (**t_proc**);
+  - its **temperature**;
+  - how many frames it had to **drop**.
+- **HOST** is what your laptop measured:
+  - frames per second received;
+  - how long drawing took;
+  - any lost data;
+  - **capture → display**: the time from the camera taking a picture to your screen showing it. It is always shown with a "±" value, which tells you how accurate the number is (see the glossary entry *clock offset*).
+- **EVENTS** are messages from the board, such as "mode changed" or warnings.
+
+**Under the picture:** what the current heatmap means, with its **units**, and its **limits**. Read these before you draw any conclusion from a heatmap.
+
+| Key | What it does |
 |---|---|
-| **o** | overlay: none → presence (device) → movement (PC) |
-| **m** | next experiment mode (see `experiments.md` §4) |
-| **r** | reset both heatmaps |
-| **g** | ask the board for its grid now |
-| **s** | recording of images on/off |
-| **c** | disconnect/reconnect |
-| **q** | quit |
+| `o` | switch the heatmap: none → presence → movement |
+| `m` | switch to the next **mode** (see [experiments.md](experiments.md), section 4) |
+| `r` | clear both heatmaps |
+| `g` | ask the board for its presence heatmap now |
+| `s` | start/stop saving camera pictures |
+| `c` | disconnect / reconnect |
+| `q` | quit |
+
+---
 
 ## 4. Where your data goes
-Every session writes a folder `runs/<date_time>_<device>/`; `experiments.md` §6 lists the files. `metrics.csv` and `host_stats.csv` open in any spreadsheet. Replay a session later with:
+
+Every time you run the viewer, it makes a new **run folder**: `runs\<date_time>_<board>\`. The most useful files are:
+- `metrics.csv`: the board's measurements, one row per second. Open it in Excel or Google Sheets.
+- `host_stats.csv`: your laptop's measurements, one row per second.
+- `events.jsonl`: the board's messages.
+
+The full list is in [experiments.md](experiments.md), section 6.
+
+You can watch a saved session again at any time:
 ```bash
-pc\.venv\Scripts\python pc\viewer.py --replay runs\<folder>
+pc\.venv\Scripts\python pc\main.py viewer --replay runs\<folder>
 ```
 
-## 5. Run a repeatable trial
-Ask your mentor to set up the reference scene first. Then, with nothing else changed:
-```bash
-pc\.venv\Scripts\python scripts\collect_baseline.py --host <board-ip> --room-temp-c <measured> --scene <scene-name> --heatsink yes --repeats 3 --seconds 60
-```
-This takes about 25 minutes: a 2-minute warm-up, then 5 modes × 3 repeats. Results land in `baselines/…/summary.csv`, with every setting recorded in `baseline.json`.
+---
+
+## 5. Run a fair, repeatable experiment
+
+A fair experiment is one where **only the thing you are testing changes**. Everything else stays the same: the scene, the lighting, the board, the warm-up. So:
+
+1. Ask your mentor to set up the **reference scene** (printed people shapes or a video on a screen, with fixed lighting, and the camera on a stand).
+2. Measure the room temperature with a thermometer.
+3. Run the measurement script. Write your own numbers and names instead of the examples:
+   ```bash
+   pc\.venv\Scripts\python pc\main.py baseline --host <board-ip> --room-temp-c 26.5 --scene reference_scene --heatsink yes --repeats 3 --seconds 60
+   ```
+
+The script warms the board up for 2 minutes, then measures each of the 5 modes 3 times, for 60 seconds each. It takes about **25 minutes**, so don't touch the setup while it runs.
+
+The results are saved in `baselines\...\`:
+- `summary.csv`: one line of results per run;
+- `baseline.json`: every setting that was used.
+
+---
 
 ## 6. Work like an engineer
-1. Measure the **unmodified** baseline first, and write it down (template: `experiments.md` §8).
-2. Write a hypothesis about what limits the system *before* changing anything.
-3. Change **one** thing at a time, repeat at least 3 times, and compare with the baseline taken under the same conditions.
-4. Look for a competing explanation, and design a test that would tell the two apart.
-5. Report numbers with units, the spread across repeats, and what you could *not* measure.
+
+1. **Measure the unchanged system first.** This is your **baseline**. Write it down (there is a notebook page in [experiments.md](experiments.md), section 8).
+2. **Write a hypothesis before you change anything.** It should be a clear guess that a measurement could prove wrong. For example: "If I do X, then measurement Y will go up, because Z."
+3. **Change one thing at a time.** Repeat each test at least **3 times**. Compare your results with a baseline measured under the same conditions.
+4. **Look for another explanation.** Could something else have caused the change? Design a test that tells the two explanations apart.
+5. **Report honestly.** Give numbers **with units**, say how much they changed between repeats (the spread), and say what you could *not* measure.

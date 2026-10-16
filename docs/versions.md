@@ -16,7 +16,7 @@ The source of truth is `firmware/main/idf_component.yml` (direct pins) plus `fir
 | esptool | 4.12.0 | GPL-2.0 | From the IDF Python env |
 | Host Python | 3.12.4 | — | IDF env `idf5.5_py3.12_env` |
 
-Test image `firmware/main/pedestrian.jpg` (640×480): from espressif/esp-dl
+Test image `firmware/main/assets/pedestrian.jpg` (640×480): from espressif/esp-dl
 `examples/pedestrian_detect/main/pedestrian.jpg`, last changed in commit `9b2347b5`
 (2024-08-30), fetched at master `17e9abb1`. esp-dl is MIT-licensed.
 

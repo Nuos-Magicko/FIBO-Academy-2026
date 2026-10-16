@@ -1,7 +1,7 @@
 # GMTP wire protocol v1
 
 The device is a TCP server on port **5000** and serves one client at a time. Records are sent over TCP only; logs go to USB serial and never to the data stream.
-Reference parser: `pc/protocol.py` (self-check: `python pc/protocol.py`). Device side: `firmware/main/protocol.cpp`.
+Reference parser: `pc/connection/protocol.py` (tests: `pc/tests/test_protocol.py`). Device side: `firmware/main/network/protocol.cpp`.
 
 ## Record framing (all little-endian)
 
@@ -35,7 +35,7 @@ Parsers must resync on `magic` after corruption, reject oversize `len`, and drop
 | 9 | FRAME_TIMING | dev → PC | JSON per bundle when `metrics_verbose` is true: `frame_id` + the per-frame stage times known before hand-off (`t_enqueue` and `t_proc` are not included; METRICS has them) |
 
 ### Bundles and pairing
-In `full_stream`, a processed frame is sent as JPEG_FRAME then DETECTIONS with the **same frame_id**, back to back (then FRAME_TIMING if verbose). Only inferred frames are streamed, so overlays are aligned by construction. A client must never draw DETECTIONS for frame n+1 on frame n. `pc/test_client.py` counts any such mismatch as a failure.
+In `full_stream`, a processed frame is sent as JPEG_FRAME then DETECTIONS with the **same frame_id**, back to back (then FRAME_TIMING if verbose). Only inferred frames are streamed, so overlays are aligned by construction. A client must never draw DETECTIONS for frame n+1 on frame n. `pc/main.py check` counts any such mismatch as a failure.
 In `metadata_stream` and `inference_only`, DETECTIONS are sent without JPEG_FRAME. In `inference_only`, `w×h` is the 640×480 still.
 
 ### METRICS JSON

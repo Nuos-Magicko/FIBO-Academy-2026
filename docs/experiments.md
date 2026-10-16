@@ -1,81 +1,176 @@
-# Experiments: definitions, modes, knobs, log template
+# Experiments guide
 
-This system is a **baseline to investigate**, not a solution to improve toward a target. Every number below is measured on the device or the PC with the boundaries stated here. If a boundary is unclear, read the code it names.
+This guide explains **what every measurement means**, the **modes** and **settings** you can use in your experiments, and gives you a **notebook page** for each trial.
 
-## 1. Timing stages (device, µs, `esp_timer_get_time()`)
-Defined in `firmware/main/app.h` (`stage_t`); measured in `vision.cpp` and `net.cpp`.
+This system is a starting point to investigate. It is not a puzzle with one right answer, and there is no target speed to reach. Unknown words are in the [glossary](glossary.md).
 
-| Field | Starts | Ends |
+---
+
+## 1. What the board times, step by step
+
+For every frame, the board writes down the time before and after each step, using its own clock in **microseconds (µs)**; 1,000 µs = 1 ms. Each step has a name starting with `t_`:
+
+| Name | What happens during this time | Starts when… | Ends when… |
+|---|---|---|---|
+| `t_wait_frame` | The board waits for the camera to deliver a picture | it asks the camera for a picture | the picture arrives |
+| `t_copy` | The JPEG picture is copied into a sending buffer (`full_stream` mode only) | the copy starts | the copy ends |
+| `t_decode` | The JPEG is turned back into pixels (RGB) | decoding starts | the pixels are ready |
+| `t_pre` | The picture is prepared for the AI: shrunk to 224 × 224 pixels and converted to the model's number format | preparation starts | it ends |
+| `t_infer` | The AI model itself runs | the model starts | the model finishes |
+| `t_post` | The AI's raw answer is turned into a clean list of boxes, with duplicates removed | clean-up starts | the box list is ready |
+| `t_grid` | The presence heatmap is updated | the update starts | it ends |
+| `t_enqueue` | The finished frame is handed to the network task, including any waiting | the hand-off starts | the frame is in the queue |
+| `t_proc` | **The whole job for one frame on the board** | the picture arrived from the camera | the frame is in the queue |
+| `t_send` | The network task sends one frame over Wi-Fi | sending starts | the last byte is handed to the network |
+
+Things to know:
+- The board gives the picture's memory back to the camera as soon as it has finished with it: right after `t_copy` in `full_stream`, or right after `t_decode` in the other modes.
+- The **very first** AI run after the board starts is slower than the runs after it. This first run happens during the board's self-test, so it doesn't appear in your measurements.
+- Where exactly each timer starts and stops is in the code: `firmware/main/vision/vision.cpp` and `firmware/main/network/net.cpp`.
+
+---
+
+## 2. Speed has two meanings: latency and throughput
+
+- **Latency** is how long **one** frame takes, for example `t_proc`.
+- **Throughput** is how **many** frames are finished each second (fps).
+
+They are related, but they are **not the same**. Knowing one does not tell you the other.
+
+This project counts frames per second at four places:
+
+| Name | Where it is counted | Meaning |
 |---|---|---|
-| `t_wait_frame` | before `esp_camera_fb_get()` | it returns a frame (blocked waiting for the camera) |
-| `t_copy` | before `memcpy` of the JPEG into the transmit pool (`full_stream` only) | after the copy |
-| `t_decode` | before `dl::image::sw_decode_jpeg` | RGB888 image ready |
-| `t_pre` | detector preprocess start (resize/quantize to 224×224) | preprocess done |
-| `t_infer` | `model->run()` start | model done (the neural network only) |
-| `t_post` | postprocess start (decode boxes, NMS) | result list ready |
-| `t_grid` | before the presence-grid update | after it |
-| `t_enqueue` | before handing the bundle to the network queue (incl. any wait) | queued |
-| `t_proc` | `esp_camera_fb_get()` **returned** | bundle queued: the device processing latency for one frame |
-| `t_send` | net task starts writing a bundle to the socket | last byte accepted by the TCP stack |
+| processed fps (`fps_processed`) | on the board | frames the board finished (AI done) |
+| sent fps (`fps_sent`) | on the board | frames the board finished sending |
+| capture fps | on the board | pictures taken by the camera. Only in `camera_only` mode is this how fast the camera itself can go. |
+| received fps / display fps | on your laptop (`host_stats.csv`) | frames your laptop received / drew on screen |
 
-- The camera buffer is returned to the driver right after `t_copy` (`full_stream`) or right after `t_decode` (other modes).
-- The very first detector run after boot is slower (about 216 ms vs about 120 ms). The boot self-test absorbs it.
+If these numbers are different, something happened in between. For example, when the board's sending queue is full, it throws away the oldest frame. Your laptop then sees a jump in `frame_id`, counted as **frame_id gaps**.
 
-## 2. Throughput is not latency
-- **Processed fps** (`fps_processed`): frames the device fully processed per second.
-- **Sent fps** (`fps_sent`): bundles the device finished writing to the socket per second.
-- **Capture fps**: frames delivered by the camera (`counters.cap_ok` change / time). Only in `camera_only` is this the camera's own rate.
-- **Received / display fps** (PC `host_stats.csv`): frames the PC completed and drew.
+---
 
-A low `t_proc` does not mean high fps, and high processed fps does not mean the PC sees every frame. `frame_id` gaps on the PC count frames the device processed but dropped (drop-oldest) before sending.
+## 3. Measuring the time from camera to screen
 
-## 3. End-to-end latency
-Device and PC clocks are not synchronized. The PC estimates the offset with PING/PONG and keeps the smallest round trip: `offset = t_dev − (t_host + rtt/2)`, uncertainty **±rtt/2**. "Capture → display" in the viewer uses that offset and is always reported with its ± band. Don't quote an end-to-end number without the band, or one computed from raw timestamps of the two clocks.
+The board's clock and your laptop's clock **do not show the same time**. So you cannot simply subtract the board's "picture taken" time from the laptop's "picture shown" time.
 
-## 4. Modes
-| Mode | Device does | Sent over Wi-Fi |
+To compare the two clocks, the viewer does this every 2 seconds:
+1. The laptop sends a message (a "ping") containing its own time.
+2. The board answers at once with *its* time.
+3. The laptop measures how long the round trip took (the **RTT**).
+
+The board's answer was made somewhere during that round trip, so the clock comparison is only accurate to within **± half the RTT**. The viewer keeps the fastest round trip, because it gives the smallest error.
+
+That is why "capture → display" is always shown with a ± value, for example **≈ 150 ms ± 5 ms** (made-up numbers). Always write down the ± value with the number. A camera-to-screen time without its ± value is not a valid result.
+
+---
+
+## 4. The five modes
+
+Each mode switches parts of the system on or off, so you can measure what each part does:
+
+| Mode | What the board does | What it sends over Wi-Fi |
 |---|---|---|
-| `camera_only` | capture + return | METRICS, EVENT |
-| `inference_only` | decode + detect the embedded 640×480 still, `infer_only_runs` times | DETECTIONS (no JPEG), METRICS, EVENT |
-| `detect_no_stream` | full live pipeline (no JPEG copy) | METRICS, EVENT |
-| `metadata_stream` | full live pipeline | DETECTIONS, PRESENCE_GRID, METRICS, EVENT |
-| `full_stream` (default) | full live pipeline + JPEG copy | JPEG_FRAME + DETECTIONS, PRESENCE_GRID, METRICS, EVENT |
+| `camera_only` | only takes pictures and throws them away | measurements and messages |
+| `inference_only` | runs the AI again and again on one saved photo (640 × 480 pixels); the camera is off | the boxes, measurements, messages |
+| `detect_no_stream` | camera + AI + presence heatmap | measurements and messages only |
+| `metadata_stream` | camera + AI + presence heatmap | the boxes and the heatmap, but **no pictures** |
+| `full_stream` (default) | camera + AI + heatmap + a copy of each picture | everything, **including the pictures** |
 
-Switch with the viewer key **m** or `{"cmd":"set","values":{"mode":"…"}}`. The current mode is in every METRICS record, in HELLO (`hello.json`), and in `mode_changed` events.
+To switch modes, press `m` in the viewer. The current mode is written in every measurement row, so your files always show which mode was running.
 
-## 5. Knobs (`{"cmd":"set","values":{…}}`, `save` to keep)
-`frame_size` (QQVGA/QVGA/HVGA/VGA), `jpeg_quality` (4–63; lower = better quality, bigger files), `xclk_hz`, `infer_every_n` (process every Nth camera frame), `metrics_interval_ms`, `score_thr`, `metrics_verbose` (per-frame FRAME_TIMING records, which have a cost of their own), `grid_every_n`, `thermal_warn_c`, `warmup_frames`, `wifi_mode`. These are tools for experiments, **not** recommended settings.
+---
 
-## 6. Data
-- **Device METRICS** are aggregated per window (default 1 s): for each stage `n, min, mean, max, p95` (nearest-rank), plus counters since boot, memory (`*_min` = lowest ever since boot), die temperature, RSSI, Wi-Fi state, uptime and reset reason.
-- **PC run folder** `runs/<time>_<device>/`: `hello.json`, `detections.jsonl`, `metrics.csv` (fixed columns), `events.jsonl`, `grid_snapshots.csv`, `host_stats.csv`, `stream.gmtp` (replayable with `pc/replay.py`), and `frames/` (only while recording).
-- **Baseline folder** `baselines/<date>_<device>_<scene>/` from `scripts/collect_baseline.py`: `baseline.json` (provenance), `summary.csv` (one row per trial), and one run folder per trial.
+## 5. Settings you can change
 
-## 7. Warm-up and repeatability
-- Stream at least **2 minutes** before measuring, so the die temperature settles. `collect_baseline.py` does this (`--initial-warmup-s 120`) plus 15 s after every mode switch.
-- Record the die temperature with every trial (it is in METRICS; `summary.csv` has start/end/max).
-- Note the room temperature, the heatsink, the scene and the board MAC.
-- Use the reference scenes: printed full-body silhouettes or a still photo on a monitor at a fixed distance under fixed lighting; or a looping walking video (licensed or self-recorded with consent) on a monitor. The camera goes on a tripod or clamp.
-- The detector was trained on roughly eye-level views. Mount the camera at about 2–2.5 m with an oblique angle, people at least about ¼ of the frame height.
-- Wi-Fi is shared airtime: other devices and people moving between the board and the router change `t_send`. Note the RSSI and the time of day.
+You can change these settings while the board is running. They are tools for your experiments, **not** recommended values. Change one at a time, and write down what you changed.
 
-## 8. Trial log template
-Copy one block per trial into your notebook. The scripts fill most fields automatically (`baseline.json`, `summary.csv`).
+| Setting | What it changes | Allowed values |
+|---|---|---|
+| `frame_size` | picture size | QQVGA (160×120), QVGA (320×240, default), HVGA (480×320), VGA (640×480) |
+| `jpeg_quality` | picture quality. **Lower number = better quality, bigger file.** | 4 to 63 (default 12) |
+| `infer_every_n` | run the AI only on every Nth picture | 1 to 1000 (default 1 = every picture) |
+| `score_thr` | minimum score for a box to count | 0.01 to 1.0 (default 0.7) |
+| `xclk_hz` | the camera's clock speed | 5,000,000 to 24,000,000 (default 20,000,000) |
+| `metrics_interval_ms` | how often the board sends its summary | 100 to 60,000 ms (default 1000) |
+| `metrics_verbose` | also send the timing of **every** frame. Sending this extra data has a cost of its own. | true / false |
+| `grid_every_n` | how often the presence heatmap is sent | 1 to 65535 frames (default 50) |
+| `warmup_frames` | pictures thrown away after the camera starts | 0 to 1000 (default 10) |
+
+To change a setting, send it from the laptop with `--set name=value`, for example:
+```bash
+pc\.venv\Scripts\python pc\main.py check <board-ip> --seconds 3 --set jpeg_quality=20
+```
+You can give several at once, such as `--set jpeg_quality=20 --set infer_every_n=2`. Check the printed `events` to see whether it worked: `cmd_ok` means the board accepted it, and `cmd_error` tells you what was wrong.
+The change lasts until the board restarts. Ask your mentor if you want to keep a setting permanently.
+
+---
+
+## 6. Your data files
+
+**The board's summary (once per second).** For each timed step, the summary gives:
+- `n`: how many frames were measured;
+- `min`: the fastest;
+- `mean`: the average;
+- `max`: the slowest;
+- `p95`: 95 % of the frames were this fast or faster.
+
+It also includes counters (totals since the board started), free memory (`int_min` and `ps_min` = the lowest it has ever been), the chip temperature, the Wi-Fi signal strength (RSSI), and how long the board has been running.
+
+**Your run folder,** `runs\<date_time>_<board>\`:
+
+| File | Contents |
+|---|---|
+| `hello.json` | the board's details and all its settings |
+| `metrics.csv` | the board's summary, one row per second (open in a spreadsheet) |
+| `host_stats.csv` | your laptop's measurements, one row per second |
+| `detections.jsonl` | every box the AI found, frame by frame |
+| `events.jsonl` | the board's messages |
+| `grid_snapshots.csv` | the presence heatmap, each time it was sent |
+| `stream.gmtp` | everything received, for replaying the session later |
+| `frames\` | camera pictures, **only** if you turned saving on with `s` |
+
+**A baseline folder,** `baselines\<date>_<board>_<scene>\`, made by `pc/main.py baseline`:
+- `baseline.json`: every setting and condition;
+- `summary.csv`: one result line per run;
+- one run folder per run.
+
+---
+
+## 7. Getting results you can trust
+
+- **Warm up first.** Let the board run for at least **2 minutes** before you measure, so its temperature stops rising. The script does this for you, and also waits 15 seconds after every mode change.
+- **Write down the conditions** of every trial:
+  - the room temperature;
+  - whether the heatsink is on;
+  - the scene;
+  - the board's MAC address;
+  - the chip temperature at the start and end. The script records this.
+- **Use the reference scene.** Use printed people shapes or a photo on a screen at a fixed distance, or a looping video of people walking. Keep the lighting fixed and put the camera on a stand.
+- **Point the camera sensibly.** The AI was trained on pictures taken at about eye level. It works best with the camera about 2–2.5 m high, looking down at an angle, with people filling at least a quarter of the picture height.
+- **Remember that Wi-Fi is shared.** Other devices, and people walking between the board and the router, can change how long sending takes. Note the Wi-Fi signal strength (RSSI) and the time of day.
+
+---
+
+## 8. Notebook page for one trial
+
+Copy this for every trial. The scripts fill in many of the values for you: see `baseline.json` and `summary.csv`.
 
 ```
-Date / time:            Team:                 Trial id:
-Question / hypothesis:
-Board MAC:              Sensor PID:           Firmware (fw_version):
-IDF / esp-dl / camera / model versions: (from hello.json)
-Config changed from default: (key = value, or "none")
-Mode:                   Repeat #:             Duration (s):     Warm-up (s):
-Scene:                  Lighting:             Camera height/angle:
-Room temp (°C):         Heatsink (y/n):       Power (port/hub):  RSSI (dBm):
-Die temp start / end / max (°C):
-Results (with units):   fps processed / sent / received:
-                        t_decode / t_pre / t_infer / t_post / t_proc / t_send (mean, p95):
-                        tx_dropped / frame_id gaps / missing pairs / seq gaps:
-Run folder:
-Observations (what surprised you?):
-Competing explanations, and the test that would separate them:
+Date and time:          Team:                 Trial number:
+My question / hypothesis:
+Board MAC:              Camera ID (sensor PID):    Firmware version:
+Software versions (from hello.json):
+What I changed from the default settings (setting = value, or "nothing"):
+Mode:                   Repeat number:        Length (s):       Warm-up (s):
+Scene:                  Lighting:             Camera height and angle:
+Room temperature (°C):  Heatsink (yes/no):    Power (laptop port / hub):   Wi-Fi signal RSSI (dBm):
+Chip temperature at start / end / highest (°C):
+Results (always with units):
+   frames per second processed / sent / received:
+   t_decode / t_pre / t_infer / t_post / t_proc / t_send (mean and p95, in ms):
+   frames dropped / frame_id gaps / missing pairs / sequence gaps:
+Run folder name:
+What surprised me:
+Another possible explanation, and a test that could tell the two apart:
 ```
