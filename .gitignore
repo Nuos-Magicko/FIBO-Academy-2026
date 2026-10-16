@@ -8,6 +8,7 @@ runs/
 boards.csv
 pc/.venv/
 .vscode/
+.pytest_cache/
 # Camera frames can show people; keep them local, never in git
 docs/logs/**/frames/*.jpg
 docs/measurements/**/frames/*.jpg
