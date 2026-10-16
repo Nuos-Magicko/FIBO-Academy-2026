@@ -6,9 +6,7 @@
  *   {"cmd":"set","values":{...}}           keys as in settings.cpp; replies with a new HELLO
  *   {"cmd":"reset_grid"}  {"cmd":"get_grid"}  {"cmd":"get_hello"}  {"cmd":"save"}  {"cmd":"reboot"}
  */
-#include <algorithm>
 #include <cstring>
-#include <iterator>
 #include "network/commands.h"
 #include "config/settings.h"
 #include "network/net.h"
@@ -18,85 +16,106 @@
 #include "vision/grid.h"
 #include "esp_timer.h"
 
-static void reply(bool ok, const char *cmd, const char *text)
+static void reply_ok(const char *cmd, const char *text)
 {
-    if (ok) g_counters.cmd_ok++;
-    else g_counters.cmd_err++;
-    event_post(ok ? EV_INFO : EV_WARN, ok ? "cmd_ok" : "cmd_error", "%s: %s", cmd, text);
+    g_counters.cmd_ok++;
+    event_post(event_severity_t::info, "cmd_ok", "%s: %s", cmd, text);
+}
+
+static void reply_error(const char *cmd, const char *text)
+{
+    g_counters.cmd_err++;
+    event_post(event_severity_t::warn, "cmd_error", "%s: %s", cmd, text);
 }
 
 static void handle_ping(const cJSON *request, client_connection_t *client)
 {
     cJSON *pong = cJSON_CreateObject();
     const cJSON *t_host_us = cJSON_GetObjectItem(request, "t_host_us");
-    cJSON_AddItemToObject(pong, "t_host_us", t_host_us ? cJSON_Duplicate(t_host_us, false) : cJSON_CreateNull());
-    cJSON_AddNumberToObject(pong, "t_dev_us", (double)esp_timer_get_time());
-    send_json(client, REC_PONG, pong);
+    if (t_host_us != nullptr) {
+        cJSON_AddItemToObject(pong, "t_host_us", cJSON_Duplicate(t_host_us, false));
+    } else {
+        cJSON_AddItemToObject(pong, "t_host_us", cJSON_CreateNull());
+    }
+    cJSON_AddNumberToObject(pong, "t_dev_us", static_cast<double>(esp_timer_get_time()));
+    send_json(client, record_type_t::pong, pong);
     g_counters.cmd_ok++;
 }
 
 static void handle_set(const cJSON *request, client_connection_t *client)
 {
-    char err[96];
-    if (!settings_set(cJSON_GetObjectItem(request, "values"), err, sizeof err)) {
-        reply(false, "set", err);
+    char err[EVENT_TEXT_BYTES];
+    if (!settings_set(cJSON_GetObjectItem(request, "values"), err, sizeof(err))) {
+        reply_error("set", err);
         return;
     }
-    reply(true, "set", "applied (wifi keys need save + reboot)");
+    reply_ok("set", "applied (wifi keys need save + reboot)");
     client->hello_requested = true;
 }
 
-static void handle_reset_grid(const cJSON *, client_connection_t *client)
+static void handle_reset_grid(client_connection_t *client)
 {
     grid_clear();
-    reply(true, "reset_grid", "grid cleared");
+    reply_ok("reset_grid", "grid cleared");
     client->grid_requested = true;
 }
 
-static void handle_get_grid(const cJSON *, client_connection_t *client)
+static void handle_get_grid(client_connection_t *client)
 {
     client->grid_requested = true;
     g_counters.cmd_ok++;
 }
 
-static void handle_get_hello(const cJSON *, client_connection_t *client)
+static void handle_get_hello(client_connection_t *client)
 {
     client->hello_requested = true;
     g_counters.cmd_ok++;
 }
 
-static void handle_save(const cJSON *, client_connection_t *)
+static void handle_save()
 {
-    bool saved = settings_save();
-    reply(saved, "save", saved ? "saved to NVS" : "NVS write failed");
+    if (settings_save()) {
+        reply_ok("save", "saved to NVS");
+    } else {
+        reply_error("save", "NVS write failed");
+    }
 }
 
-static void handle_reboot(const cJSON *, client_connection_t *client)
+static void handle_reboot(client_connection_t *client)
 {
-    reply(true, "reboot", "rebooting");
+    reply_ok("reboot", "rebooting");
     client->reboot_requested = true;
 }
 
-static const struct {
-    const char *name;
-    void (*handle)(const cJSON *request, client_connection_t *client);
-} COMMANDS[] = {
-    {"ping", handle_ping},         {"set", handle_set},   {"reset_grid", handle_reset_grid},
-    {"get_grid", handle_get_grid}, {"get_hello", handle_get_hello}, {"save", handle_save},
-    {"reboot", handle_reboot},
-};
+static void run_command(const char *name, const cJSON *request, client_connection_t *client)
+{
+    if (strcmp(name, "ping") == 0) {
+        handle_ping(request, client);
+    } else if (strcmp(name, "set") == 0) {
+        handle_set(request, client);
+    } else if (strcmp(name, "reset_grid") == 0) {
+        handle_reset_grid(client);
+    } else if (strcmp(name, "get_grid") == 0) {
+        handle_get_grid(client);
+    } else if (strcmp(name, "get_hello") == 0) {
+        handle_get_hello(client);
+    } else if (strcmp(name, "save") == 0) {
+        handle_save();
+    } else if (strcmp(name, "reboot") == 0) {
+        handle_reboot(client);
+    } else {
+        reply_error(name, "unknown cmd");
+    }
+}
 
 void command_dispatch(const uint8_t *payload, uint32_t len, client_connection_t *client)
 {
-    cJSON *request = cJSON_ParseWithLength((const char *)payload, len);
+    cJSON *request = cJSON_ParseWithLength(reinterpret_cast<const char *>(payload), len);
     const cJSON *cmd = cJSON_GetObjectItem(request, "cmd");
-    if (!cJSON_IsString(cmd)) {
-        reply(false, "?", "payload must be JSON with a string 'cmd'");
+    if (cJSON_IsString(cmd)) {
+        run_command(cmd->valuestring, request, client);
     } else {
-        auto *command = std::find_if(std::begin(COMMANDS), std::end(COMMANDS),
-                                     [&](const auto &c) { return !strcmp(c.name, cmd->valuestring); });
-        if (command != std::end(COMMANDS)) command->handle(request, client);
-        else reply(false, cmd->valuestring, "unknown cmd");
+        reply_error("?", "payload must be JSON with a string 'cmd'");
     }
     cJSON_Delete(request);
 }

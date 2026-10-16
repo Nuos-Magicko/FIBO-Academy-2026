@@ -6,7 +6,7 @@
 #include <cstdint>
 #include "config/settings.h"
 
-void wifi_start(const app_cfg_t &cfg);
+void wifi_start(const app_cfg_t &settings);
 /** "sta_connecting", "sta_connected" or "ap". */
 const char *wifi_state();
 const char *wifi_ip();

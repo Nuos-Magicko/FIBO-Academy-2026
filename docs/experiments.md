@@ -25,7 +25,6 @@ For every frame, the board writes down the time before and after each step, usin
 
 Things to know:
 - The board gives the picture's memory back to the camera as soon as it has finished with it: right after `t_copy` in `full_stream`, or right after `t_decode` in the other modes.
-- The **very first** AI run after the board starts is slower than the runs after it. This first run happens during the board's self-test, so it doesn't appear in your measurements.
 - Where exactly each timer starts and stops is in the code: `firmware/main/vision/vision.cpp` and `firmware/main/network/net.cpp`.
 
 ---
@@ -43,7 +42,7 @@ This project counts frames per second at four places:
 |---|---|---|
 | processed fps (`fps_processed`) | on the board | frames the board finished (AI done) |
 | sent fps (`fps_sent`) | on the board | frames the board finished sending |
-| capture fps | on the board | pictures taken by the camera. Only in `camera_only` mode is this how fast the camera itself can go. |
+| capture fps | on the board | pictures taken by the camera |
 | received fps / display fps | on your laptop (`host_stats.csv`) | frames your laptop received / drew on screen |
 
 If these numbers are different, something happened in between. For example, when the board's sending queue is full, it throws away the oldest frame. Your laptop then sees a jump in `frame_id`, counted as **frame_id gaps**.
@@ -93,7 +92,7 @@ You can change these settings while the board is running. They are tools for you
 | `score_thr` | minimum score for a box to count | 0.01 to 1.0 (default 0.7) |
 | `xclk_hz` | the camera's clock speed | 5,000,000 to 24,000,000 (default 20,000,000) |
 | `metrics_interval_ms` | how often the board sends its summary | 100 to 60,000 ms (default 1000) |
-| `metrics_verbose` | also send the timing of **every** frame. Sending this extra data has a cost of its own. | true / false |
+| `metrics_verbose` | also send the timing of **every** frame | true / false |
 | `grid_every_n` | how often the presence heatmap is sent | 1 to 65535 frames (default 50) |
 | `warmup_frames` | pictures thrown away after the camera starts | 0 to 1000 (default 10) |
 
@@ -139,7 +138,7 @@ It also includes counters (totals since the board started), free memory (`int_mi
 
 ## 7. Getting results you can trust
 
-- **Warm up first.** Let the board run for at least **2 minutes** before you measure, so its temperature stops rising. The script does this for you, and also waits 15 seconds after every mode change.
+- **Warm up first.** Let the board run for at least **2 minutes** before you measure. The script does this for you, and also waits 15 seconds after every mode change.
 - **Write down the conditions** of every trial:
   - the room temperature;
   - whether the heatsink is on;
@@ -148,7 +147,7 @@ It also includes counters (totals since the board started), free memory (`int_mi
   - the chip temperature at the start and end. The script records this.
 - **Use the reference scene.** Use printed people shapes or a photo on a screen at a fixed distance, or a looping video of people walking. Keep the lighting fixed and put the camera on a stand.
 - **Point the camera sensibly.** The AI was trained on pictures taken at about eye level. It works best with the camera about 2–2.5 m high, looking down at an angle, with people filling at least a quarter of the picture height.
-- **Remember that Wi-Fi is shared.** Other devices, and people walking between the board and the router, can change how long sending takes. Note the Wi-Fi signal strength (RSSI) and the time of day.
+- **Note the Wi-Fi conditions:** the signal strength (RSSI) and the time of day.
 
 ---
 

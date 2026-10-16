@@ -8,6 +8,8 @@
 #include "network/wifi.h"
 #include "telemetry/events.h"
 #include "telemetry/metrics.h"
+#include "utils/device.h"
+#include "utils/units.h"
 #include "esp_event.h"
 #include "esp_log.h"
 #include "esp_mac.h"
@@ -27,64 +29,95 @@ static constexpr uint32_t LOG_EVERY_NTH_FAILED_ATTEMPT = 10;
 
 static constexpr char STATE_OFF[] = "off";
 static const char *s_state = STATE_OFF;
-static char s_ip[16] = "0.0.0.0";
-static uint32_t s_failed_attempts, s_reconnects;
+/** "255.255.255.255" plus the closing '\0'. */
+static constexpr size_t IP_TEXT_BYTES = 16;
+static char s_ip[IP_TEXT_BYTES] = "0.0.0.0";
+static uint32_t s_failed_attempts;
+static uint32_t s_reconnects;
 static bool s_ever_connected;
 static esp_timer_handle_t s_retry_timer;
 
-const char *wifi_state() { return s_state; }
-const char *wifi_ip() { return s_ip; }
-uint32_t wifi_reconnects() { return s_reconnects; }
+const char *wifi_state()
+{
+    return s_state;
+}
+
+const char *wifi_ip()
+{
+    return s_ip;
+}
+
+uint32_t wifi_reconnects()
+{
+    return s_reconnects;
+}
+
+static bool state_is(const char *state)
+{
+    return strcmp(s_state, state) == 0;
+}
 
 int wifi_rssi()
 {
+    if (!state_is(STATE_STATION_CONNECTED)) {
+        return 0;
+    }
     wifi_ap_record_t access_point;
-    bool connected = s_state == STATE_STATION_CONNECTED;
-    return connected && esp_wifi_sta_get_ap_info(&access_point) == ESP_OK ? access_point.rssi : 0;
+    if (esp_wifi_sta_get_ap_info(&access_point) != ESP_OK) {
+        return 0;
+    }
+    return access_point.rssi;
 }
 
 /** SoftAP "GMT-PF-xxxx" (last two MAC bytes), WPA2, at SOFT_AP_IP. */
 static void start_soft_ap()
 {
     wifi_config_t config = {};
-    uint8_t mac[6];
-    esp_read_mac(mac, ESP_MAC_WIFI_SOFTAP);
-    config.ap.ssid_len = snprintf((char *)config.ap.ssid, sizeof config.ap.ssid, "GMT-PF-%02X%02X", mac[4], mac[5]);
-    strlcpy((char *)config.ap.password, SOFT_AP_PASSWORD, sizeof config.ap.password);
+    mac_address_t mac = {};
+    esp_read_mac(mac.data(), ESP_MAC_WIFI_SOFTAP);
+    char *ssid = reinterpret_cast<char *>(config.ap.ssid);
+    config.ap.ssid_len = snprintf(ssid, sizeof(config.ap.ssid), "GMT-PF-%02X%02X", mac[4], mac[5]);
+    strlcpy(reinterpret_cast<char *>(config.ap.password), SOFT_AP_PASSWORD, sizeof(config.ap.password));
     config.ap.channel = SOFT_AP_CHANNEL;
-    config.ap.max_connection = 2;
+    config.ap.max_connection = SOFT_AP_MAX_CLIENTS;
     config.ap.authmode = WIFI_AUTH_WPA2_PSK;
     esp_wifi_set_mode(WIFI_MODE_AP);
     esp_wifi_set_config(WIFI_IF_AP, &config);
     strcpy(s_ip, SOFT_AP_IP);
     s_state = STATE_SOFT_AP;
-    ESP_LOGI(TAG, "NET mode=ap ssid=%s ip=%s port=%d", (char *)config.ap.ssid, s_ip, TCP_PORT);
+    ESP_LOGI(TAG, "NET mode=ap ssid=%s ip=%s port=%d", ssid, s_ip, TCP_PORT);
 }
 
-static void configure_station(const app_cfg_t &cfg)
+static void configure_station(const app_cfg_t &settings)
 {
     wifi_config_t config = {};
-    strlcpy((char *)config.sta.ssid, cfg.sta_ssid, sizeof config.sta.ssid);
-    strlcpy((char *)config.sta.password, cfg.sta_pass, sizeof config.sta.password);
+    strlcpy(reinterpret_cast<char *>(config.sta.ssid), settings.sta_ssid, sizeof(config.sta.ssid));
+    strlcpy(reinterpret_cast<char *>(config.sta.password), settings.sta_pass, sizeof(config.sta.password));
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
     ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &config));
     s_state = STATE_STATION_CONNECTING;
-    ESP_LOGI(TAG, "NET mode=sta ssid=%s connecting", cfg.sta_ssid);
+    ESP_LOGI(TAG, "NET mode=sta ssid=%s connecting", settings.sta_ssid);
 }
 
 /** 1 s, 2 s, 4 s, ... capped at WIFI_BACKOFF_MAX_MS. */
 static uint32_t backoff_delay_ms(uint32_t failed_attempts)
 {
-    uint32_t doublings = failed_attempts > BACKOFF_MAX_DOUBLINGS ? BACKOFF_MAX_DOUBLINGS : failed_attempts - 1;
+    uint32_t doublings = failed_attempts - 1;
+    if (failed_attempts > BACKOFF_MAX_DOUBLINGS) {
+        doublings = BACKOFF_MAX_DOUBLINGS;
+    }
     uint32_t delay = FIRST_RETRY_DELAY_MS << doublings;
-    return delay > WIFI_BACKOFF_MAX_MS ? WIFI_BACKOFF_MAX_MS : delay;
+    if (delay > WIFI_BACKOFF_MAX_MS) {
+        delay = WIFI_BACKOFF_MAX_MS;
+    }
+    return delay;
 }
 
 /** Runs in the esp_timer task after each backoff delay. */
 static void retry_or_fall_back(void *)
 {
     if (!s_ever_connected && s_failed_attempts >= WIFI_ATTEMPTS_BEFORE_SOFT_AP) {
-        event_post(EV_WARN, "wifi_fallback_ap", "station never connected after %u tries", (unsigned)s_failed_attempts);
+        event_post(event_severity_t::warn, "wifi_fallback_ap", "station never connected after %u tries", static_cast<unsigned>(s_failed_attempts));
         start_soft_ap();
         return;
     }
@@ -93,39 +126,50 @@ static void retry_or_fall_back(void *)
 
 static void on_station_disconnected(const wifi_event_sta_disconnected_t *info)
 {
-    if (s_state == STATE_SOFT_AP) return;
-    bool was_connected = s_state == STATE_STATION_CONNECTED;
+    if (state_is(STATE_SOFT_AP)) {
+        return;
+    }
+    bool was_connected = state_is(STATE_STATION_CONNECTED);
     s_state = STATE_STATION_CONNECTING;
     strcpy(s_ip, NO_IP);
     g_counters.wifi_disconnects++;
     s_failed_attempts++;
     uint32_t delay_ms = backoff_delay_ms(s_failed_attempts);
-    if (was_connected || s_failed_attempts == 1 || s_failed_attempts % LOG_EVERY_NTH_FAILED_ATTEMPT == 0)
-        event_post(EV_WARN, "wifi_disconnected", "reason=%d attempt=%u retry_in=%ums", info->reason,
-                   (unsigned)s_failed_attempts, (unsigned)delay_ms);
-    esp_timer_start_once(s_retry_timer, (uint64_t)delay_ms * 1000);
+
+    bool first_failure = (s_failed_attempts == 1);
+    bool every_nth_failure = (s_failed_attempts % LOG_EVERY_NTH_FAILED_ATTEMPT == 0);
+    if (was_connected || first_failure || every_nth_failure) {
+        event_post(event_severity_t::warn, "wifi_disconnected", "reason=%d attempt=%u retry_in=%ums", info->reason,
+                   static_cast<unsigned>(s_failed_attempts), static_cast<unsigned>(delay_ms));
+    }
+    esp_timer_start_once(s_retry_timer, delay_ms * MICROSECONDS_PER_MILLISECOND);
 }
 
 static void on_got_ip(const ip_event_got_ip_t *info)
 {
-    snprintf(s_ip, sizeof s_ip, IPSTR, IP2STR(&info->ip_info.ip));
-    if (s_ever_connected) s_reconnects++;
+    snprintf(s_ip, sizeof(s_ip), IPSTR, IP2STR(&info->ip_info.ip));
+    if (s_ever_connected) {
+        s_reconnects++;
+    }
     s_ever_connected = true;
     s_failed_attempts = 0;
     s_state = STATE_STATION_CONNECTED;
     ESP_LOGI(TAG, "NET mode=sta ip=%s port=%d", s_ip, TCP_PORT);
-    event_post(EV_INFO, "wifi_connected", "ip=%s reconnects=%u", s_ip, (unsigned)s_reconnects);
+    event_post(event_severity_t::info, "wifi_connected", "ip=%s reconnects=%u", s_ip, static_cast<unsigned>(s_reconnects));
 }
 
 static void on_wifi_event(void *, esp_event_base_t base, int32_t id, void *data)
 {
-    if (base == WIFI_EVENT && id == WIFI_EVENT_STA_START) esp_wifi_connect();
-    else if (base == WIFI_EVENT && id == WIFI_EVENT_STA_DISCONNECTED)
-        on_station_disconnected((wifi_event_sta_disconnected_t *)data);
-    else if (base == IP_EVENT && id == IP_EVENT_STA_GOT_IP) on_got_ip((ip_event_got_ip_t *)data);
+    if (base == WIFI_EVENT && id == WIFI_EVENT_STA_START) {
+        esp_wifi_connect();
+    } else if (base == WIFI_EVENT && id == WIFI_EVENT_STA_DISCONNECTED) {
+        on_station_disconnected(static_cast<wifi_event_sta_disconnected_t *>(data));
+    } else if (base == IP_EVENT && id == IP_EVENT_STA_GOT_IP) {
+        on_got_ip(static_cast<ip_event_got_ip_t *>(data));
+    }
 }
 
-void wifi_start(const app_cfg_t &cfg)
+void wifi_start(const app_cfg_t &settings)
 {
     ESP_ERROR_CHECK(esp_netif_init());
     ESP_ERROR_CHECK(esp_event_loop_create_default());
@@ -140,7 +184,11 @@ void wifi_start(const app_cfg_t &cfg)
     timer_args.name = "wifi_retry";
     ESP_ERROR_CHECK(esp_timer_create(&timer_args, &s_retry_timer));
 
-    if (cfg.use_soft_ap || !cfg.sta_ssid[0]) start_soft_ap();
-    else configure_station(cfg);
+    bool no_station_network = (settings.sta_ssid[0] == '\0');
+    if (settings.use_soft_ap || no_station_network) {
+        start_soft_ap();
+    } else {
+        configure_station(settings);
+    }
     ESP_ERROR_CHECK(esp_wifi_start());
 }

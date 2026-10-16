@@ -29,8 +29,8 @@ struct app_cfg_t {
     float thermal_warn_c;
     bool metrics_verbose;
     bool use_soft_ap;
-    char sta_ssid[33];
-    char sta_pass[65];
+    char sta_ssid[WIFI_SSID_BUFFER_BYTES];
+    char sta_pass[WIFI_PASSWORD_BUFFER_BYTES];
 };
 
 /** Loads compile-time defaults, then any saved NVS overrides. */

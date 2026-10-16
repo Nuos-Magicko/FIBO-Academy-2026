@@ -1,0 +1,16 @@
+# Style and type-check settings for the laptop code. Install the checkers with
+# requirements-dev.txt, then run them from the pc/ folder:
+#   python -m black --check .           layout (PEP 8, 79 characters per line)
+#   python -m pycodestyle --exclude=.venv .   PEP 8 checker
+#   python -m mypy .                    every function has type hints, and they agree
+
+[tool.black]
+line-length = 79
+extend-exclude = '\.venv'
+
+[tool.mypy]
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+ignore_missing_imports = true
+explicit_package_bases = true
+exclude = '\.venv'

@@ -12,19 +12,18 @@ Words you don't know are explained in the [glossary](glossary.md).
 
 ## Safety and privacy first
 
-- **The chip gets hot.** About 60–74 °C was measured without a heatsink. Don't touch the chip or the metal heatsink while the board is running. Don't put the board inside a closed plastic box.
+- **The chip gets hot enough to hurt.** Don't touch it while the board is running. Don't put the board inside a closed plastic box.
 - **The camera can see people.** Saving pictures is **off** at the start. Only turn it on (key `s`) when everyone the camera can see has said yes. The measurement files never contain pictures.
 
 ---
 
 ## 1. Set up your laptop (only once)
 
-Open a terminal in the project folder. On Windows, type:
+Open a terminal in the project folder and type:
 ```bash
 python -m venv pc\.venv
 pc\.venv\Scripts\pip install -r pc\requirements.txt
 ```
-On a Mac or Linux laptop, type `python3` instead of `python`, and `pc/.venv/bin/pip` instead of `pc\.venv\Scripts\pip`.
 
 Now test it without the board:
 ```bash
@@ -108,7 +107,7 @@ A fair experiment is one where **only the thing you are testing changes**. Every
 2. Measure the room temperature with a thermometer.
 3. Run the measurement script. Write your own numbers and names instead of the examples:
    ```bash
-   pc\.venv\Scripts\python pc\main.py baseline --host <board-ip> --room-temp-c 26.5 --scene reference_scene --heatsink yes --repeats 3 --seconds 60
+   pc\.venv\Scripts\python pc\main.py baseline --host <board-ip> --room-temp-c 26.5 --scene reference_scene --heatsink no --repeats 3 --seconds 60
    ```
 
 The script warms the board up for 2 minutes, then measures each of the 5 modes 3 times, for 60 seconds each. It takes about **25 minutes**, so don't touch the setup while it runs.

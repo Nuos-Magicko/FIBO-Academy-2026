@@ -106,7 +106,7 @@ The small operating system inside the firmware. It decides which task runs when.
 A **buffer** is a piece of memory that holds data, for example one frame. A **pool** is a fixed set of buffers created once at start-up and reused again and again, so the firmware never runs out of memory while it is running.
 
 **Queue, drop-oldest**
-A **queue** is a waiting line between two tasks: the vision task puts finished frames in, and the net task takes them out to send. Our queue holds only 2 frames. If it is full when a new frame is ready, the **oldest** waiting frame is thrown away (**drop-oldest**) and counted as `tx_dropped`. This way the AI never has to stop and wait for the network.
+A **queue** is a waiting line between two tasks: the vision task puts finished frames in, and the net task takes them out to send. Our queue holds only 2 frames. If it is full when a new frame is ready, the **oldest** waiting frame is thrown away (**drop-oldest**) and counted as `tx_dropped`. In the modes that send no pictures, the board first waits up to 1 second for space.
 
 **Watchdog**
 A safety timer. If a task stops responding for too long, the watchdog notices and reports it, or resets the board.

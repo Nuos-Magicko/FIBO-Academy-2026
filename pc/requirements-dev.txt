@@ -1,0 +1,6 @@
+# Style and type checkers (settings in pyproject.toml); not needed to run the programs.
+# Install: pc\.venv\Scripts\pip install -r pc\requirements-dev.txt
+black==26.10.1
+pycodestyle==2.15.0
+mypy==2.4.0
+types-pyserial==3.5.0.20260712

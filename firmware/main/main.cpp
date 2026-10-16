@@ -11,7 +11,6 @@
  * assets/ (the test photo for the self-test).
  */
 #include "config/settings.h"
-#include "esp_chip_info.h"
 #include "esp_flash.h"
 #include "esp_heap_caps.h"
 #include "esp_log.h"
@@ -26,6 +25,7 @@
 #include "telemetry/metrics.h"
 #include "telemetry/thermal.h"
 #include "utils/device.h"
+#include "utils/units.h"
 #include "vision/bundle.h"
 #include "vision/camera.h"
 #include "vision/vision.h"
@@ -40,10 +40,10 @@ static constexpr BaseType_t VISION_CORE = 1;
 static void log_memory(const char *when)
 {
     ESP_LOGI(TAG, "MEM %s: internal free=%u min=%u | psram free=%u min=%u | temp=%.1fC", when,
-             (unsigned)heap_caps_get_free_size(MALLOC_CAP_INTERNAL),
-             (unsigned)heap_caps_get_minimum_free_size(MALLOC_CAP_INTERNAL),
-             (unsigned)heap_caps_get_free_size(MALLOC_CAP_SPIRAM),
-             (unsigned)heap_caps_get_minimum_free_size(MALLOC_CAP_SPIRAM), thermal_read_c());
+             static_cast<unsigned>(heap_caps_get_free_size(MALLOC_CAP_INTERNAL)),
+             static_cast<unsigned>(heap_caps_get_minimum_free_size(MALLOC_CAP_INTERNAL)),
+             static_cast<unsigned>(heap_caps_get_free_size(MALLOC_CAP_SPIRAM)),
+             static_cast<unsigned>(heap_caps_get_minimum_free_size(MALLOC_CAP_SPIRAM)), thermal_read_c());
 }
 
 /** Initializes NVS, erasing it first if its layout is full or from a newer IDF. */
@@ -57,27 +57,33 @@ static void init_nvs()
     ESP_ERROR_CHECK(err);
 }
 
-/** The BOARD lines are parsed by scripts/verify_board.py and scripts/soak.py. */
+/** The BOARD lines are read by pc/tools/verify_board.py and pc/tools/soak.py. */
 static void log_board_facts()
 {
-    esp_chip_info_t chip;
-    esp_chip_info(&chip);
+    char revision[CHIP_REVISION_TEXT_BYTES];
+    chip_revision_text(revision, sizeof(revision));
     uint32_t flash_bytes = 0;
-    esp_flash_get_size(NULL, &flash_bytes);
-    uint8_t mac[6];
-    device_mac(mac);
-    ESP_LOGI(TAG, "BOARD chip=esp32s3 rev=v%d.%d flash=%uMB psram=%uMB mac=%02x:%02x:%02x:%02x:%02x:%02x",
-             chip.revision / 100, chip.revision % 100, (unsigned)(flash_bytes >> 20),
-             (unsigned)(esp_psram_get_size() >> 20), mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+    esp_flash_get_size(nullptr, &flash_bytes);
+    unsigned flash_megabytes = flash_bytes / BYTES_PER_MEGABYTE;
+    unsigned psram_megabytes = esp_psram_get_size() / BYTES_PER_MEGABYTE;
+    mac_address_t mac = device_mac();
+    ESP_LOGI(TAG, "BOARD chip=esp32s3 rev=%s flash=%uMB psram=%uMB mac=%02x:%02x:%02x:%02x:%02x:%02x", revision,
+             flash_megabytes, psram_megabytes, mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
     ESP_LOGI(TAG, "BOARD reset_reason=%s idf=%s", reset_reason_str(), esp_get_idf_version());
-    if (esp_reset_reason() == ESP_RST_BROWNOUT)
-        event_post(EV_ERROR, "brownout_reset", "last reset was a brown-out: check USB power");
+    if (esp_reset_reason() == ESP_RST_BROWNOUT) {
+        event_post(event_severity_t::error, "brownout_reset", "last reset was a brown-out: check USB power");
+    }
 }
 
 /** Camera health check on every boot; the vision task then starts the camera again for real use. */
-static void run_boot_capture_test(const app_cfg_t &cfg)
+static void run_boot_capture_test(const app_cfg_t &config)
 {
-    if (BOOT_CAPTURE_TEST_FRAMES <= 0 || !camera_start(cfg)) return;
+    if (BOOT_CAPTURE_TEST_FRAMES <= 0) {
+        return;
+    }
+    if (!camera_start(config)) {
+        return;
+    }
     camera_capture_test(BOOT_CAPTURE_TEST_FRAMES);
     camera_stop();
 }
@@ -94,10 +100,10 @@ extern "C" void app_main(void)
     log_board_facts();
     log_memory("boot");
 
-    app_cfg_t cfg = settings_get();
-    run_boot_capture_test(cfg);
+    app_cfg_t config = settings_get();
+    run_boot_capture_test(config);
     pool_init();
-    wifi_start(cfg);
+    wifi_start(config);
     log_memory("wifi_started");
     xTaskCreatePinnedToCore(net_task, "net", NET_TASK_STACK_BYTES, nullptr, TASK_PRIORITY, nullptr, NET_CORE);
     xTaskCreatePinnedToCore(vision_task, "vision", VISION_TASK_STACK_BYTES, nullptr, TASK_PRIORITY, nullptr,

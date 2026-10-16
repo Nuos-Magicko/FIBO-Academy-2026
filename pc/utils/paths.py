@@ -1,4 +1,7 @@
-"""Folders the tools read from and write to, all relative to the repository root."""
+"""Folders the tools read from and write to, all relative to the repository
+root.
+"""
+
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]

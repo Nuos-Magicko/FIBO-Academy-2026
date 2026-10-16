@@ -3,15 +3,23 @@
  * EVENT messages: short notes from the board such as "mode_changed" or "thermal_warning".
  */
 #pragma once
+#include <cstddef>
 #include <cstdint>
 
-enum event_severity_t : uint8_t { EV_INFO, EV_WARN, EV_ERROR };
+enum class event_severity_t : uint8_t {
+    info,
+    warn,
+    error,
+};
+
+constexpr size_t EVENT_CODE_BYTES = 24;
+constexpr size_t EVENT_TEXT_BYTES = 96;
 
 struct event_t {
     int64_t t_us;
     event_severity_t severity;
-    char code[24];
-    char text[96];
+    char code[EVENT_CODE_BYTES];
+    char text[EVENT_TEXT_BYTES];
 };
 
 void events_init();
@@ -22,3 +30,5 @@ void events_init();
 void event_post(event_severity_t severity, const char *code, const char *fmt, ...)
     __attribute__((format(printf, 3, 4)));
 bool event_pop(event_t *out);
+/** "info", "warn" or "error", as sent to the laptop. */
+const char *severity_name(event_severity_t severity);

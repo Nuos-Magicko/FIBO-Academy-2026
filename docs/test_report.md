@@ -175,3 +175,51 @@ No intended behavior change. Wire names (counters, settings keys, JSON fields, l
 | `main.py baseline`, `serial-log`, `soak` (1 min) | complete; soak writes to repo `runs/`, 411 frames, 0 resets/seq/CRC/missing | VERIFIED ON HARDWARE |
 | `main.py report` | identical tables to the original script | SIMULATED-UNIT-TESTED |
 | `pytest pc/tests` | 34 passed | SIMULATED-UNIT-TESTED |
+
+## 2026-10-16: readability pass (no short forms, C++ Core Guidelines, PEP 8, type hints), re-verified
+
+Behaviour, wire format, log formats and error texts were kept; only the way the code is written changed. Firmware: no ternaries or one-line `if`s, `enum class` for modes / record types / severities / timing stages (lowercase names matching the laptop's), `stage_times_t` and `mac_address_t` types, packed header structs instead of byte offsets, named casts only, `nullptr`, named constants for pins, units, buffer sizes and the "set" limits (now in `config.h`), no `#define` (component versions come from a CMake-generated `component_versions.h`; `wifi_secrets.h` and its example now use `constexpr`; the git-ignored `wifi_secrets.h` on the mentor laptop was converted in place). The NVS settings layout is byte-compatible (`app_mode_t` keeps `uint8_t`), so saved settings still load. PC: no walrus, inline `if`, `or` defaults, lambdas, `**`/`|` merges, `*rest` unpacking or filtering comprehensions; PEP 8 at 79 columns (pycodestyle + black) and type hints on every function (mypy `disallow_untyped_defs`); checker settings in `pc/pyproject.toml`, checker versions pinned in `requirements.txt`. `samples/synthetic_run/README.md` regenerated from the repo root: the committed copy named `../samples/...` paths (generated from inside `pc/`); `stream.gmtp` unchanged.
+
+| Item | Result | Label |
+|---|---|---|
+| Firmware build | clean, 0 warnings; `component_versions.h` holds esp-dl 3.3.13, esp32-camera 2.1.8, pedestrian_detect 0.3.2 | BUILD-VERIFIED ONLY |
+| `main.py verify-board --flash` (COM3) | flashed (hash verified); sensor 0x3660, 8 MB/8 MB, self-test 3 boxes, capture fail 0, joined Wi-Fi with the `constexpr` secrets; FAIL only for `-dirty` (`afc6768-dirty`) | VERIFIED ON HARDWARE |
+| `main.py check` (ping, `--set`, out-of-range value, `get_grid`, `metrics_verbose`) | 45/45 pairs, 0 mismatch/seq/CRC/frame_id gaps; FRAME_TIMING arrives with all stage names; error text `jpeg_quality: 4..63` unchanged; ±7.2 ms clock | VERIFIED ON HARDWARE |
+| `main.py viewer` live | 57 pairs, 0 seq gaps, 0 missing; 7.7 fps processed and sent | VERIFIED ON HARDWARE |
+| `main.py baseline` (full_stream, metadata_stream, inference_only; 5 s each) | complete; 0 CRC errors, 0 missing pairs, 0 frame_id gaps | VERIFIED ON HARDWARE |
+| `main.py soak` (1 min) | 61 s, 363 frames, 0 seq/CRC/missing, 0 reconnects, 0 unexpected resets | VERIFIED ON HARDWARE |
+| Synthetic sample | `stream.gmtp` byte-identical to the generator output | SIMULATED-UNIT-TESTED |
+| `main.py replay samples/synthetic_run` | 155 records, 68 pairs, 1 missing pair, 1 frame_id gap, 121 movement crossings (unchanged) | SIMULATED-UNIT-TESTED |
+| `main.py report` (Oct 15 baseline + soak) | byte-identical to the output of the previous code | SIMULATED-UNIT-TESTED |
+| `pytest pc/tests` | 34 passed | SIMULATED-UNIT-TESTED |
+| `pycodestyle`, `black --check`, `mypy` | no issues in 29 files | SIMULATED-UNIT-TESTED |
+| Viewer keys pressed by a person, STA reconnect after AP loss | not re-tested | NOT TESTED |
+
+## 2026-10-16: simplification pass (audit items 1-9), re-verified
+
+`soak` now matches pictures with boxes and counts losses with the same `Pipeline` as the viewer (its own seq-gap and pairing code removed; `frames/*.json` now holds the completed frame: frame_id, w, h, boxes, t_capture_us). Firmware: `std::clamp` replaces two hand-written clamps; the duplicate list of numeric setting keys is gone (non-numeric keys are checked first, then `apply_number`, which rejects unknown keys); `send_json_text` folded into `send_json`; one `MICROSECONDS_PER_SECOND` constant. PC: one `protocol.MODES` list instead of three copies; synthetic records built with a plain list; `pc/tools/flash_all.ps1` / `.sh` deleted, docs now give `python pc/main.py verify-board --all --flash`.
+
+| Item | Result | Label |
+|---|---|---|
+| Firmware build | clean, 0 warnings | BUILD-VERIFIED ONLY |
+| `main.py verify-board --all --flash` | found COM3 by itself, flashed (hash verified), every hardware check passed; FAIL only for `-dirty` | VERIFIED ON HARDWARE |
+| `main.py check`: unknown key, out-of-range value, inference_only | `unknown key 'bogus'` and `xclk_hz: 5000000..24000000` unchanged; inference_only 19 frames, 57 boxes (3 per frame, as the self-test), 0 CRC/seq errors | VERIFIED ON HARDWARE |
+| `main.py soak` (1 min, frame every 20 s) | 0 seq/CRC/missing, 0 reconnects, 0 unexpected resets; 3 frames saved. 222 frames (3.6 fps): for about 50 s the board's t_send was 400-600 ms and it dropped bundles, then recovered to 7.6-7.9 fps sent with the same receiver; `Pipeline.feed` costs about 8 us per record, so this was the Wi-Fi, not the receiver | VERIFIED ON HARDWARE |
+| Synthetic `stream.gmtp`, replay counters, `report` tables | identical | SIMULATED-UNIT-TESTED |
+| `pytest`, `pycodestyle`, `black --check`, `mypy` | 34 passed; no issues | SIMULATED-UNIT-TESTED |
+
+## 2026-10-16: Wi-Fi drop and reconnect (simulated outage), handover clean-up
+
+PC: the viewer and soak now treat 10 s without data as a dead connection and reconnect (a dropped router often leaves the TCP connection silent instead of closed, and both used to wait on it forever); soak also follows the board to a new IP printed on serial. Handover: answer-revealing internal records are `export-ignore` (`.gitattributes`), hinting sentences removed from shipped docs and code comments, Windows only (`setup_linux.md` removed), one board at a time (`verify-board --port`, `--all` removed), no heatsink, checkers moved to `requirements-dev.txt`, office SSID removed from `setup_windows.md`. Package dry run (`git archive` of the working tree): 101 entries, no internal records, images (except the Espressif self-test still), firmware images or office Wi-Fi strings.
+
+The office router could not be switched off and nobody was on site, so the outage was made by a temporary test build (not kept): 120 s after first joining, the board pointed its station config at a network that does not exist for 90 s, then back. The real disconnect / backoff / reconnect code ran unchanged.
+
+| Item | Result | Label |
+|---|---|---|
+| `pytest pc/tests` (new `test_reconnect.py`: a fake board goes silent with the connection open) | 36 passed; both new tests fail without the fix | SIMULATED-UNIT-TESTED |
+| Board: drop while connected | `wifi_disconnected reason=8` at 159.9 s, then 7 retries with backoff; `client_lost errno=113` at once | VERIFIED ON HARDWARE (simulated outage) |
+| Board: network back | config restored at the next retry (265.4 s, 15.5 s after the 90 s ended, because of the backoff; worst case 30 s); IP again 2.0 s later; `wifi_connected reconnects=1`; no SoftAP fallback, no reset | VERIFIED ON HARDWARE (simulated outage) |
+| Laptop (`soak`): reconnect | 14 failed connects during the outage, reconnected 0.8 s after the board was back; afterwards 7.4 fps, 0 seq gaps, 0 CRC errors, 0 missing pairs over the 7 min run | VERIFIED ON HARDWARE (simulated outage) |
+| Normal firmware restored | rebuilt (0 warnings), flashed, boot log has no outage code; every hardware check passed, FAIL only for `-dirty` | VERIFIED ON HARDWARE |
+| A real router power cycle; the viewer window through an outage | not done (office router in use, nobody on site); the viewer uses the same watchdog, covered by `test_reconnect.py` | NOT TESTED |
+| Viewer keys pressed by a person | not done | NOT TESTED |

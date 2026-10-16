@@ -8,6 +8,8 @@
  * people walked past. The laptop divides the counts by the number of frames or seconds so that
  * runs of different length can be compared.
  */
+#include <algorithm>
+#include <array>
 #include <cstring>
 #include "vision/grid.h"
 #include "config/config.h"
@@ -15,18 +17,17 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
 
-static constexpr size_t GRID_HEADER_BYTES = 20;
-
-static uint32_t s_counts[GRID_COLS * GRID_ROWS];
+static std::array<uint32_t, GRID_COLS * GRID_ROWS> s_counts;
 static uint32_t s_frames;
 static int64_t s_started_us;
-static uint16_t s_frame_width = 320, s_frame_height = 240;
+static uint16_t s_frame_width = GRID_DEFAULT_FRAME_WIDTH;
+static uint16_t s_frame_height = GRID_DEFAULT_FRAME_HEIGHT;
 static portMUX_TYPE s_lock = portMUX_INITIALIZER_UNLOCKED;
 
 void grid_reset(uint16_t frame_width, uint16_t frame_height)
 {
     taskENTER_CRITICAL(&s_lock);
-    memset(s_counts, 0, sizeof s_counts);
+    s_counts.fill(0);
     s_frames = 0;
     s_started_us = esp_timer_get_time();
     s_frame_width = frame_width;
@@ -34,41 +35,55 @@ void grid_reset(uint16_t frame_width, uint16_t frame_height)
     taskEXIT_CRITICAL(&s_lock);
 }
 
-void grid_clear() { grid_reset(s_frame_width, s_frame_height); }
-
-static int clamp(int value, int lo, int hi) { return value < lo ? lo : value > hi ? hi : value; }
+void grid_clear()
+{
+    grid_reset(s_frame_width, s_frame_height);
+}
 
 static int cell_of_bottom_center(const box_t &box)
 {
-    int x = clamp((box.x1 + box.x2) / 2, 0, s_frame_width - 1);
-    int y = clamp(box.y2, 0, s_frame_height - 1);
-    return (y * GRID_ROWS / s_frame_height) * GRID_COLS + x * GRID_COLS / s_frame_width;
+    int center_x = (box.x1 + box.x2) / 2;
+    int bottom_y = box.y2;
+    int x = std::clamp(center_x, 0, s_frame_width - 1);
+    int y = std::clamp(bottom_y, 0, s_frame_height - 1);
+    int row = y * GRID_ROWS / s_frame_height;
+    int column = x * GRID_COLS / s_frame_width;
+    return row * GRID_COLS + column;
 }
 
 void grid_add(const box_t *boxes, int count)
 {
     taskENTER_CRITICAL(&s_lock);
-    for (int i = 0; i < count; i++) s_counts[cell_of_bottom_center(boxes[i])]++;
+    for (int index = 0; index < count; index++) {
+        int cell = cell_of_bottom_center(boxes[index]);
+        s_counts[cell]++;
+    }
     s_frames++;
     taskEXIT_CRITICAL(&s_lock);
 }
 
-uint32_t grid_frames() { return s_frames; }
+uint32_t grid_frames()
+{
+    return s_frames;
+}
 
 size_t grid_payload(uint8_t *buffer, size_t capacity)
 {
-    const size_t payload_bytes = GRID_HEADER_BYTES + sizeof s_counts;
-    if (capacity < payload_bytes) return 0;
-    const uint16_t cols = GRID_COLS, rows = GRID_ROWS;
+    const size_t counts_bytes = s_counts.size() * sizeof(uint32_t);
+    const size_t payload_bytes = GRID_HEADER_BYTES + counts_bytes;
+    if (capacity < payload_bytes) {
+        return 0;
+    }
     taskENTER_CRITICAL(&s_lock);
-    int64_t elapsed_us = esp_timer_get_time() - s_started_us;
-    memcpy(buffer, &cols, 2);
-    memcpy(buffer + 2, &rows, 2);
-    memcpy(buffer + 4, &s_frames, 4);
-    memcpy(buffer + 8, &elapsed_us, 8);
-    memcpy(buffer + 16, &s_frame_width, 2);
-    memcpy(buffer + 18, &s_frame_height, 2);
-    memcpy(buffer + GRID_HEADER_BYTES, s_counts, sizeof s_counts);
+    grid_header_t header = {};
+    header.cols = GRID_COLS;
+    header.rows = GRID_ROWS;
+    header.frames = s_frames;
+    header.elapsed_us = esp_timer_get_time() - s_started_us;
+    header.frame_width = s_frame_width;
+    header.frame_height = s_frame_height;
+    memcpy(buffer, &header, sizeof(header));
+    memcpy(buffer + GRID_HEADER_BYTES, s_counts.data(), counts_bytes);
     taskEXIT_CRITICAL(&s_lock);
     return payload_bytes;
 }

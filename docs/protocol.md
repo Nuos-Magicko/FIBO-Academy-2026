@@ -68,7 +68,7 @@ p95 is nearest-rank (`ceil(0.95·n)`-th sorted sample). At most 512 samples per 
 Events are queued (depth 16, oldest dropped and counted in `events_dropped`) while no client is connected, so a new client receives the most recent ones, including boot events.
 
 ## Backpressure
-- `full_stream`: ready queue depth 2. When it's full, the **oldest** bundle is dropped (`tx_dropped`). Inference never waits on the network.
+- `full_stream`: ready queue depth 2. When it's full, the **oldest** bundle is dropped (`tx_dropped`).
 - `metadata_stream` / `inference_only`: the vision task waits up to 1 s for queue space, then drops the oldest.
 - No client: bundles are discarded (`no_client_discards`), events are kept.
 - Socket send timeout is 5 s; a longer stall drops the client, which can then reconnect.

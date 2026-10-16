@@ -1,20 +1,18 @@
 # Flashing and recovery (mentors)
 
-All commands run from the repository root with the project venv (`pc\.venv\Scripts\python` on Windows, `pc/.venv/bin/python` on Linux). Only `pyserial` and `esptool` (both in `pc/requirements.txt`) are needed to flash. ESP-IDF is needed only to *build* an image.
+All commands run from the repository root with the project venv (`pc\.venv\Scripts\python`). Only `pyserial` and `esptool` (both in `pc/requirements.txt`) are needed to flash. ESP-IDF is needed only to *build* an image.
 
-## Flash and verify every board
+## Flash and verify a board
 1. Build the image once, from a committed tree (`setup_windows.md` §3): `firmware/build/gmt_people_flow_merged.bin`.
    It contains the Wi-Fi credentials from `wifi_secrets.h`. Keep it on mentor laptops and don't publish it.
-2. Plug in the boards: direct laptop ports or a **powered** hub.
+2. Plug in **one** board: a direct laptop port or a **powered** hub. Find its COM port in Device Manager.
 3. Run:
    ```powershell
-   .\pc\tools\flash_all.ps1                                   # Windows
-   ./pc/tools/flash_all.sh                                    # Linux
-   python pc/main.py verify-board --all                      # verify only, no flashing
-   python pc/main.py verify-board --port COM7 --flash        # one board
+   python pc/main.py verify-board --port COM3 --flash        # flash, then verify
+   python pc/main.py verify-board --port COM3                # verify only, no flashing
    ```
-   Boards are done one at a time, about 2 minutes each: flash, reboot, a 1000-frame capture test, the still-image self-test, then Wi-Fi.
-4. Each board prints a line, which is also appended to `boards.csv`. Label the board with its MAC.
+   It takes about 2 minutes: flash, reboot, a 1000-frame capture test, the still-image self-test, then Wi-Fi. Repeat for the next board.
+4. The board prints a line, which is also appended to `boards.csv`. Label the board with its MAC.
    ```
    PASS  COM3  mac=8c:bf:ea:8e:6d:d8  sensor=0x3660  psram=8MB  flash=8MB  fw=3a81649  ip=192.168.1.248
    ```
@@ -26,7 +24,7 @@ Seeed shipped both OV2640 and OV3660 during a transition period. An OV2640 board
 
 | Symptom | Fix |
 |---|---|
-| No COM port / `/dev/ttyACM*` appears | Try another cable (many are charge-only) and a direct port. Still nothing: hold **BOOT** (the small button by the USB-C connector), plug in, release; this forces download mode. Then flash again. |
+| No COM port appears | Try another cable (many are charge-only) and a direct port. Still nothing: hold **BOOT** (the small button by the USB-C connector), plug in, release; this forces download mode. Then flash again. |
 | esptool "Failed to connect" / "No serial data received" | Same as above (BOOT + replug). Close anything that holds the port (`idf.py monitor`, `pc/main.py serial-log`, `pc/main.py soak`). |
 | Board flashed but unreachable on Wi-Fi | The serial log shows why: `python pc/main.py serial-log COM3 120 boot.log`, then look for `wifi_disconnected reason=201` (network not found: wrong name, or a 5 GHz network) or `reason=202`, `15` or `204` (usually a wrong password). |
 | A wrong network name or password was **saved** from the viewer/test client | After 8 failed tries (about 2 minutes) the board starts its own network `GMT-PF-xxxx` (password `gmtcamp2026`, 192.168.4.1). Either connect a PC to that network and send `{"cmd":"set","values":{"sta_ssid":"…","sta_pass":"…"}}` + `save` + `reboot`, or erase the saved settings over USB (next row). |
@@ -35,7 +33,7 @@ Seeed shipped both OV2640 and OV3660 during a transition period. An OV2640 board
 | `camera_init_failed` event / `STOP: no camera` | Unplug, reseat the Sense expansion board and the camera ribbon, replug. |
 | `capture_timeout` or `no_eoi` counters rising | Lower the camera clock: `{"cmd":"set","values":{"xclk_hz":10000000}}` (documented fallback). Also check the ribbon. |
 | Random resets, `reset_reason=BROWNOUT`, camera init failures under load | Power: use a direct port or a powered hub, a shorter/better cable, one board per port. |
-| `thermal_warning` event (die ≥ 80 °C by default) | Check the heatsink and airflow; PLA enclosures can deform. The firmware warns but does **not** throttle itself. |
+| `thermal_warning` event (die ≥ 80 °C by default) | Check the airflow; PLA enclosures can deform. The firmware warns but does **not** throttle itself. |
 | `sensor_mismatch` event | Not an OV3660: set the board aside (see above). |
 
 ## Changing settings without rebuilding

@@ -15,7 +15,9 @@
  * frames are thrown away so the vision task never has to wait; messages are kept for the next
  * laptop that connects. The message format is described in docs/protocol.md.
  */
+#include <array>
 #include <cstring>
+#include "component_versions.h"
 #include "network/net.h"
 #include "config/settings.h"
 #include "network/commands.h"
@@ -25,11 +27,11 @@
 #include "telemetry/metrics.h"
 #include "telemetry/thermal.h"
 #include "utils/device.h"
+#include "utils/units.h"
 #include "vision/bundle.h"
 #include "vision/camera.h"
 #include "vision/grid.h"
 #include "esp_app_desc.h"
-#include "esp_chip_info.h"
 #include "esp_flash.h"
 #include "esp_log.h"
 #include "esp_psram.h"
@@ -44,45 +46,74 @@ static constexpr int NO_SOCKET = -1;
 static constexpr uint32_t ACCEPT_POLL_US = 50000;
 static constexpr uint32_t BUNDLE_WAIT_MS = 20;
 static constexpr uint32_t REBOOT_DELAY_MS = 200;
+static constexpr int ONE_PENDING_CLIENT = 1;
+static constexpr int SOCKET_OPTION_ON = 1;
+static constexpr TickType_t NO_WAIT = 0;
 static constexpr uint8_t COORDINATES_FRAME_PIXELS = 0;
 static constexpr uint8_t CLASS_PERSON = 0;
+static constexpr uint32_t NO_FRAME_ID = 0;
+static constexpr size_t INCOMING_CHUNK_BYTES = 256;
+/** "aa:bb:cc:dd:ee:ff" plus the closing '\0'. */
+static constexpr size_t MAC_TEXT_BYTES = 18;
+/** "gmt-ddeeff" plus the closing '\0', with room to spare. */
+static constexpr size_t DEVICE_ID_BYTES = 16;
+static constexpr size_t BUILD_TIME_TEXT_BYTES = 40;
+/** "0x3660" plus the closing '\0', with room to spare. */
+static constexpr size_t SENSOR_PID_TEXT_BYTES = 8;
 
 struct __attribute__((packed)) jpeg_frame_header_t {
-    uint16_t width, height;
-    uint8_t quality, pad[3];
+    uint16_t width;
+    uint16_t height;
+    uint8_t quality;
+    uint8_t pad[3];
     int64_t t_capture_us;
 };
 
 struct __attribute__((packed)) detections_header_t {
-    uint8_t coordinate_space, count;
-    uint16_t width, height, pad;
+    uint8_t coordinate_space;
+    uint8_t count;
+    uint16_t width;
+    uint16_t height;
+    uint16_t pad;
 };
 
 struct __attribute__((packed)) wire_box_t {
-    int16_t x1, y1, x2, y2;
+    int16_t x1;
+    int16_t y1;
+    int16_t x2;
+    int16_t y2;
     float score;
-    uint8_t class_id, pad[3];
+    uint8_t class_id;
+    uint8_t pad[3];
 };
 
-/** When the JSON cannot be printed (out of memory) the record is skipped but the connection kept. */
-bool send_json(client_connection_t *client, uint8_t type, cJSON *obj)
+/**
+ * When the JSON cannot be printed (out of memory) the record is skipped but the connection kept.
+ * With no client connected (sock == NO_SOCKET) nothing is sent.
+ */
+bool send_json(client_connection_t *client, record_type_t type, cJSON *obj)
 {
     char *text = cJSON_PrintUnformatted(obj);
     cJSON_Delete(obj);
-    if (!text) return true;
-    bool sent = client->sock == NO_SOCKET || proto_send(client->sock, &client->seq, type, 0, text, strlen(text));
+    if (text == nullptr) {
+        return true;
+    }
+    bool sent = true;
+    if (client->sock != NO_SOCKET) {
+        sent = proto_send(client->sock, &client->seq, type, NO_FRAME_ID, text, strlen(text));
+    }
     cJSON_free(text);
     return sent;
 }
 
 static void add_device_identity(cJSON *hello)
 {
-    uint8_t mac[6];
-    device_mac(mac);
-    char mac_text[18], device_id[16];
-    snprintf(mac_text, sizeof mac_text, "%02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4],
+    mac_address_t mac = device_mac();
+    char mac_text[MAC_TEXT_BYTES];
+    char device_id[DEVICE_ID_BYTES];
+    snprintf(mac_text, sizeof(mac_text), "%02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4],
              mac[5]);
-    snprintf(device_id, sizeof device_id, "gmt-%02x%02x%02x", mac[3], mac[4], mac[5]);
+    snprintf(device_id, sizeof(device_id), "gmt-%02x%02x%02x", mac[3], mac[4], mac[5]);
     cJSON_AddStringToObject(hello, "device_id", device_id);
     cJSON_AddStringToObject(hello, "mac", mac_text);
 }
@@ -91,26 +122,25 @@ static void add_device_identity(cJSON *hello)
 static void add_software_versions(cJSON *hello)
 {
     const esp_app_desc_t *app = esp_app_get_description();
-    char built[40];
-    snprintf(built, sizeof built, "%s %s", app->date, app->time);
+    char built[BUILD_TIME_TEXT_BYTES];
+    snprintf(built, sizeof(built), "%s %s", app->date, app->time);
     cJSON_AddStringToObject(hello, "fw_version", app->version);
     cJSON_AddStringToObject(hello, "fw_build", built);
     cJSON_AddStringToObject(hello, "idf", app->idf_ver);
-    cJSON_AddStringToObject(hello, "esp_dl", ESP_DL_VER);
-    cJSON_AddStringToObject(hello, "esp32_camera", ESP32_CAMERA_VER);
-    cJSON_AddStringToObject(hello, "pedestrian_detect", PEDESTRIAN_DETECT_VER);
+    cJSON_AddStringToObject(hello, "esp_dl", ESP_DL_VERSION);
+    cJSON_AddStringToObject(hello, "esp32_camera", ESP32_CAMERA_VERSION);
+    cJSON_AddStringToObject(hello, "pedestrian_detect", PEDESTRIAN_DETECT_VERSION);
     cJSON_AddStringToObject(hello, "model", "pico_s8_v1_s3");
 }
 
 static void add_hardware(cJSON *hello)
 {
-    esp_chip_info_t chip;
-    esp_chip_info(&chip);
     uint32_t flash_bytes = 0;
-    esp_flash_get_size(NULL, &flash_bytes);
-    char revision[8], sensor_pid[8];
-    snprintf(revision, sizeof revision, "v%d.%d", chip.revision / 100, chip.revision % 100);
-    snprintf(sensor_pid, sizeof sensor_pid, "0x%04x", camera_sensor_pid());
+    esp_flash_get_size(nullptr, &flash_bytes);
+    char revision[CHIP_REVISION_TEXT_BYTES];
+    chip_revision_text(revision, sizeof(revision));
+    char sensor_pid[SENSOR_PID_TEXT_BYTES];
+    snprintf(sensor_pid, sizeof(sensor_pid), "0x%04x", camera_sensor_pid());
     cJSON_AddStringToObject(hello, "chip", "esp32s3");
     cJSON_AddStringToObject(hello, "chip_rev", revision);
     cJSON_AddNumberToObject(hello, "flash_bytes", flash_bytes);
@@ -138,59 +168,81 @@ cJSON *hello_json()
 
 static bool send_jpeg_frame(client_connection_t *client, const bundle_t *bundle)
 {
-    jpeg_frame_header_t header = {bundle->width, bundle->height, settings_get().jpeg_quality, {0, 0, 0},
-                                  bundle->t_capture_us};
-    return proto_send(client->sock, &client->seq, REC_JPEG_FRAME, bundle->frame_id, &header, sizeof header,
-                      bundle->jpeg_buffer, bundle->jpeg_len);
+    jpeg_frame_header_t header = {};
+    header.width = bundle->width;
+    header.height = bundle->height;
+    header.quality = settings_get().jpeg_quality;
+    header.t_capture_us = bundle->t_capture_us;
+    return proto_send(client->sock, &client->seq, record_type_t::jpeg_frame, bundle->frame_id, &header,
+                      sizeof(header), bundle->jpeg_buffer, bundle->jpeg_len);
 }
 
 static bool send_detections(client_connection_t *client, const bundle_t *bundle)
 {
-    uint8_t payload[sizeof(detections_header_t) + MAX_BOXES_PER_FRAME * sizeof(wire_box_t)];
-    detections_header_t header = {COORDINATES_FRAME_PIXELS, bundle->box_count, bundle->width, bundle->height, 0};
-    memcpy(payload, &header, sizeof header);
-    for (int i = 0; i < bundle->box_count; i++) {
-        const box_t &box = bundle->boxes[i];
-        wire_box_t wire = {box.x1, box.y1, box.x2, box.y2, box.score, CLASS_PERSON, {0, 0, 0}};
-        memcpy(payload + sizeof header + i * sizeof wire, &wire, sizeof wire);
+    std::array<uint8_t, sizeof(detections_header_t) + MAX_BOXES_PER_FRAME * sizeof(wire_box_t)> payload;
+    detections_header_t header = {};
+    header.coordinate_space = COORDINATES_FRAME_PIXELS;
+    header.count = bundle->box_count;
+    header.width = bundle->width;
+    header.height = bundle->height;
+    memcpy(payload.data(), &header, sizeof(header));
+    for (int index = 0; index < bundle->box_count; index++) {
+        const box_t &box = bundle->boxes[index];
+        wire_box_t wire = {};
+        wire.x1 = box.x1;
+        wire.y1 = box.y1;
+        wire.x2 = box.x2;
+        wire.y2 = box.y2;
+        wire.score = box.score;
+        wire.class_id = CLASS_PERSON;
+        memcpy(payload.data() + sizeof(header) + index * sizeof(wire), &wire, sizeof(wire));
     }
-    return proto_send(client->sock, &client->seq, REC_DETECTIONS, bundle->frame_id, payload,
-                      sizeof header + bundle->box_count * sizeof(wire_box_t));
+    size_t length = sizeof(header) + bundle->box_count * sizeof(wire_box_t);
+    return proto_send(client->sock, &client->seq, record_type_t::detections, bundle->frame_id, payload.data(),
+                      length);
 }
 
 static bool send_frame_timing(client_connection_t *client, const bundle_t *bundle)
 {
     cJSON *timing = cJSON_CreateObject();
     cJSON_AddNumberToObject(timing, "frame_id", bundle->frame_id);
-    for (int stage = 0; stage < ST_COUNT; stage++)
-        if (bundle->stage_us[stage] != STAGE_NOT_MEASURED)
-            cJSON_AddNumberToObject(timing, STAGE_NAMES[stage], bundle->stage_us[stage]);
+    for (stage_t stage : ALL_STAGES) {
+        if (bundle->stage_us[stage] != STAGE_NOT_MEASURED) {
+            cJSON_AddNumberToObject(timing, stage_name(stage), bundle->stage_us[stage]);
+        }
+    }
     char *text = cJSON_PrintUnformatted(timing);
     cJSON_Delete(timing);
-    bool sent = !text || proto_send(client->sock, &client->seq, REC_FRAME_TIMING, bundle->frame_id, text, strlen(text));
+    if (text == nullptr) {
+        return true;
+    }
+    bool sent = proto_send(client->sock, &client->seq, record_type_t::frame_timing, bundle->frame_id, text,
+                           strlen(text));
     cJSON_free(text);
     return sent;
 }
 
 static bool send_bundle(client_connection_t *client, const bundle_t *bundle, bool with_frame_timing)
 {
-    if (bundle->jpeg_len && !send_jpeg_frame(client, bundle)) return false;
-    if (!send_detections(client, bundle)) return false;
-    return !with_frame_timing || send_frame_timing(client, bundle);
+    if (bundle->jpeg_len > 0) {
+        if (!send_jpeg_frame(client, bundle)) {
+            return false;
+        }
+    }
+    if (!send_detections(client, bundle)) {
+        return false;
+    }
+    if (with_frame_timing) {
+        return send_frame_timing(client, bundle);
+    }
+    return true;
 }
 
 static bool send_grid(client_connection_t *client)
 {
-    static uint8_t payload[20 + GRID_COLS * GRID_ROWS * sizeof(uint32_t)];
-    size_t length = grid_payload(payload, sizeof payload);
-    return proto_send(client->sock, &client->seq, REC_PRESENCE_GRID, 0, payload, length);
-}
-
-static const char *severity_name(event_severity_t severity)
-{
-    if (severity == EV_ERROR) return "error";
-    if (severity == EV_WARN) return "warn";
-    return "info";
+    static std::array<uint8_t, GRID_PAYLOAD_BYTES> payload;
+    size_t length = grid_payload(payload.data(), payload.size());
+    return proto_send(client->sock, &client->seq, record_type_t::presence_grid, NO_FRAME_ID, payload.data(), length);
 }
 
 static bool send_pending_events(client_connection_t *client)
@@ -201,26 +253,36 @@ static bool send_pending_events(client_connection_t *client)
         cJSON_AddStringToObject(json, "severity", severity_name(event.severity));
         cJSON_AddStringToObject(json, "code", event.code);
         cJSON_AddStringToObject(json, "text", event.text);
-        cJSON_AddNumberToObject(json, "t_event_us", (double)event.t_us);
-        if (!send_json(client, REC_EVENT, json)) return false;
+        cJSON_AddNumberToObject(json, "t_event_us", static_cast<double>(event.t_us));
+        if (!send_json(client, record_type_t::event, json)) {
+            return false;
+        }
     }
     return true;
 }
 
-static void on_incoming_record(uint8_t type, const uint8_t *payload, uint32_t len, void *context)
+static void on_incoming_record(record_type_t type, const uint8_t *payload, uint32_t len, void *context)
 {
-    if (type == REC_COMMAND) command_dispatch(payload, len, (client_connection_t *)context);
+    if (type == record_type_t::command) {
+        client_connection_t *client = static_cast<client_connection_t *>(context);
+        command_dispatch(payload, len, client);
+    }
 }
 
 /** Reads whatever the client sent without blocking. Returns false if the client closed or failed. */
 static bool receive_commands(client_connection_t *client, proto_receiver_t *receiver)
 {
-    uint8_t incoming[256];
-    for (;;) {
-        int received = recv(client->sock, incoming, sizeof incoming, MSG_DONTWAIT);
-        if (received == 0) return false;
-        if (received < 0) return errno == EAGAIN || errno == EWOULDBLOCK;
-        proto_receiver_feed(receiver, incoming, received, on_incoming_record, client);
+    std::array<uint8_t, INCOMING_CHUNK_BYTES> incoming;
+    while (true) {
+        int received = recv(client->sock, incoming.data(), incoming.size(), MSG_DONTWAIT);
+        if (received == 0) {
+            return false;
+        }
+        if (received < 0) {
+            bool nothing_to_read = (errno == EAGAIN || errno == EWOULDBLOCK);
+            return nothing_to_read;
+        }
+        proto_receiver_feed(receiver, incoming.data(), received, on_incoming_record, client);
     }
 }
 
@@ -232,97 +294,134 @@ static bool run_metrics_tick(client_connection_t *client, int64_t &next_tick_us)
 {
     static int64_t next_serial_us = 0;
     int64_t now_us = esp_timer_get_time();
-    if (now_us < next_tick_us) return true;
-    app_cfg_t cfg = settings_get();
-    next_tick_us = now_us + (int64_t)cfg.metrics_interval_ms * 1000;
-    thermal_check(cfg.thermal_warn_c);
+    if (now_us < next_tick_us) {
+        return true;
+    }
+    app_cfg_t settings = settings_get();
+    next_tick_us = now_us + settings.metrics_interval_ms * MICROSECONDS_PER_MILLISECOND;
+    thermal_check(settings.thermal_warn_c);
     cJSON *metrics = metrics_window();
     int dropped = cJSON_GetObjectItem(metrics, "dropped_in_window")->valueint;
-    if (dropped >= DROP_BURST_EVENT_THRESHOLD)
-        event_post(EV_WARN, "queue_drop_burst", "%d bundles dropped in window", dropped);
+    if (dropped >= DROP_BURST_EVENT_THRESHOLD) {
+        event_post(event_severity_t::warn, "queue_drop_burst", "%d bundles dropped in window", dropped);
+    }
     if (now_us >= next_serial_us) {
-        next_serial_us = now_us + SERIAL_METRICS_EVERY_S * 1000000LL;
+        next_serial_us = now_us + SERIAL_METRICS_EVERY_S * MICROSECONDS_PER_SECOND;
         char *text = cJSON_PrintUnformatted(metrics);
-        if (text) ESP_LOGI(TAG, "METRICS %s", text);
+        if (text != nullptr) {
+            ESP_LOGI(TAG, "METRICS %s", text);
+        }
         cJSON_free(text);
     }
-    return send_json(client, REC_METRICS, metrics);
+    return send_json(client, record_type_t::metrics, metrics);
 }
 
 static int open_server_socket()
 {
     int server = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    int enable = 1;
-    setsockopt(server, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof enable);
+    int enable = SOCKET_OPTION_ON;
+    setsockopt(server, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(enable));
     sockaddr_in address = {};
     address.sin_family = AF_INET;
     address.sin_port = htons(TCP_PORT);
     address.sin_addr.s_addr = htonl(INADDR_ANY);
-    if (bind(server, (sockaddr *)&address, sizeof address) != 0 || listen(server, 1) != 0) return NO_SOCKET;
+    sockaddr *generic_address = reinterpret_cast<sockaddr *>(&address);
+    if (bind(server, generic_address, sizeof(address)) != 0) {
+        return NO_SOCKET;
+    }
+    if (listen(server, ONE_PENDING_CLIENT) != 0) {
+        return NO_SOCKET;
+    }
     return server;
 }
 
 static void recycle_ready_bundles()
 {
     bundle_t *bundle;
-    while (xQueueReceive(g_ready_bundles, &bundle, 0) == pdTRUE) {
-        xQueueSend(g_free_bundles, &bundle, 0);
+    while (xQueueReceive(g_ready_bundles, &bundle, NO_WAIT) == pdTRUE) {
+        xQueueSend(g_free_bundles, &bundle, NO_WAIT);
         g_counters.no_client_discards++;
     }
 }
 
+static client_connection_t new_connection(int sock)
+{
+    client_connection_t connection;
+    connection.sock = sock;
+    connection.seq = 0;
+    connection.grid_requested = false;
+    connection.hello_requested = false;
+    connection.reboot_requested = false;
+    return connection;
+}
+
 static int wait_for_client(int server, int64_t &next_tick_us)
 {
-    client_connection_t nobody = {NO_SOCKET, 0, false, false, false};
-    for (;;) {
+    client_connection_t nobody = new_connection(NO_SOCKET);
+    while (true) {
         fd_set readable;
         FD_ZERO(&readable);
         FD_SET(server, &readable);
-        timeval poll_timeout = {0, ACCEPT_POLL_US};
+        timeval poll_timeout = {};
+        poll_timeout.tv_sec = 0;
+        poll_timeout.tv_usec = ACCEPT_POLL_US;
         int client_sock = NO_SOCKET;
-        if (select(server + 1, &readable, nullptr, nullptr, &poll_timeout) > 0)
+        if (select(server + 1, &readable, nullptr, nullptr, &poll_timeout) > 0) {
             client_sock = accept(server, nullptr, nullptr);
+        }
         recycle_ready_bundles();
         run_metrics_tick(&nobody, next_tick_us);
-        if (client_sock != NO_SOCKET) return client_sock;
+        if (client_sock != NO_SOCKET) {
+            return client_sock;
+        }
     }
 }
 
 static void configure_client_socket(int sock)
 {
-    timeval send_timeout = {SOCKET_SEND_TIMEOUT_S, 0};
-    int enable = 1;
-    setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, &send_timeout, sizeof send_timeout);
-    setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, &enable, sizeof enable);
+    timeval send_timeout = {};
+    send_timeout.tv_sec = SOCKET_SEND_TIMEOUT_S;
+    send_timeout.tv_usec = 0;
+    int enable = SOCKET_OPTION_ON;
+    setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, &send_timeout, sizeof(send_timeout));
+    setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, &enable, sizeof(enable));
 }
 
 /** Sends the next ready bundle, if one arrives within BUNDLE_WAIT_MS. */
-static bool send_next_bundle(client_connection_t *client, const app_cfg_t &cfg, uint32_t &bundles_since_grid)
+static bool send_next_bundle(client_connection_t *client, const app_cfg_t &settings, uint32_t &bundles_since_grid)
 {
     bundle_t *bundle;
-    if (xQueueReceive(g_ready_bundles, &bundle, pdMS_TO_TICKS(BUNDLE_WAIT_MS)) != pdTRUE) return true;
+    if (xQueueReceive(g_ready_bundles, &bundle, pdMS_TO_TICKS(BUNDLE_WAIT_MS)) != pdTRUE) {
+        return true;
+    }
     int64_t started_us = esp_timer_get_time();
-    bool sent = send_bundle(client, bundle, cfg.metrics_verbose);
+    bool sent = send_bundle(client, bundle, settings.metrics_verbose);
     if (sent) {
-        metrics_add(ST_SEND, esp_timer_get_time() - started_us);
+        metrics_add(stage_t::send, esp_timer_get_time() - started_us);
         g_counters.bundles_sent++;
         bundles_since_grid++;
     }
-    xQueueSend(g_free_bundles, &bundle, 0);
+    xQueueSend(g_free_bundles, &bundle, NO_WAIT);
     return sent;
 }
 
-static bool send_requested_records(client_connection_t *client, const app_cfg_t &cfg, uint32_t &bundles_since_grid)
+static bool send_requested_records(client_connection_t *client, const app_cfg_t &settings,
+                                   uint32_t &bundles_since_grid)
 {
-    bool streaming = cfg.mode == MODE_METADATA_STREAM || cfg.mode == MODE_FULL_STREAM;
-    if (client->grid_requested || (streaming && bundles_since_grid >= cfg.grid_every_n)) {
+    bool streaming = (settings.mode == app_mode_t::metadata_stream || settings.mode == app_mode_t::full_stream);
+    bool grid_is_due = (streaming && bundles_since_grid >= settings.grid_every_n);
+    if (client->grid_requested || grid_is_due) {
         client->grid_requested = false;
         bundles_since_grid = 0;
-        if (!send_grid(client)) return false;
+        if (!send_grid(client)) {
+            return false;
+        }
     }
     if (client->hello_requested) {
         client->hello_requested = false;
-        if (!send_json(client, REC_HELLO, hello_json())) return false;
+        if (!send_json(client, record_type_t::hello, hello_json())) {
+            return false;
+        }
     }
     return true;
 }
@@ -334,25 +433,47 @@ static void reboot_after(client_connection_t *client)
     esp_restart();
 }
 
+/** One pass of the client loop. Returns false as soon as one step finds the connection broken. */
+static bool serve_one_round(client_connection_t *client, proto_receiver_t *receiver, uint32_t &bundles_since_grid,
+                            int64_t &next_tick_us)
+{
+    app_cfg_t settings = settings_get();
+    if (!send_next_bundle(client, settings, bundles_since_grid)) {
+        return false;
+    }
+    if (!send_pending_events(client)) {
+        return false;
+    }
+    if (!receive_commands(client, receiver)) {
+        return false;
+    }
+    if (!send_requested_records(client, settings, bundles_since_grid)) {
+        return false;
+    }
+    if (!run_metrics_tick(client, next_tick_us)) {
+        return false;
+    }
+    return true;
+}
+
 static void serve_client(int sock, int64_t &next_tick_us)
 {
     static proto_receiver_t receiver;
-    client_connection_t client = {sock, 0, false, false, false};
+    client_connection_t client = new_connection(sock);
     configure_client_socket(sock);
     receiver.length = 0;
     g_counters.clients++;
-    event_post(EV_INFO, "client_connected", "count=%u", (unsigned)g_counters.clients);
+    event_post(event_severity_t::info, "client_connected", "count=%u", static_cast<unsigned>(g_counters.clients));
 
     uint32_t bundles_since_grid = 0;
-    bool connected = send_json(&client, REC_HELLO, hello_json());
+    bool connected = send_json(&client, record_type_t::hello, hello_json());
     while (connected) {
-        app_cfg_t cfg = settings_get();
-        connected = send_next_bundle(&client, cfg, bundles_since_grid) && send_pending_events(&client) &&
-                    receive_commands(&client, &receiver) && send_requested_records(&client, cfg, bundles_since_grid) &&
-                    run_metrics_tick(&client, next_tick_us);
-        if (client.reboot_requested) reboot_after(&client);
+        connected = serve_one_round(&client, &receiver, bundles_since_grid, next_tick_us);
+        if (client.reboot_requested) {
+            reboot_after(&client);
+        }
     }
-    event_post(EV_WARN, "client_lost", "errno=%d", errno);
+    event_post(event_severity_t::warn, "client_lost", "errno=%d", errno);
     close(sock);
 }
 
@@ -360,9 +481,12 @@ void net_task(void *)
 {
     int server = open_server_socket();
     if (server == NO_SOCKET) {
-        event_post(EV_ERROR, "net_listen_failed", "errno=%d", errno);
+        event_post(event_severity_t::error, "net_listen_failed", "errno=%d", errno);
         vTaskDelete(nullptr);
     }
     int64_t next_tick_us = 0;
-    for (;;) serve_client(wait_for_client(server, next_tick_us), next_tick_us);
+    while (true) {
+        int client_sock = wait_for_client(server, next_tick_us);
+        serve_client(client_sock, next_tick_us);
+    }
 }

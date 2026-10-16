@@ -20,15 +20,22 @@ static bool s_warning_active;
 void thermal_init()
 {
     s_lock = xSemaphoreCreateMutex();
-    temperature_sensor_config_t cfg = TEMPERATURE_SENSOR_CONFIG_DEFAULT(SENSOR_RANGE_MIN_C, SENSOR_RANGE_MAX_C);
-    if (temperature_sensor_install(&cfg, &s_sensor) != ESP_OK || temperature_sensor_enable(s_sensor) != ESP_OK)
+    temperature_sensor_config_t config = TEMPERATURE_SENSOR_CONFIG_DEFAULT(SENSOR_RANGE_MIN_C, SENSOR_RANGE_MAX_C);
+    if (temperature_sensor_install(&config, &s_sensor) != ESP_OK) {
         s_sensor = nullptr;
+        return;
+    }
+    if (temperature_sensor_enable(s_sensor) != ESP_OK) {
+        s_sensor = nullptr;
+    }
 }
 
 float thermal_read_c()
 {
     float celsius = NAN;
-    if (!s_sensor) return celsius;
+    if (s_sensor == nullptr) {
+        return celsius;
+    }
     xSemaphoreTake(s_lock, portMAX_DELAY);
     temperature_sensor_get_celsius(s_sensor, &celsius);
     xSemaphoreGive(s_lock);
@@ -38,13 +45,15 @@ float thermal_read_c()
 void thermal_check(float warn_c)
 {
     float celsius = thermal_read_c();
-    if (std::isnan(celsius)) return;
+    if (std::isnan(celsius)) {
+        return;
+    }
     const float clear_c = warn_c - THERMAL_HYSTERESIS_C;
     if (!s_warning_active && celsius >= warn_c) {
         s_warning_active = true;
-        event_post(EV_WARN, "thermal_warning", "die %.1fC >= %.1fC", celsius, warn_c);
+        event_post(event_severity_t::warn, "thermal_warning", "die %.1fC >= %.1fC", celsius, warn_c);
     } else if (s_warning_active && celsius < clear_c) {
         s_warning_active = false;
-        event_post(EV_INFO, "thermal_ok", "die %.1fC < %.1fC", celsius, clear_c);
+        event_post(event_severity_t::info, "thermal_ok", "die %.1fC < %.1fC", celsius, clear_c);
     }
 }

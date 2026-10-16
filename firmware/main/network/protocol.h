@@ -10,46 +10,61 @@
 #include <cstdint>
 
 constexpr uint8_t PROTO_VERSION = 1;
-constexpr size_t PROTO_HEADER_BYTES = 28;
 constexpr uint32_t PROTO_MAX_PAYLOAD = 65536;
 /** Limit for COMMAND records arriving from the PC. */
 constexpr uint32_t PROTO_MAX_INCOMING_PAYLOAD = 1024;
+constexpr size_t PROTO_MAGIC_BYTES = 4;
+constexpr size_t PROTO_CRC_BYTES = 4;
 
-enum record_type_t : uint8_t {
+enum class record_type_t : uint8_t {
     /** JSON: device facts and full configuration. */
-    REC_HELLO = 1,
+    hello = 1,
     /** Binary: width u16, height u16, quality u8, pad[3], t_capture_us i64, then the JPEG. */
-    REC_JPEG_FRAME = 2,
+    jpeg_frame = 2,
     /** Binary: space u8, count u8, width u16, height u16, pad u16, then count boxes of 16 bytes. */
-    REC_DETECTIONS = 3,
+    detections = 3,
     /** Binary: see grid_payload(). */
-    REC_PRESENCE_GRID = 4,
+    presence_grid = 4,
     /** JSON: one metrics window. */
-    REC_METRICS = 5,
+    metrics = 5,
     /** JSON: severity, code, text. */
-    REC_EVENT = 6,
+    event = 6,
     /** JSON, PC to device. */
-    REC_COMMAND = 7,
+    command = 7,
     /** JSON: reply to a ping command. */
-    REC_PONG = 8,
+    pong = 8,
     /** JSON: per-frame stage times, only when metrics_verbose is on. */
-    REC_FRAME_TIMING = 9,
+    frame_timing = 9,
 };
+
+/** The 28 bytes in front of every payload, exactly as they travel on the wire. */
+struct __attribute__((packed)) record_header_t {
+    char magic[PROTO_MAGIC_BYTES];
+    uint8_t version;
+    record_type_t type;
+    uint16_t flags;
+    uint32_t seq;
+    uint32_t frame_id;
+    int64_t t_dev_us;
+    uint32_t payload_length;
+};
+constexpr size_t PROTO_HEADER_BYTES = 28;
+static_assert(sizeof(record_header_t) == PROTO_HEADER_BYTES, "header layout must match docs/protocol.md");
 
 /**
  * Sends one record whose payload is the concatenation of two parts (the second may be empty).
  * Increments *seq. Returns false on a socket error.
  */
-bool proto_send(int sock, uint32_t *seq, uint8_t type, uint32_t frame_id, const void *part1, uint32_t part1_len,
-                const void *part2 = nullptr, uint32_t part2_len = 0);
+bool proto_send(int sock, uint32_t *seq, record_type_t type, uint32_t frame_id, const void *part1,
+                uint32_t part1_len, const void *part2 = nullptr, uint32_t part2_len = 0);
 
 /** Reassembles incoming records with magic resync, a length limit and a CRC check. */
 struct proto_receiver_t {
-    uint8_t buffer[PROTO_HEADER_BYTES + PROTO_MAX_INCOMING_PAYLOAD + 4];
+    uint8_t buffer[PROTO_HEADER_BYTES + PROTO_MAX_INCOMING_PAYLOAD + PROTO_CRC_BYTES];
     size_t length;
 };
 
-using proto_record_handler_t = void (*)(uint8_t type, const uint8_t *payload, uint32_t len, void *context);
+using proto_record_handler_t = void (*)(record_type_t type, const uint8_t *payload, uint32_t len, void *context);
 
 /** Appends received bytes and calls on_record for every complete record whose CRC is valid. */
 void proto_receiver_feed(proto_receiver_t *receiver, const uint8_t *data, size_t length,

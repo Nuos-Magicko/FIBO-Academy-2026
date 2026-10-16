@@ -1,56 +1,88 @@
-"""Connect to the board, optionally change settings, and check that everything arrives correctly.
+"""Connect to the board, optionally change settings, and check that everything
+arrives correctly.
 
-Prints one JSON summary: how many records of each kind arrived, whether every picture got its
-own boxes, lost or damaged data, the board's messages and its last measurements.
-Exit code 1 if pairing or integrity checks fail.
+Prints one JSON summary: how many records of each kind arrived, whether every
+picture got its own boxes, lost or damaged data, the board's messages and its
+last measurements. Exit code 1 if pairing or integrity checks fail.
 
-  python pc/main.py check HOST --seconds 3 --set jpeg_quality=20        change a setting
+Check for 30 seconds:
   python pc/main.py check HOST --seconds 30
-  python pc/main.py check HOST --seconds 30 --slow-ms 200 --recv-bytes 2048   slow reader (~10 KB/s)
-  python pc/main.py check HOST --cmd '{"cmd":"set","values":{"mode":"metadata_stream"}}'
-  python pc/main.py check HOST --reconnects 3                       disconnect/reconnect cycles
-  python pc/main.py check HOST --save-frame frame.jpg               one JPEG + its boxes (.json)
+Change a setting:
+  python pc/main.py check HOST --seconds 3 --set jpeg_quality=20
+Pretend to be a slow reader (about 10 KB/s):
+  python pc/main.py check HOST --seconds 30 --slow-ms 200 --recv-bytes 2048
+Send any command:
+  python pc/main.py check HOST \
+      --cmd '{"cmd":"set","values":{"mode":"metadata_stream"}}'
+Disconnect and reconnect 3 extra times:
+  python pc/main.py check HOST --reconnects 3
+Save one JPEG and its boxes (.json):
+  python pc/main.py check HOST --save-frame frame.jpg
 """
+
 import argparse
 import json
 import socket
 import time
+from typing import Any
 
-from connection import protocol as P
+from connection import protocol
 from connection.clock_sync import ClockSync
 
 SOCKET_POLL_S = 0.5
 PING_INTERVAL_S = 1
 
 
-def new_summary():
-    return {"sessions": 0, "bytes": 0, "counts": {}, "seq_gaps": 0, "crc_errors": 0, "resyncs": 0,
-            "pairs": 0, "pair_mismatch": 0, "unpaired_jpeg": 0, "det_without_jpeg": 0, "det_only": 0,
-            "frame_id_gaps": 0, "boxes": 0, "server_closed": 0, "events": [], "hello": None,
-            "last_metrics": None, "last_grid": None}
+def new_summary() -> dict[str, Any]:
+    return {
+        "sessions": 0,
+        "bytes": 0,
+        "counts": {},
+        "seq_gaps": 0,
+        "crc_errors": 0,
+        "resyncs": 0,
+        "pairs": 0,
+        "pair_mismatch": 0,
+        "unpaired_jpeg": 0,
+        "det_without_jpeg": 0,
+        "det_only": 0,
+        "frame_id_gaps": 0,
+        "boxes": 0,
+        "server_closed": 0,
+        "events": [],
+        "hello": None,
+        "last_metrics": None,
+        "last_grid": None,
+    }
 
 
 class Session:
-    """One TCP connection: counts records and checks that DETECTIONS follow their own JPEG_FRAME.
+    """One TCP connection: counts records and checks that DETECTIONS follow
+    their own JPEG_FRAME.
 
-    pair_mismatch counts DETECTIONS[n+1] arriving right after JPEG_FRAME[n], which must never happen.
+    pair_mismatch counts DETECTIONS[n+1] arriving right after JPEG_FRAME[n],
+    which must never happen.
     """
 
-    def __init__(self, args, summary, clock):
-        self.args, self.summary, self.clock = args, summary, clock
+    def __init__(
+        self,
+        args: argparse.Namespace,
+        summary: dict[str, Any],
+        clock: ClockSync,
+    ) -> None:
+        self.args = args
+        self.summary = summary
+        self.clock = clock
         self.sock = socket.create_connection((args.host, args.port), timeout=5)
         self.sock.settimeout(SOCKET_POLL_S)
-        self.parser = P.Parser()
-        self.last_seq = None
-        self.jpeg_awaiting_detections = None
-        self.last_frame_id = None
+        self.parser = protocol.Parser()
+        self.last_seq: int | None = None
+        self.jpeg_awaiting_detections: tuple[int, dict[str, Any]] | None = None
+        self.last_frame_id: int | None = None
         self.commands_sent = False
         self.frame_saved = False
-        self.handlers = {P.HELLO: self.on_hello, P.JPEG_FRAME: self.on_jpeg, P.DETECTIONS: self.on_detections,
-                         P.METRICS: self.on_metrics, P.EVENT: self.on_event, P.PONG: self.on_pong,
-                         P.PRESENCE_GRID: self.on_grid}
 
-    def run(self, seconds):
+    def run(self, seconds: float) -> None:
         deadline = time.time() + seconds
         next_ping = time.time() + PING_INTERVAL_S
         while time.time() < deadline:
@@ -59,18 +91,19 @@ class Session:
                 break
             for record in self.parser.feed(data):
                 self.count(record)
-                handler = self.handlers.get(record.type)
-                if handler:
-                    handler(record)
+                self.handle(record)
             if self.args.ping and time.time() >= next_ping:
-                self.sock.sendall(P.encode_command(self.clock.ping_payload()))
+                self.sock.sendall(
+                    protocol.encode_command(self.clock.ping_payload())
+                )
                 next_ping = time.time() + PING_INTERVAL_S
         self.summary["crc_errors"] += self.parser.crc_errors
         self.summary["resyncs"] += self.parser.resyncs
         self.sock.close()
 
-    def receive(self):
-        """Bytes received (possibly empty), or None when the device closed the connection."""
+    def receive(self) -> bytes | None:
+        """Bytes received (possibly empty), or None when the device closed the
+        connection."""
         try:
             data = self.sock.recv(self.args.recv_bytes)
             if not data:
@@ -83,29 +116,53 @@ class Session:
         self.summary["bytes"] += len(data)
         return data
 
-    def count(self, record):
+    def handle(self, record: protocol.Record) -> None:
+        if record.type == protocol.HELLO:
+            self.on_hello(record)
+        elif record.type == protocol.JPEG_FRAME:
+            self.on_jpeg(record)
+        elif record.type == protocol.DETECTIONS:
+            self.on_detections(record)
+        elif record.type == protocol.METRICS:
+            self.on_metrics(record)
+        elif record.type == protocol.EVENT:
+            self.on_event(record)
+        elif record.type == protocol.PONG:
+            self.on_pong(record)
+        elif record.type == protocol.PRESENCE_GRID:
+            self.on_grid(record)
+
+    def count(self, record: protocol.Record) -> None:
         counts = self.summary["counts"]
         counts[record.name] = counts.get(record.name, 0) + 1
         if self.last_seq is not None and record.seq != self.last_seq + 1:
             self.summary["seq_gaps"] += 1
         self.last_seq = record.seq
 
-    def on_hello(self, record):
-        self.summary["hello"] = P.decode_json(record.payload)
-        self.summary.setdefault("first_hello_config", self.summary["hello"].get("config"))
+    def on_hello(self, record: protocol.Record) -> None:
+        self.summary["hello"] = protocol.decode_json(record.payload)
+        if "first_hello_config" not in self.summary:
+            self.summary["first_hello_config"] = self.summary["hello"].get(
+                "config"
+            )
         if not self.commands_sent:
             for command in self.args.cmd:
-                self.sock.sendall(P.encode_command(json.loads(command)))
+                self.sock.sendall(protocol.encode_command(json.loads(command)))
             self.commands_sent = True
 
-    def on_jpeg(self, record):
+    def on_jpeg(self, record: protocol.Record) -> None:
         if self.jpeg_awaiting_detections is not None:
             self.summary["unpaired_jpeg"] += 1
-        self.jpeg_awaiting_detections = (record.frame_id, P.decode_jpeg_frame(record.payload))
+        self.jpeg_awaiting_detections = (
+            record.frame_id,
+            protocol.decode_jpeg_frame(record.payload),
+        )
 
-    def on_detections(self, record):
-        detections = P.decode_detections(record.payload)
-        mode = (self.summary.get("hello") or {}).get("config", {}).get("mode")
+    def on_detections(self, record: protocol.Record) -> None:
+        detections = protocol.decode_detections(record.payload)
+        mode = None
+        if self.summary["hello"] is not None:
+            mode = self.summary["hello"].get("config", {}).get("mode")
         if self.jpeg_awaiting_detections is not None:
             jpeg_frame_id, jpeg = self.jpeg_awaiting_detections
             if jpeg_frame_id == record.frame_id:
@@ -118,12 +175,19 @@ class Session:
             self.summary["det_without_jpeg"] += 1
         else:
             self.summary["det_only"] += 1
-        if self.last_frame_id is not None and record.frame_id > self.last_frame_id + 1:
-            self.summary["frame_id_gaps"] += record.frame_id - self.last_frame_id - 1
+        if (
+            self.last_frame_id is not None
+            and record.frame_id > self.last_frame_id + 1
+        ):
+            self.summary["frame_id_gaps"] += (
+                record.frame_id - self.last_frame_id - 1
+            )
         self.last_frame_id = record.frame_id
         self.summary["boxes"] += len(detections["boxes"])
 
-    def save_frame_once(self, jpeg, detections):
+    def save_frame_once(
+        self, jpeg: dict[str, Any], detections: dict[str, Any]
+    ) -> None:
         if not self.args.save_frame or self.frame_saved:
             return
         with open(self.args.save_frame, "wb") as image_file:
@@ -132,37 +196,64 @@ class Session:
             json.dump(detections, boxes_file, indent=1)
         self.frame_saved = True
 
-    def on_metrics(self, record):
-        self.summary["last_metrics"] = P.flatten(P.decode_json(record.payload))
+    def on_metrics(self, record: protocol.Record) -> None:
+        self.summary["last_metrics"] = protocol.flatten(
+            protocol.decode_json(record.payload)
+        )
 
-    def on_event(self, record):
-        event = P.decode_json(record.payload)
-        self.summary["events"].append(f'{event["severity"]}:{event["code"]}: {event["text"]}')
+    def on_event(self, record: protocol.Record) -> None:
+        event = protocol.decode_json(record.payload)
+        self.summary["events"].append(
+            f'{event["severity"]}:{event["code"]}: {event["text"]}'
+        )
 
-    def on_pong(self, record):
-        self.clock.on_pong(P.decode_json(record.payload))
+    def on_pong(self, record: protocol.Record) -> None:
+        self.clock.on_pong(protocol.decode_json(record.payload))
 
-    def on_grid(self, record):
-        grid = P.decode_grid(record.payload)
-        self.summary["last_grid"] = {key: grid[key] for key in ("cols", "rows", "frames", "elapsed_us")}
-        self.summary["last_grid"]["total"] = sum(map(sum, grid["counts"]))
+    def on_grid(self, record: protocol.Record) -> None:
+        grid = protocol.decode_grid(record.payload)
+        total = 0
+        for counts_in_row in grid["counts"]:
+            total += sum(counts_in_row)
+        self.summary["last_grid"] = {
+            "cols": grid["cols"],
+            "rows": grid["rows"],
+            "frames": grid["frames"],
+            "elapsed_us": grid["elapsed_us"],
+            "total": total,
+        }
 
 
-def finish_summary(summary, clock, elapsed):
+def finish_summary(
+    summary: dict[str, Any], clock: ClockSync, elapsed: float
+) -> None:
     summary["elapsed_s"] = round(elapsed, 1)
-    summary["rx_fps"] = round(summary["counts"].get("DETECTIONS", 0) / elapsed, 2)
+    summary["rx_fps"] = round(
+        summary["counts"].get("DETECTIONS", 0) / elapsed, 2
+    )
     if clock.samples:
         rtt, offset = min(clock.samples)
-        summary["clock"] = {"n": len(clock.samples), "best_rtt_us": rtt, "offset_us": round(offset),
-                            "uncertainty_us": rtt / 2}
+        summary["clock"] = {
+            "n": len(clock.samples),
+            "best_rtt_us": rtt,
+            "offset_us": round(offset),
+            "uncertainty_us": rtt / 2,
+        }
     if summary["hello"]:
         hello = summary["hello"]
-        summary["hello"] = {key: hello.get(key) for key in ("device_id", "fw_version", "sensor_pid", "ip", "config")}
+        summary["hello"] = {
+            "device_id": hello.get("device_id"),
+            "fw_version": hello.get("fw_version"),
+            "sensor_pid": hello.get("sensor_pid"),
+            "ip": hello.get("ip"),
+            "config": hello.get("config"),
+        }
 
 
-def parse_setting(text):
-    """"jpeg_quality=20" -> ("jpeg_quality", 20). Numbers and true/false are converted; anything else
-    stays text, so "mode=camera_only" works without quotes."""
+def parse_setting(text: str) -> tuple[str, Any]:
+    """ "jpeg_quality=20" -> ("jpeg_quality", 20). Numbers and true/false are
+    converted; anything else stays text, so "mode=camera_only" works without
+    quotes."""
     name, separator, value = text.partition("=")
     if not separator or not name:
         raise argparse.ArgumentTypeError(f"expected NAME=VALUE, got {text!r}")
@@ -172,39 +263,74 @@ def parse_setting(text):
         return name, value
 
 
-def settings_command(settings):
-    return json.dumps({"cmd": "set", "values": dict(settings)})
-
-
-def parse_args():
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("host")
     parser.add_argument("--port", type=int, default=5000)
     parser.add_argument("--seconds", type=float, default=20)
-    parser.add_argument("--slow-ms", type=float, default=0, help="sleep after every recv (test harness only)")
-    parser.add_argument("--recv-bytes", type=int, default=65536,
-                        help="max bytes per recv (with --slow-ms: reader throughput cap)")
-    parser.add_argument("--set", action="append", default=[], type=parse_setting, metavar="NAME=VALUE",
-                        help="change a setting, e.g. --set jpeg_quality=20 (repeatable)")
-    parser.add_argument("--cmd", action="append", default=[], help="COMMAND JSON sent after HELLO")
-    parser.add_argument("--ping", action="store_true", help="PING once per second; report clock offset")
-    parser.add_argument("--reconnects", type=int, default=0, help="extra disconnect/reconnect cycles")
+    parser.add_argument(
+        "--slow-ms",
+        type=float,
+        default=0,
+        help="sleep after every recv (test harness only)",
+    )
+    parser.add_argument(
+        "--recv-bytes",
+        type=int,
+        default=65536,
+        help="max bytes per recv (with --slow-ms: reader throughput cap)",
+    )
+    parser.add_argument(
+        "--set",
+        action="append",
+        default=[],
+        type=parse_setting,
+        metavar="NAME=VALUE",
+        help="change a setting, e.g. --set jpeg_quality=20 (repeatable)",
+    )
+    parser.add_argument(
+        "--cmd",
+        action="append",
+        default=[],
+        help="COMMAND JSON sent after HELLO",
+    )
+    parser.add_argument(
+        "--ping",
+        action="store_true",
+        help="PING once per second; report clock offset",
+    )
+    parser.add_argument(
+        "--reconnects",
+        type=int,
+        default=0,
+        help="extra disconnect/reconnect cycles",
+    )
     parser.add_argument("--save-frame")
     args = parser.parse_args()
     if args.set:
-        args.cmd.insert(0, settings_command(args.set))
+        set_command = {"cmd": "set", "values": dict(args.set)}
+        args.cmd.insert(0, json.dumps(set_command))
     return args
 
 
-def main():
+def main() -> int:
     args = parse_args()
-    summary, clock = new_summary(), ClockSync(window=10_000)
+    summary = new_summary()
+    clock = ClockSync(window=10_000)
     started = time.time()
-    for _ in range(args.reconnects + 1):
-        Session(args, summary, clock).run(args.seconds / (args.reconnects + 1))
+    session_count = args.reconnects + 1
+    for session_number in range(session_count):
+        session = Session(args, summary, clock)
+        session.run(args.seconds / session_count)
         summary["sessions"] += 1
     finish_summary(summary, clock, time.time() - started)
     print(json.dumps(summary, indent=1))
-    failed = summary["pair_mismatch"] or summary["crc_errors"] or summary["seq_gaps"] or summary["det_without_jpeg"]
-    return 1 if failed else 0
-
+    if summary["pair_mismatch"] > 0:
+        return 1
+    if summary["crc_errors"] > 0:
+        return 1
+    if summary["seq_gaps"] > 0:
+        return 1
+    if summary["det_without_jpeg"] > 0:
+        return 1
+    return 0

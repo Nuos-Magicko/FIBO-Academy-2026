@@ -2,7 +2,7 @@
 
 **A small camera that finds people, and a PC program that shows where they were and where they moved.**
 
-This project was made for the General Magic (Thailand) high-school engineering research camp. A tiny computer board with a camera looks at a scene, uses artificial intelligence (AI) **on the board itself** to find the people in each picture, and sends the results over Wi-Fi to a laptop. The laptop shows the pictures with boxes around the people, draws two kinds of heatmaps, and saves every measurement to files.
+This project was made for the FIBO Academy Robotics and AI 2026 x General Magic Thailand. A tiny computer board with a camera looks at a scene, uses artificial intelligence (AI) **on the board itself** to find the people in each picture, and sends the results over Wi-Fi to a laptop. The laptop shows the pictures with boxes around the people, draws two kinds of heatmaps, and saves every measurement to files.
 
 Your job at the camp is to **measure this system like an engineer**:
 - Find out how fast it really is, and which parts take the time.
@@ -33,7 +33,7 @@ New words are explained in the **[glossary](docs/glossary.md)**.
      receives commands from the laptop               ◄═════
 ```
 
-- **The board has two cores** (two "brains"). One runs the camera and the AI; the other runs the network. They pass finished frames to each other through a short **queue**. If the queue is full, the oldest frame is thrown away and counted, so the AI never has to wait for the Wi-Fi.
+- **The board has two cores** (two "brains"). One runs the camera and the AI; the other runs the network. They pass finished frames to each other through a short **queue**. What happens when the queue is full depends on the mode; see [protocol.md](docs/protocol.md).
 - **Everything is timed.** For every frame, the board measures how long each step took, in microseconds:
   - waiting for the camera;
   - decoding the JPEG;
@@ -48,7 +48,7 @@ New words are explained in the **[glossary](docs/glossary.md)**.
   - **Movement**, worked out on the laptop, shows where people *moved*.
 
   They measure different things, so they can look different.
-- **Five modes** let you switch parts of the system on and off, so you can find out what each part costs:
+- **Five modes** switch parts of the system on and off:
 
 | Mode | What the board does |
 |---|---|
@@ -63,32 +63,31 @@ New words are explained in the **[glossary](docs/glossary.md)**.
 ## Getting started
 
 ### What you need
-- The board (Seeed XIAO ESP32S3 Sense) with its **OV3660 camera**, the **Wi-Fi antenna** attached, and a **heatsink** on the chip.
+- The board (Seeed XIAO ESP32S3 Sense) with its **OV3660 camera** and the **Wi-Fi antenna** attached.
 - A USB-C cable that carries data (some cables only charge), plugged straight into the laptop or into a powered USB hub.
-- A laptop with **Python 3.11 or newer**, on a **2.4 GHz** Wi-Fi network. The board cannot use 5 GHz Wi-Fi.
+- A **Windows** laptop with **Python 3.11 or newer**, on a **2.4 GHz** Wi-Fi network. The board cannot use 5 GHz Wi-Fi.
 
 ### Step 1 – Install the laptop programs (only once)
 Open a terminal in this project folder and run:
 ```bash
-python -m venv pc/.venv
-pc/.venv/Scripts/pip install -r pc/requirements.txt
-pc/.venv/Scripts/python -m pytest pc/tests -q
+python -m venv pc\.venv
+pc\.venv\Scripts\pip install -r pc\requirements.txt
+pc\.venv\Scripts\python -m pytest pc\tests -q
 ```
-On a Mac or Linux laptop, write `pc/.venv/bin/` instead of `pc/.venv/Scripts/`.
 - The first line makes a private Python folder for this project.
 - The second installs the libraries the project needs.
-- The third runs the automatic tests; the last line should say `34 passed`.
+- The third runs the automatic tests; the last line should say `36 passed`.
 
 ### Step 2 – Try it without a board
 ```bash
-pc/.venv/Scripts/python pc/main.py viewer --replay samples/synthetic_run
+pc\.venv\Scripts\python pc\main.py viewer --replay samples\synthetic_run
 ```
 You will see three coloured boxes walking across a grey picture labelled SYNTHETIC. This is made-up data, but it goes through exactly the same program as real data. Press **q** to close.
 
 ### Step 3 – Connect to a real board
 Your mentor flashes the board (copies the firmware onto it) and tells you its **IP address**. Plug the board in, wait about one minute while it checks itself, then run:
 ```bash
-pc/.venv/Scripts/python pc/main.py viewer --host <board-ip>
+pc\.venv\Scripts\python pc\main.py viewer --host <board-ip>
 ```
 
 | Key | What it does |
@@ -101,17 +100,16 @@ pc/.venv/Scripts/python pc/main.py viewer --host <board-ip>
 | `c` | disconnect / reconnect |
 | `q` or `Esc` | quit |
 
-Every session is saved in a new **run folder**, `runs/<date_time>_<board>/`. The measurements are in `metrics.csv`, which you can open in Excel or Google Sheets. The file `stream.gmtp` lets you replay the session later:
+Every session is saved in a new **run folder**, `runs\<date_time>_<board>\`. The measurements are in `metrics.csv`, which you can open in Excel or Google Sheets. The file `stream.gmtp` lets you replay the session later:
 ```bash
-pc/.venv/Scripts/python pc/main.py viewer --replay runs/<folder>
+pc\.venv\Scripts\python pc\main.py viewer --replay runs\<folder>
 ```
 Camera pictures are saved **only** while you have pressed `s`.
 
 ### Step 4 – Run a fair, repeatable experiment
 Ask your mentor to set up the reference scene first, so every team measures the same thing. Then run:
 ```bash
-pc/.venv/Scripts/python pc/main.py baseline --host <board-ip> --room-temp-c 26.5 \
-    --scene static_silhouettes --heatsink yes --repeats 3 --seconds 60
+pc\.venv\Scripts\python pc\main.py baseline --host <board-ip> --room-temp-c 26.5 --scene static_silhouettes --heatsink no --repeats 3 --seconds 60
 ```
 Replace 26.5 with the room temperature you measured.
 - **What it does:** the script lets the board warm up for 2 minutes, then runs each of the five modes 3 times, for 60 seconds each. It takes about 25 minutes in total.
@@ -138,13 +136,13 @@ What every measurement means, the settings you can change, and a page for your n
 
 The project does **not** recognise faces or identify people, and it does not follow anyone over time.
 
-**Safety.** The chip gets hot: 60–74 °C was measured without a heatsink. Don't touch the chip or the heatsink while the board runs. Don't put the board in a closed plastic box.
+**Safety.** The chip gets hot enough to hurt. Don't touch it while the board runs, and don't put the board in a closed plastic box.
 
 ---
 
 ## For mentors: building and flashing
 
-1. **Build the firmware** (needs ESP-IDF v5.5.3; see [setup_windows.md](docs/setup_windows.md) or [setup_linux.md](docs/setup_linux.md)). In `firmware/`:
+1. **Build the firmware** (needs ESP-IDF v5.5.3; see [setup_windows.md](docs/setup_windows.md)). In `firmware\`:
    ```bash
    idf.py build
    idf.py merge-bin -o gmt_people_flow_merged.bin
@@ -153,11 +151,11 @@ The project does **not** recognise faces or identify people, and it does not fol
 2. **Set the Wi-Fi:** copy `firmware/main/config/wifi_secrets.example.h` to `wifi_secrets.h` (not stored in git) and fill in a 2.4 GHz network.
    - Without it, each board makes its own network `GMT-PF-xxxx` (password `gmtcamp2026`, board at 192.168.4.1).
    - Wi-Fi settings can also be changed later from the laptop.
-3. **Flash and check every connected board:**
+3. **Flash and check the boards one at a time.** Plug in one board and find its COM port in Device Manager, then run:
    ```bash
-   pc/tools/flash_all.ps1
+   pc\.venv\Scripts\python pc\main.py verify-board --port COM3 --flash
    ```
-   On Linux the equivalent is `pc/tools/flash_all.sh`. Each board prints **PASS** or **FAIL** with its MAC address, camera ID (it must be `0x3660`), memory sizes, firmware version and IP address, and a line is added to `boards.csv`.
+   The board prints **PASS** or **FAIL** with its MAC address, camera ID (it must be `0x3660`), memory sizes, firmware version and IP address, and a line is added to `boards.csv`.
 
 Boards that won't flash, a wrong Wi-Fi password saved on a board, resets and camera errors: see [flashing_and_recovery.md](docs/flashing_and_recovery.md). How to run sessions: [mentor_notes.md](docs/mentor_notes.md).
 
@@ -184,7 +182,7 @@ gmt-people-flow/
 │   ├── recording/            saving sessions, replaying them, the synthetic sample
 │   ├── tools/                checks and experiments (baseline, soak, verify-board, ...)
 │   ├── utils/                small helpers
-│   └── tests/                34 automatic tests that run without a board
+│   └── tests/                36 automatic tests that run without a board
 ├── samples/synthetic_run/    a made-up session for trying the viewer without a board
 └── docs/                     documentation (see below)
 ```
@@ -201,7 +199,7 @@ gmt-people-flow/
 | | `wifi.cpp`, `protocol.cpp`, `commands.cpp` | The Wi-Fi connection, the message format, the commands from the laptop |
 | `telemetry/` | `metrics.cpp` | Collects the timings and makes the once-per-second summary |
 | | `events.cpp`, `thermal.cpp` | Warning messages, temperature checks |
-| `utils/` | `device.cpp` | Reset reason, MAC address, a memory helper |
+| `utils/` | `device.cpp`, `units.h` | Reset reason, MAC address, a memory helper; unit conversions (microseconds, megabytes) |
 
 Every `.cpp` file has a `.h` file next to it that lists what it offers to the other files.
 
@@ -217,7 +215,7 @@ Every program starts from `pc/main.py`. Run `python pc/main.py` on its own to se
 | `baseline` | A repeatable experiment: every mode, several repeats, all conditions saved | `tools/baseline.py` |
 | `report` | Tables from a baseline folder | `tools/report.py` |
 | `soak` | A long test (an hour) to check the board stays stable | `tools/soak.py` |
-| `verify-board` | Flash and check boards (mentors); `tools/flash_all.ps1` / `.sh` do every board | `tools/verify_board.py` |
+| `verify-board` | Flash and check a board (mentors) | `tools/verify_board.py` |
 | `serial-log` | Save the board's start-up messages over USB | `tools/serial_log.py` |
 
 The commands share code in `analysis/` (matching pictures with boxes, counting losses, heatmaps, movement paths), `connection/` (the message format, comparing clocks), `recording/logger.py` (writing the run folder) and `utils/`.
@@ -228,23 +226,31 @@ The commands share code in `analysis/` (matching pictures with boxes, counting l
 | [glossary.md](docs/glossary.md) | Everyone: what the words mean |
 | [student_quickstart.md](docs/student_quickstart.md) | Students: step-by-step guide |
 | [experiments.md](docs/experiments.md) | Students: what each measurement means, settings, notebook page |
-| [setup_windows.md](docs/setup_windows.md), [setup_linux.md](docs/setup_linux.md) | Installing the tools and building the firmware |
+| [setup_windows.md](docs/setup_windows.md) | Installing the tools and building the firmware |
 | [flashing_and_recovery.md](docs/flashing_and_recovery.md), [mentor_notes.md](docs/mentor_notes.md) | Mentors |
 | [protocol.md](docs/protocol.md), [architecture.md](docs/architecture.md) | Anyone who wants the technical details |
-| [performance_report.md](docs/performance_report.md), [test_report.md](docs/test_report.md) | Mentors and GMT: measurements and what has been checked |
-| [versions.md](docs/versions.md), [research_findings.md](docs/research_findings.md), [risks.md](docs/risks.md) | Background: software versions, sources, known risks |
+| [versions.md](docs/versions.md) | Background: software versions and licences |
 
 ### How the code is written
-- **Names explain themselves.** Settings and functions have names that say what they are, such as `BUNDLE_POOL_SIZE` or `copy_jpeg_and_release_frame()`.
+The code is meant to be read by students, so it prefers plain and long over short and clever.
+
+Everywhere:
+- **Names explain themselves.** Settings and functions have names that say what they are, such as `BUNDLE_POOL_SIZE` or `copy_jpeg_and_release_frame()`. Variables use whole words (`index`, `settings`), not letters (`i`, `c`).
 - **Explanations live in docstrings.** There are no comments mixed into the code; the explanations are in the short description at the top of each file and above each function.
+- **No shortcuts.** Every `if` is written out on its own lines: no `a ? b : c`, no `x if y else z`, no `a or b` to pick a default, no lambdas, no one-line loops that also filter.
+- **No magic numbers.** A number that means something gets a name: `PIN_XCLK = 10`, `MICROSECONDS_PER_SECOND`, `JPEG_QUALITY_MAX`.
 - **Message names never change.** The names of counters and settings are part of the message format, so saved logs keep working.
 
-## Project status
-| Stage | State |
-|---|---|
-| Choose the tools, test the hardware | Done. A 1-hour test without a heatsink passed (no resets, memory stable, highest 71.9 °C). **The test with a heatsink still waits for a heatsink.** |
-| Board program | Done, tested on the real board |
-| Laptop programs and tests | Done, 34 tests pass, tested with replay and with the real board |
-| Official baseline measurements | Tools and documents are ready. **The measurements wait for a heatsink and the reference scene.** Early measurements are in [performance_report.md](docs/performance_report.md). |
+Board code (C++) follows the [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines):
+- **Strong types.** Lists of choices are `enum class`, for example `app_mode_t::full_stream` or `stage_t::infer`, with the same names the laptop uses. A MAC address is a `mac_address_t`, and the bytes of a message header are a `struct` instead of positions in an array.
+- **`constexpr`, never `#define`.** Every constant is a typed `constexpr`, including the Wi-Fi name and password in `wifi_secrets.h`.
+- **Named casts only.** Conversions are written as `static_cast<...>` (or `reinterpret_cast` / `const_cast` when talking to C libraries), never as `(int)x`.
 
-Every result in [test_report.md](docs/test_report.md) is labelled honestly: tested on the real board, only built, only tested in simulation, not tested, or blocked.
+Laptop code (Python) follows [PEP 8](https://peps.python.org/pep-0008/) and has **type hints on every function**. Three tools check this; the settings are in `pc/pyproject.toml`:
+```bash
+cd pc
+.venv\Scripts\pip install -r requirements-dev.txt
+.venv\Scripts\python -m pycodestyle --exclude=.venv .
+.venv\Scripts\python -m black --check .
+.venv\Scripts\python -m mypy .
+```

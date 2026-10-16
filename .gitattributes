@@ -1,0 +1,11 @@
+# Left out of the package made with:
+#   git archive --format=zip -o gmt-people-flow.zip HEAD
+# These are GMT's internal engineering records. They contain measured results
+# that would give away what students are meant to find out themselves.
+.gitattributes export-ignore
+docs/performance_report.md export-ignore
+docs/test_report.md export-ignore
+docs/research_findings.md export-ignore
+docs/risks.md export-ignore
+docs/measurements export-ignore
+docs/logs export-ignore

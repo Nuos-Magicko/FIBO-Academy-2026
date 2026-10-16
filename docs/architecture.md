@@ -41,7 +41,7 @@ Includes are written from `main/`, e.g. `#include "telemetry/metrics.h"`.
 
 ## Decisions
 - **Buffers:** 4 bundles × 64 KiB JPEG in PSRAM, allocated at boot. There's no per-frame malloc on the streaming path; the exceptions are the decoded RGB image (esp-dl allocates and frees it each frame) and the cJSON objects (PSRAM, about once a second).
-- **Backpressure:** drop-oldest in `full_stream`. Metadata modes wait up to 1 s, then drop. With no client, bundles are discarded. Inference never blocks indefinitely on the network.
+- **Backpressure:** drop-oldest in `full_stream`. Metadata modes wait up to 1 s, then drop. With no client, bundles are discarded.
 - **Only inferred frames are streamed.** `infer_every_n` > 1 skips frames entirely, so JPEG and boxes always match.
 - **Boxes:** pixels of the source frame (`frame_px`), clamped. For QVGA that is QVGA px.
 - **JSON** for low-rate records (HELLO, METRICS, EVENT, COMMAND, PONG, FRAME_TIMING); **binary** for JPEG_FRAME, DETECTIONS and PRESENCE_GRID.
@@ -61,7 +61,7 @@ Includes are written from `main/`, e.g. `#include "telemetry/metrics.h"`.
 | `analysis/` | `pipeline.py`, `tracker.py`, `heatmap.py` | frame_id join and loss counters, tracklets, both heatmaps |
 | `connection/` | `protocol.py`, `clock_sync.py` | GMTP framing and codecs, PING/PONG clock offset |
 | `recording/` | `logger.py`, `replay.py`, `synthetic.py` | run folders, replay, the synthetic sample |
-| `tools/` | `check.py`, `baseline.py`, `report.py`, `soak.py`, `verify_board.py`, `serial_log.py`, `flash_all.ps1/.sh` | commands for checks, experiments and flashing |
+| `tools/` | `check.py`, `baseline.py`, `report.py`, `soak.py`, `verify_board.py`, `serial_log.py` | commands for checks, experiments and flashing |
 | `utils/` | `paths.py`, `usb_serial.py` | repository paths, USB reset and boot-log parsing |
 | `tests/` | `test_*.py` | pytest suite, no hardware needed |
 
